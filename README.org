@@ -1,0 +1,23 @@
+#+TITLE: DRK's Dotfiles
+#+AUTHOR: Clay Gomera (DRK)
+#+DESCRIPTION: Here i store all my dotfiles
+
+* ABOUT
+This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify.
+
+* Dependencies
+If you want to get the full experience you need theese things:
+- ani-cli (A great cli tool to watch anime)
+- ytfzf (A great cli tool to watch youtube videos)
+- void linux (If you want to use the same aliases that i use in my shell configs)
+- elogind (If you will use void linux, to make shure that suspend, reboot and poweroff works properly)
+- xbacklight (for brightness control in laptops)
+- xbindkeys (for volume and brightness control with fn key)
+- arc-icon-theme (needed for the widgets)
+- gruvbox-dark & gruvbox-material-dark-icon-theme (my personal preference of theme and icons)
+
+* Screenshots:
+#+CAPTION: An example screenshot
+#+NAME:   screenshot
+#+attr_org: :width 750
+[[./screenshot.jpg]]
