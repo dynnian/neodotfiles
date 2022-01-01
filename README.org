@@ -7,6 +7,8 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 
 * Dependencies
 If you want to get the full experience you need theese things:
+- doom emacs (the best emacs distribution)
+- spacevim & neovide (just in case i need it)
 - ani-cli (A great cli tool to watch anime)
 - ytfzf (A great cli tool to watch youtube videos)
 - void linux (If you want to use the same aliases that i use in my shell configs)
