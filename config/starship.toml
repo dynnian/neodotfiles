@@ -1,0 +1,39 @@
+##     ____  ____  _  __
+##    |  _ \|  _ \| |/ /
+##    | | | | |_) | ' /  Clay Gomera (Drake)
+##    | |_| |  _ <| . \  This is my custom starship config for my laptop
+##    |____/|_| \_\_|\_\
+##
+
+# ~/.config/starship.toml
+
+# disable starship from forcing a new line to be taken. Solved the empty line 
+# at start of terminal
+add_newline = false
+
+[line_break]
+disabled = true
+
+# character settings
+[character]
+error_symbol = "[✘](bold red) "
+success_symbol = "[↳](bold green)"
+
+# directory settings
+[directory]
+truncation_length = 5
+format = "[$path]($style)[$lock_symbol]($lock_style) "
+
+# shows the hostname on new lines
+[hostname]
+ssh_only = false
+disabled = false
+style = "bold italic #87A752"
+
+[package]
+disabled = true
+
+# the user name will always show up
+[username]
+style_user = "bold dimmed blue"
+show_always = true 
