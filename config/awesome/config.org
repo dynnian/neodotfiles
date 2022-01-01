@@ -171,7 +171,7 @@ local modkey1      = "Control"
 * Tags
 Here are the tagnames, you can edit them as you wish.
 #+begin_src lua
-awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " TERM1 ", " TERM2 ", " WORK1 ", " WORK2 ", " GAME " }
+awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " TERM ", " WORK1 ", " WORK2 ", " GAME " }
 #+end_src
 
 * Wibox and wallpaper stuff
@@ -230,19 +230,21 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) 
 
 * Bindings
 This sections is all about keyboard shortcuts or being more correct "bindings". This is the most important part of this config, all the tags are app centric, this means that they are there to host a specific application or type of applications.
-|-----------+---------+-----+--------------------+--------------------------------------------------------------|
-| Tagnumber | Tagname | Key | Type               | App                                                          |
-|-----------+---------+-----+--------------------+--------------------------------------------------------------|
-|         1 | CODE    | F1  | Text editors       | Super + F1 = Emacs / Super + Shift + F1 = spacevim           |
-|         2 | WEB     | F2  | Web browsers       | Super + F2 = firefox / Super + Shift + F2 = qutebrowser      |
-|         3 | MUSIC   | F3  | Music players      | Super + F3 = musikcube / Super + Shift + F3 = lollypop       |
-|         4 | CHAT    | F4  | Messaging apps     | Super + F4 = element / Super + Shift + F4 = whatsapp         |
-|         5 | TERM1   |     | Terminal apps 1    | Super + Shift + f = vifm / Super + Alt + f = pcmanfm         |
-|         6 | TERM2   |     | Terminal apps 2    | Super + Shift + m = pulsemixer / Super + Alt + m = alsamixer |
-|         7 | WORK1   |     | Work in progress 1 | Super + d = opens rofi to select a program                   |
-|         8 | WORK2   |     | Work in progress 2 | Super + d = opens rofi to select a program                   |
-|         9 | GAME    | F9  | Games              | Super + F9 = retroarch                                       |
-|-----------+---------+-----+--------------------+--------------------------------------------------------------|
+|-----------+---------+-------+--------------------+--------------------------------------------------------------|
+| Tagnumber | Tagname | Key   | Type               | App                                                          |
+|-----------+---------+-------+--------------------+--------------------------------------------------------------|
+|         1 | CODE    | F1    | Text editors       | Super + F1 = Emacs / Super + Shift + F1 = spacevim           |
+|         2 | WEB     | F2    | Web browsers       | Super + F2 = firefox / Super + Shift + F2 = qutebrowser      |
+|         3 | MUSIC   | F3    | Music players      | Super + F3 = musikcube / Super + Shift + F3 = lollypop       |
+|         4 | CHAT    | F4    | Messaging apps     | Super + F4 = element / Super + Shift + F4 = whatsapp         |
+|         5 | FILE    | F5    | File managers      | Super + F5 = vifm / Super + Shift + F5 = pcmanfm             |
+|         6 | TERM    | Enter | Terminal           | Super + Enter = terminal                                     |
+|         7 | WORK1   | XX    | Work in progress 1 | Super + d = opens rofi to select a program                   |
+|         8 | WORK2   | XX    | Work in progress 2 | Super + d = opens rofi to select a program                   |
+|         9 | GAME    | F9    | Games              | Super + F9 = retroarch                                       |
+|-----------+---------+-------+--------------------+--------------------------------------------------------------|
+|         X | XXXX    | XX    | tag agnostic       | Super + Shift + m = pulsemixer / Super + Alt + m = alsamixer |
+|-----------+---------+-------+--------------------+--------------------------------------------------------------|
 
 #+begin_src lua
 -- Mouse bindings
@@ -341,9 +343,6 @@ globalkeys = my_table.join(
         {description = "switch to us keyboard layout", group = "keyboard"}),
 
 --  Apps
-                -- terminal
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-        {description = "open a terminal", group = "launcher"}),
                 -- code
     awful.key({ modkey }, "F1", function () awful.spawn(editorgui) end,
         {description = "launch emacs", group = "apps"}),
@@ -364,11 +363,15 @@ globalkeys = my_table.join(
         {description = "launch element", group = "apps"}),
     awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(whatsapp) end,
         {description = "launch whatsapp", group = "apps"}),
-                -- term1, term2, work1, work2
-    awful.key({ modkey, "Shift" }, "f", function () awful.spawn(filemanager) end,
+                -- file
+    awful.key({ modkey }, "F5", function () awful.spawn(filemanager) end,
         {description = "launch vifm", group = "apps"}),
-    awful.key({ modkey, altkey }, "f", function () awful.spawn(filemanagergui) end,
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(filemanagergui) end,
         {description = "launch pcmanfm", group = "apps"}),
+                -- term
+    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
+        {description = "open a terminal", group = "launcher"}),
+                -- tag agnostic
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn(audiomixer) end,
         {description = "launch pulsemixer", group = "apps"}),
     awful.key({ modkey, altkey }, "m", function () awful.spawn(audiomixer2) end,

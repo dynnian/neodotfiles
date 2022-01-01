@@ -93,9 +93,11 @@ alias l.='exa -a | egrep "^\."'
 
 # xbps
 alias xb-up='sudo xbps-install -Su'         # update the whole system
-alias xb-get='sudo xbps-install'            # install a program
+alias xb-get='sudo xbps-install -S'            # install a program
 alias xb-qry='sudo xbps-query'              # query details about a program
-alias xb-rmv='sudo xbps-remove'             # remove a package with all its dependencies (it may brake something)
+alias xb-rmv='sudo xbps-remove -R'             # remove a package with all its dependencies (it may brake something)
+alias xb-cln='sudo xbps-remove -o'          # remove unnecesary packages
+alias xb-cln-cache='sudo xbps-remove -O'    # clean the package cache
 
 # xbps-src
 alias xbsrc='~/.void-packages/./xbps-src pkg'
