@@ -13,6 +13,8 @@ If you want to get the full experience you need theese things:
 - elogind (If you will use void linux, to make shure that suspend, reboot and poweroff works properly)
 - xbacklight (for brightness control in laptops)
 - xbindkeys (for volume and brightness control with fn key)
+- acpi (for the battery icon)
+- pulsemixer & alsa-utils (for correct volume mixing)
 - arc-icon-theme (needed for the widgets)
 - gruvbox-dark & gruvbox-material-dark-icon-theme (my personal preference of gtk theme and icons)
 - lx-appearance (to set gtk themes)
@@ -22,6 +24,7 @@ If you want to get the full experience you need theese things:
 - starship (the shell prompt that i use)
 - fish (the shell i use)
 - alacritty (the terminal emulator)
+- rofi (cool gui menu)
 
 * Screenshots:
 #+CAPTION: An example screenshot
