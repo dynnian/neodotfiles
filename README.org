@@ -14,7 +14,14 @@ If you want to get the full experience you need theese things:
 - xbacklight (for brightness control in laptops)
 - xbindkeys (for volume and brightness control with fn key)
 - arc-icon-theme (needed for the widgets)
-- gruvbox-dark & gruvbox-material-dark-icon-theme (my personal preference of theme and icons)
+- gruvbox-dark & gruvbox-material-dark-icon-theme (my personal preference of gtk theme and icons)
+- lx-appearance (to set gtk themes)
+- nitrogen (to set wallpapers)
+- lxsession (to get password prompts)
+- picom (the nice window animations)
+- starship (the shell prompt that i use)
+- fish (the shell i use)
+- alacritty (the terminal emulator)
 
 * Screenshots:
 #+CAPTION: An example screenshot
