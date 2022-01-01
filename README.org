@@ -15,6 +15,7 @@ If you want to get the full experience you need theese things:
 - xbindkeys (for volume and brightness control with fn key)
 - acpi (for the battery icon)
 - pulsemixer & alsa-utils (for correct volume mixing)
+- musikcube (the best music player available in linux)
 - arc-icon-theme (needed for the widgets)
 - gruvbox-dark & gruvbox-material-dark-icon-theme (my personal preference of gtk theme and icons)
 - lx-appearance (to set gtk themes)
