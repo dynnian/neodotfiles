@@ -110,7 +110,7 @@ local modkey       = "Mod4"
 local altkey       = "Mod1"
 local modkey1      = "Control"
 
-awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " TERM1 ", " TERM2 ", " WORK1 ", " WORK2 ", " GAME " }
+awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " TERM ", " WORK1 ", " WORK2 ", " GAME " }
 
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
@@ -258,9 +258,6 @@ globalkeys = my_table.join(
         {description = "switch to us keyboard layout", group = "keyboard"}),
 
 --  Apps
-                -- terminal
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-        {description = "open a terminal", group = "launcher"}),
                 -- code
     awful.key({ modkey }, "F1", function () awful.spawn(editorgui) end,
         {description = "launch emacs", group = "apps"}),
@@ -281,11 +278,15 @@ globalkeys = my_table.join(
         {description = "launch element", group = "apps"}),
     awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(whatsapp) end,
         {description = "launch whatsapp", group = "apps"}),
-                -- term1, term2, work1, work2
-    awful.key({ modkey, "Shift" }, "f", function () awful.spawn(filemanager) end,
+                -- file
+    awful.key({ modkey }, "F5", function () awful.spawn(filemanager) end,
         {description = "launch vifm", group = "apps"}),
-    awful.key({ modkey, altkey }, "f", function () awful.spawn(filemanagergui) end,
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(filemanagergui) end,
         {description = "launch pcmanfm", group = "apps"}),
+                -- term
+    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
+        {description = "open a terminal", group = "launcher"}),
+                -- tag agnostic
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn(audiomixer) end,
         {description = "launch pulsemixer", group = "apps"}),
     awful.key({ modkey, altkey }, "m", function () awful.spawn(audiomixer2) end,
