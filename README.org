@@ -9,7 +9,7 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 #+CAPTION: An example screenshot
 #+NAME:   screenshot
 #+attr_org: :width 750
-[[./screenshot1.jpg]]
+[[./screenshot1.png]]
 
 #+CAPTION: Another example screenshot
 #+NAME:   screenshot2
