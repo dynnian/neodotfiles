@@ -98,6 +98,7 @@ alias pac-cln='sudo pacman -Rns (pacman -Qtdq)'       # remove unnecesary packag
 alias pac-unlock='sudo rm /var/lib/pacman/db.lck'     # remove pacman lock
 alias yay-up='yay -Sua --noconfirm'                   # update only AUR pkgs (yay)
 alias yay-get='yay -S'                                # install a program for the AUR
+alias pac-cln-cache='yay -Scc'                        # clean package cache
 
 # get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -125,6 +126,12 @@ alias ani-q='ani-cli -q'    # to select video quality
 # ytfzf
 alias yt='ytfzf -f'
 
+# notflix
+alias nt='notflix'
+
+# tty-clock
+alias clock='tty-clock'
+
 # mount and unmount drives
 alias mnt='sudo mount'
 alias umnt='sudo umount'
@@ -145,7 +152,7 @@ alias sp='systemctl suspend'
 alias rb='reboot'
 
 # file manager
-alias fm='./.config/vifm/scripts/vifmrun'
+alias fm='/home/drk/.config/vifm/scripts/./vifmrun'
 
 # system monitor
 alias tp='htop'
