@@ -60,8 +60,6 @@ shopt -s checkwinsize # checks term size when bash regains control
 #ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
-### ALIASES ###
-
 ### ALIASES
 # navigation
 alias ..='cd ..'
@@ -70,13 +68,11 @@ alias .3='cd ../../..'
 alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 
-# text editors
-alias vim='nvim'
-
 # bat as cat
 alias cat='bat'
 
-# DOOM emacs
+# vim and DOOM emacs
+alias vim='nvim'
 alias doom-sync="~/.emacs.d/bin/doom sync"
 alias doom-doctor="~/.emacs.d/bin/doom doctor"
 alias doom-upgrade="~/.emacs.d/bin/doom upgrade"
@@ -91,17 +87,28 @@ alias ll='exa -l --color=always --group-directories-first'  # long format
 alias lt='exa -aT --color=always --group-directories-first' # tree listing
 alias l.='exa -a | egrep "^\."'
 
-# xbps
-alias xb-up='sudo xbps-install -Su'         # update the whole system
-alias xb-get='sudo xbps-install -S'            # install a program
-alias xb-qry='sudo xbps-query'              # query details about a program
-alias xb-rmv='sudo xbps-remove -R'             # remove a package with all its dependencies (it may brake something)
-alias xb-cln='sudo xbps-remove -o'          # remove unnecesary packages
-alias xb-cln-cache='sudo xbps-remove -O'    # clean the package cache
+# pacman and yay
+alias pac-up='sudo pacman -Syyu'                      # update the whole system
+alias pac-get='sudo pacman -S --needed'               # install a program
+alias pac-qry-sync='sudo pacman -Ss'                  # query details about a program
+alias pac-qry='sudo pacman -Q'                        # query details about a program
+alias pac-rmv='sudo pacman -Rcns'                     # remove a package with all its dependencies (it may brake something)
+alias pac-rmv-sec='sudo pacman -Runs'                 # remove a package with all its dependencies (secure way)
+alias pac-cln='sudo pacman -Rns (pacman -Qtdq)'       # remove unnecesary packages
+alias pac-unlock='sudo rm /var/lib/pacman/db.lck'     # remove pacman lock
+alias yay-up='yay -Sua --noconfirm'                   # update only AUR pkgs (yay)
+alias yay-get='yay -S'                                # install a program for the AUR
 
-# xbps-src
-alias xbsrc='~/.void-packages/./xbps-src pkg'
-alias xbins='cd ~/.void-packages/ && xi'
+# get fastest mirrors
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+
+# Colorize grep output (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
 
 # confirm before overwriting something
 alias rm='rm -i'
@@ -133,14 +140,15 @@ alias mk='musikcube'
 alias bt='acpi'
 
 # power management
-alias po='loginctl poweroff'
-alias sp='loginctl suspend'
-alias rb='loginctl reboot'
+alias po='poweroff'
+alias sp='systemctl suspend'
+alias rb='reboot'
 
 # file manager
 alias fm='./.config/vifm/scripts/vifmrun'
 
 # system monitor
+alias tp='htop'
 alias top='htop'
 
 # get error messages from journalctl
@@ -157,7 +165,7 @@ alias yta-vorbis="youtube-dl --extract-audio --audio-format vorbis "
 alias yta-wav="youtube-dl --extract-audio --audio-format wav "
 alias ytv-best="youtube-dl -f bestvideo+bestaudio "
 
-# Network Manager
+# Network Manager and bluetooth
 alias netstats='nmcli dev'
 alias wfi='nmtui-connect'
 alias wfi-scan='nmcli dev wifi list'

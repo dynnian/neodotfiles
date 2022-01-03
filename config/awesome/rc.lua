@@ -91,26 +91,29 @@ lain.layout.cascade.tile.ncol          = 2
 
 awful.util.terminal = terminal
 
-local editor            = os.getenv("EDITOR") or "/home/drk/.local/bin/./neovide"
 local editorgui         = "emacsclient -c -a 'emacs'"
+local editor            = os.getenv("EDITOR") or "gvim"
 local terminal          = "alacritty"
 local filemanager       = "alacritty -e ./.config/vifm/scripts/vifmrun"
 local filemanagergui    = "pcmanfm"
 local audiomixer        = "alacritty -e pulsemixer"
 local audiomixer2       = "alacritty -e alsamixer"
-local browser           = "firefox"
+local browser           = "librewolf"
 local browser2          = "qutebrowser"
 local musicplayer       = "alacritty -e musikcube"
 local musicplayergui    = "lollypop"
 local emailclient       = "thunderbird"
-local element           = "element-desktop"
-local whatsapp          = 'firefox --new-window web.whatsapp.com'
+local chat1             = "element-desktop"
+local chat2             = "whatsapp-for-linux"
+local notes             = "joplin-desktop"
+local passwords         = "joplin-desktop"
+
 -- Key bindings variables
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local modkey1      = "Control"
 
-awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " TERM ", " WORK1 ", " WORK2 ", " GAME " }
+awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " NOTES ", " WORK1 ", " WORK2 ", " GAME " }
 
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
@@ -241,6 +244,10 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
         {description = "select previous", group = "layout"}),
 
+--  Terminal
+    awful.key({ modkey }, "Return", function() awful.spawn(terminal) end,
+        {description = "launch a terminal", group = "apps"}),
+
 --  Rofi
     awful.key({ modkey }, "d", function () awful.spawn(string.format("rofi -show drun", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
         {description = "show rofi drun menu", group = "hotkeys"}),
@@ -248,7 +255,7 @@ globalkeys = my_table.join(
         {description = "show rofi run menu", group = "hotkeys"}),
     awful.key({ modkey }, "Tab", function () awful.spawn(string.format("rofi -show window", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
         {description = "show rofi window menu", group = "hotkeys"}),
-    awful.key({ modkey }, "w", function () awful.util.spawn("./.shell-scripts/rofi-wifi-menu.sh") end,
+    awful.key({ modkey }, "w", function () awful.util.spawn("~/.shell-scripts/./rofi-wifi-menu.sh") end,
         {description = "show rofi wifi menu", group = "hotkeys"}),
 
 --  Keyboard Layouts
@@ -274,18 +281,18 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift" }, "F3", function () awful.spawn(musicplayergui) end,
         {description = "launch lollypop", group = "apps"}),
                 -- chat
-    awful.key({ modkey }, "F4", function () awful.spawn(element) end,
+    awful.key({ modkey }, "F4", function () awful.spawn(chat1) end,
         {description = "launch element", group = "apps"}),
-    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(whatsapp) end,
+    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(chat2) end,
         {description = "launch whatsapp", group = "apps"}),
                 -- file
     awful.key({ modkey }, "F5", function () awful.spawn(filemanager) end,
         {description = "launch vifm", group = "apps"}),
     awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(filemanagergui) end,
         {description = "launch pcmanfm", group = "apps"}),
-                -- term
-    awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-        {description = "open a terminal", group = "launcher"}),
+                -- notes
+    awful.key({ modkey }, "F6", function () awful.spawn(notes) end,
+        {description = "launch joplin", group = "apps"}),
                 -- tag agnostic
     awful.key({ modkey, "Shift" }, "m", function () awful.spawn(audiomixer) end,
         {description = "launch pulsemixer", group = "apps"}),

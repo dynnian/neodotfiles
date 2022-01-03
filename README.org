@@ -3,40 +3,39 @@
 #+DESCRIPTION: Here i store all my dotfiles
 
 * ABOUT
-This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify.
+This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify. The main thing you want to see here is my awesomewm config, so here's a link >>> [[file:config/awesome/config.org][Link to the awesome config.org]]
 
 * Screenshots:
 #+CAPTION: An example screenshot
 #+NAME:   screenshot
 #+attr_org: :width 750
-[[./screenshot.jpg]]
+[[./screenshot1.jpg]]
+
+#+CAPTION: Another example screenshot
+#+NAME:   screenshot2
+#+attr_org: :width 750
+[[./screenshot2.png]]
 
 * Dependencies
 If you want to get the full experience you need theese things:
-- doom emacs (the best emacs distribution)
-- spacevim & neovide (just in case i need it)
+- DOOM Emacs (The best emacs distribution and text editor)
+- Spacevim (Just in case you need it...)
 - ani-cli (A great cli tool to watch anime)
 - ytfzf (A great cli tool to watch youtube videos)
-- void linux (If you want to use the same aliases that i use in my shell configs)
-- elogind (If you will use void linux, to make shure that suspend, reboot and poweroff works properly)
-- xbacklight (for brightness control in laptops)
-- xbindkeys (for volume and brightness control with fn key)
-- acpi (for the battery icon)
-- pulsemixer & alsa-utils (for correct volume mixing)
-- musikcube (the best music player available in linux)
-- cava & lolcat (for that cool audio visualizing)
-- arc-icon-theme (needed for the widgets)
-- gruvbox-dark & gruvbox-material-dark-icon-theme (my personal preference of gtk theme and icons)
-- lx-appearance (to set gtk themes)
-- nitrogen (to set wallpapers)
-- lxsession (to get password prompts)
-- picom (the nice window animations)
-- starship (the shell prompt that i use)
-- fish (the shell i use)
-- alacritty (the terminal emulator)
-- rofi (cool gui menu)
-
-* Awesome config
-Here is a link to my awesome config.org located in this repository.
-[[file:config/awesome/config.org][Link to the awesome config.org]]
-
+- xbacklight (For brightness control)
+- xbindkeys (For volume and brightness control with the "fn" key)
+- acpi (For the battery icon)
+- pulsemixer & alsa-utils (For correct volume mixing)
+- musikcube (The best music player available in Linux)
+- cava & lolcat (The cool and colorful audio visualizing)
+- arc-icon-theme (Needed for the widgets)
+- gruvbox-dark-gtk & gruvbox-dark-icons-gtk (Available in the AUR)
+- lxappearance (To set gtk themes)
+- nitrogen (To set wallpapers)
+- scrot (To get screenshots)
+- lxsession (To get password prompts)
+- picom (Those nice window effects and animations)
+- starship (The best shell prompt)
+- fish (The best shell)
+- alacritty (The best terminal emulator)
+- rofi (The best run prompt)
