@@ -106,7 +106,7 @@ local emailclient       = "thunderbird"
 local chat1             = "element-desktop"
 local chat2             = "whatsapp-for-linux"
 local notes             = "joplin-desktop"
-local passwords         = "joplin-desktop"
+local passwords         = "bitwarden-desktop"
 
 -- Key bindings variables
 local modkey       = "Mod4"
@@ -298,6 +298,8 @@ globalkeys = my_table.join(
         {description = "launch pulsemixer", group = "apps"}),
     awful.key({ modkey, altkey }, "m", function () awful.spawn(audiomixer2) end,
         {description = "launch alsamixer", group = "apps"}),
+    awful.key({ modkey, altkey }, "p", function () awful.spawn(passwords) end,
+        {description = "launch bitwarden", group = "apps"}),
                 -- game
     awful.key({ modkey }, "F9", function () awful.util.spawn("retroarch") end,
         {description = "launch retroarch", group = "apps"}),
