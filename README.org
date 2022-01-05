@@ -33,6 +33,7 @@ If you want to get the full experience you need theese things:
 - lxappearance (To set gtk themes)
 - nitrogen (To set wallpapers)
 - scrot (To get screenshots)
+- betterlockscreen (to get screenlocking)
 - lxsession (To get password prompts)
 - picom (Those nice window effects and animations)
 - starship (The best shell prompt)
