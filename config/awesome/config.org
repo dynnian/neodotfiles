@@ -415,7 +415,7 @@ globalkeys = my_table.join(
         {description = "launch screen configuration tool", group = ("screen")}),
 
 -- Screen Lock
-    awful.key({ modkey }, "l", function() awful.spawn(screenlocker) end,
+    awful.key({ modkey, modkey1 }, "l", function() awful.spawn(screenlocker) end,
         {description = "lock the screen", group = "screen"}),
 
 -- Show/Hide Wibox
