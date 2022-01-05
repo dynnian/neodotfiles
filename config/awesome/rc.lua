@@ -107,6 +107,7 @@ local chat1             = "element-desktop"
 local chat2             = "whatsapp-for-linux"
 local notes             = "joplin-desktop"
 local passwords         = "bitwarden-desktop"
+local screenlocker      = "betterlockscreen -l"
 
 -- Key bindings variables
 local modkey       = "Mod4"
@@ -327,6 +328,10 @@ globalkeys = my_table.join(
 -- Screen configuration
     awful.key({ modkey }, "p", function() awful.util.spawn("arandr") end,
         {description = "launch screen configuration tool", group = ("screen")}),
+
+-- Screen Lock
+    awful.key({ modkey }, "l", function() awful.spawn(screenlocker) end,
+        {description = "lock the screen", group = "screen"}),
 
 -- Show/Hide Wibox
     awful.key({ modkey }, "b", function ()
