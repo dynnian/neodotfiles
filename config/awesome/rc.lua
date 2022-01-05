@@ -255,7 +255,7 @@ globalkeys = my_table.join(
         {description = "show rofi run menu", group = "hotkeys"}),
     awful.key({ modkey }, "Tab", function () awful.spawn(string.format("rofi -show window", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
         {description = "show rofi window menu", group = "hotkeys"}),
-    awful.key({ modkey }, "w", function () awful.util.spawn("~/.shell-scripts/./rofi-wifi-menu.sh") end,
+    awful.key({ modkey }, "w", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-wifi-menu.sh") end,
         {description = "show rofi wifi menu", group = "hotkeys"}),
 
 --  Keyboard Layouts
@@ -551,5 +551,5 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 awful.util.spawn_with_shell("nitrogen --restore")
 awful.util.spawn_with_shell("lxpolkit")
-awful.util.spawn_with_shell("picom")
+awful.util.spawn_with_shell("picom --experimental-backend --config ~/.config/picom.conf")
 awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
