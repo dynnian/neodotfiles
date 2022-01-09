@@ -343,6 +343,10 @@ globalkeys = my_table.join(
         {description = "show rofi window menu", group = "hotkeys"}),
     awful.key({ modkey }, "w", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-wifi-menu.sh") end,
         {description = "show rofi wifi menu", group = "hotkeys"}),
+    awful.key({ modkey, altkey }, "Delete", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-power-menu.sh") end,
+        {description = "show rofi power menu", group = "hotkeys"}),
+    awful.key({ modkey, altkey }, "Print", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-scrot-menu.sh") end,
+        {description = "show rofi power menu", group = "hotkeys"}),
 
 --  Keyboard Layouts
     awful.key({ modkey, "Shift" }, "e", function () awful.util.spawn("setxkbmap -layout es") end,
@@ -573,6 +577,8 @@ clientbuttons = gears.table.join(
 -- Set keys
 root.keys(globalkeys)
 #+end_src
+
+#+RESULTS:
 
 * Rules
 Here are the rules, so basically here you can specify how you want Awesomewm to manage clients. I edited this to make sure that my master client always stays in its default position, for example in the master and stack layout or "tile layout", it wont matter how much apps i open, my main client will stay there in the main position. Also you can edit this to specify wich apps needs to open always in floating mode and a bunch of other things.
