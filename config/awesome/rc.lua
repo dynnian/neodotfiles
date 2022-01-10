@@ -261,7 +261,7 @@ globalkeys = my_table.join(
     awful.key({ modkey, altkey }, "Delete", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-power-menu.sh") end,
         {description = "show rofi power menu", group = "hotkeys"}),
     awful.key({ modkey, altkey }, "Print", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-scrot-menu.sh") end,
-        {description = "show rofi power menu", group = "hotkeys"}),
+        {description = "show rofi scrot menu", group = "hotkeys"}),
 
 --  Keyboard Layouts
     awful.key({ modkey, "Shift" }, "e", function () awful.util.spawn("setxkbmap -layout es") end,
