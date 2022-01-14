@@ -20,6 +20,7 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 If you want to get the full experience you need theese things:
 - DOOM Emacs (The best emacs distribution and text editor)
 - Spacevim (Just in case you need it...)
+- mononoki Nerd Font (A really hard dependency for my config)
 - ani-cli (A great cli tool to watch anime)
 - ytfzf (A great cli tool to watch youtube videos)
 - xbacklight (For brightness control)
