@@ -25,6 +25,7 @@ If you want to get the full experience you need theese things:
 - ytfzf (A great cli tool to watch youtube videos)
 - xbacklight (For brightness control)
 - xbindkeys (For volume and brightness control with the "fn" key)
+- libinput & libinput-gestures (Better mouse support)
 - acpi (For the battery icon)
 - pulsemixer & alsa-utils (For correct volume mixing)
 - musikcube (The best music player available in Linux)
