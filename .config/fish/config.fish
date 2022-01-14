@@ -123,9 +123,9 @@ alias mk='musikcube'
 alias bt='acpi'
 
 # power management
-alias po='poweroff'
+alias po='systemctl poweroff'
 alias sp='systemctl suspend'
-alias rb='reboot'
+alias rb='systemctl reboot'
 
 # file manager
 alias fm='/home/drk/.config/vifm/scripts/./vifmrun'
@@ -153,11 +153,13 @@ alias netstats='nmcli dev'
 alias wfi='nmtui-connect'
 alias wfi-scan='nmcli dev wifi list'
 alias wfi-edit='nmtui-edit'
+alias wfi-on='nmcli radio wifi on'
+alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
 
 # cd to diferent directories
 alias games='cd /run/media/Storage/multimedia/games/linux && ls'
-alias anime='cd /run/media/Storage/multimedia/anime/ && ls'
+alias anime='cd /run/media/Storage/multimedia/videos/anime/ && ls'
 alias manga='cd /run/media/Storage/multimedia/manga/ && ls'
 alias videos='cd /run/media/Storage/multimedia/videos/ && ls'
 
