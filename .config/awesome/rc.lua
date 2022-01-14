@@ -1,36 +1,3 @@
-#+TITLE: DRK's Awesome Config
-#+AUTHOR: Clay Gomera (Drake)
-#+DESCRIPTION: This my full awesome config for my laptop.
-#+PROPERTY: header-args :tangle rc.lua
-
-* TABLE OF CONTENTS :toc:
-- [[#about-this-config][ABOUT THIS CONFIG]]
-- [[#libraries][Libraries]]
-- [[#handle-runtime-errors-after-startup][Handle runtime errors after startup]]
-- [[#themes][Themes]]
-- [[#layouts][Layouts]]
-- [[#lain-layouts][Lain layouts]]
-- [[#default-awesome-variables][Default Awesome variables]]
-- [[#personal-variables][Personal Variables]]
-- [[#tags][Tags]]
-- [[#wibox-and-wallpaper-stuff][Wibox and wallpaper stuff]]
-- [[#bindings][Bindings]]
-- [[#rules][Rules]]
-- [[#signals][Signals]]
-- [[#mouse-client-focus][Mouse client focus]]
-- [[#autorun][Autorun]]
-
-* ABOUT THIS CONFIG
-Awesome is a highly configurable, next generation framework window manager for X. It is very fast, extensible and licensed under the GNU GPLv2 license. It is primarily targeted at power users, developers and any people dealing with every day computing tasks and who want to have fine-grained control on their graphical environment. This is the Awesome configuration of Clay Gomera (Drake) fully written in ORG mode inside EMACS. This is just a personal hobby that gives me all the freedom and posibilites to learn how to code and use text editors like Emacs.
-
-#+CAPTION: An example screenshot
-#+NAME:   screenshot
-#+attr_org: :width 750
-[[./screenshot.png]]
-
-* Libraries
-This is where you put custom libraries like lain or awesome-wm-widgets.
-#+begin_src lua
     -- Standard awesome library
 local gears         = require("gears") --Utilities such as color parsing and objects
 local awful         = require("awful") --Everything related to window managment
@@ -54,11 +21,7 @@ local lain          = require("lain")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
 local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
-#+end_src
 
-* Handle runtime errors after startup
-This section manages all the errors and error notifications.
-#+begin_src lua
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
@@ -81,11 +44,7 @@ local function run_once(cmd_arr)
     end
 end
 run_once({ "unclutter -root" }) -- entries must be comma-separated
-#+end_src
 
-* Themes
-Here you chose your theme, tipically you will use a lain theme like powerarrow or multicolor, my custom theme is a fork of the powerarrow_dark theme focused on the gruvbox color palette and functional integration with the awesome-wm-widgets library. To setup more themes you need to put them into the themes folder located here in the awesome .config folder, then you need to add them into that variable called "local theme = { "theme1", "theme2" }". All the themes are indentified with a number as you can see down there, so to chose a theme you need to edit the variable "local chosen_theme = themes[1,2,3,etc]" to specify the theme that you want.
-#+begin_src lua
 local themes = {
     "gruvbox-dark"  -- 1
 }
@@ -93,11 +52,7 @@ local chosen_theme = themes[1]
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
 beautiful.init(string.format(gears.filesystem.get_configuration_dir() .. "/themes/%s/theme.lua", chosen_theme))
-#+end_src
 
-* Layouts
-Here you can comment out the layouts that you don't want to use or put them in another order.
-#+begin_src lua
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -123,11 +78,7 @@ awful.layout.layouts = {
     --lain.layout.termfair,
     --lain.layout.termfair.center,
 }
-#+end_src
 
-* Lain layouts
-These are the lain layouts, i don't know what is this yet.
-#+begin_src lua
 lain.layout.termfair.nmaster           = 3
 lain.layout.termfair.ncol              = 1
 lain.layout.termfair.center.nmaster    = 3
@@ -137,19 +88,11 @@ lain.layout.cascade.tile.offset_y      = 32
 lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
-#+end_src
 
-* Default Awesome variables
-Here are the defaults awesome variables, just the terminal.
-#+begin_src lua
 awful.util.terminal = terminal
-#+end_src
 
-* Personal Variables
-Here are my personal variables.
-#+begin_src lua
-local editorgui         = "emacsclient -c -a 'emacs'"
-local editor            = os.getenv("EDITOR") or "gvim"
+local emacs             = "emacsclient -c -a 'emacs'"
+local spacevim          = os.getenv("EDITOR") or "neovide"
 local terminal          = "alacritty"
 local filemanager       = "alacritty -e ./.config/vifm/scripts/vifmrun"
 local filemanagergui    = "pcmanfm"
@@ -170,17 +113,9 @@ local screenlocker      = "betterlockscreen -l"
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local modkey1      = "Control"
-#+end_src
 
-* Tags
-Here are the tagnames, you can edit them as you wish.
-#+begin_src lua
 awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " NOTES ", " WORK1 ", " WORK2 ", " GAME " }
-#+end_src
 
-* Wibox and wallpaper stuff
-Just wibox and wallpaper stuff, i use nitrogen and tipically you will edit your wibox settings in the theme.lua file located in your theme's folder. So this isn't really useful to modify.
-#+begin_src lua
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
@@ -230,27 +165,7 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
-#+end_src
 
-* Bindings
-This sections is all about keyboard shortcuts or being more correct "bindings". This is the most important part of this config, all the tags are app centric, this means that they are there to host a specific application or type of applications.
-|-----------+---------+-----+--------------------+----------------------------------------------------------------------------------------------|
-| Tagnumber | Tagname | Key | Type               | App                                                                                          |
-|-----------+---------+-----+--------------------+----------------------------------------------------------------------------------------------|
-|         1 | CODE    | F1  | Text editors       | Super + F1 = Emacs / Super + Shift + F1 = spacevim                                           |
-|         2 | WEB     | F2  | Web browsers       | Super + F2 = firefox / Super + Shift + F2 = qutebrowser                                      |
-|         3 | MUSIC   | F3  | Music players      | Super + F3 = musikcube / Super + Shift + F3 = lollypop                                       |
-|         4 | CHAT    | F4  | Messaging apps     | Super + F4 = element / Super + Shift + F4 = whatsapp                                         |
-|         5 | FILE    | F5  | File managers      | Super + F5 = vifm / Super + Shift + F5 = pcmanfm                                             |
-|         6 | NOTES   | F6  | Note taking app    | Super + F6 = joplin                                                                          |
-|         7 | WORK1   | XX  | Work in progress 1 | Super + d = opens rofi to select a program                                                   |
-|         8 | WORK2   | XX  | Work in progress 2 | Super + d = opens rofi to select a program                                                   |
-|         9 | GAME    | F9  | Games              | Super + F9 = retroarch                                                                       |
-|-----------+---------+-----+--------------------+----------------------------------------------------------------------------------------------|
-|         X | XXXX    | XX  | tag agnostic       | Super + Shift + m = pulsemixer / Super + Alt + m = alsamixer / Super + Shift + p = bitwarden |
-|-----------+---------+-----+--------------------+----------------------------------------------------------------------------------------------|
-
-#+begin_src lua
 -- Mouse bindings
 root.buttons(gears.table.join(
     awful.button({ }, 4, awful.tag.viewnext),
@@ -356,9 +271,9 @@ globalkeys = my_table.join(
 
 --  Apps
                 -- code
-    awful.key({ modkey }, "F1", function () awful.spawn(editorgui) end,
+    awful.key({ modkey }, "F1", function () awful.spawn(emacs) end,
         {description = "launch emacs", group = "apps"}),
-    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn(editor) end,
+    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn(spacevim) end,
         {description = "launch spacevim", group = "apps"}),
                 -- web
     awful.key({ modkey }, "F2", function () awful.spawn(browser) end,
@@ -576,13 +491,7 @@ clientbuttons = gears.table.join(
 
 -- Set keys
 root.keys(globalkeys)
-#+end_src
 
-#+RESULTS:
-
-* Rules
-Here are the rules, so basically here you can specify how you want Awesomewm to manage clients. I edited this to make sure that my master client always stays in its default position, for example in the master and stack layout or "tile layout", it wont matter how much apps i open, my main client will stay there in the main position. Also you can edit this to specify wich apps needs to open always in floating mode and a bunch of other things.
-#+begin_src lua
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -628,11 +537,7 @@ awful.rules.rules = {
         }
       }, properties = { floating = true }},
 }
-#+end_src
 
-* Signals
-These are the signals, they are related to the rules, i don't tipically edit them.
-#+begin_src lua
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c)
     -- Set the windows at the slave,
@@ -645,24 +550,15 @@ client.connect_signal("manage", function (c)
         awful.placement.no_offscreen(c)
     end
 end)
-#+end_src
 
-* Mouse client focus
-These are the mouse functions to whenever you hover a window with your mouse, it automatically focuses it.
-#+begin_src lua
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-#+end_src
 
-* Autorun
-You know what is this, the things that will open with you sign in. Like setting up the wallpaper automatically, or the polkit to make sure that you will get the password prompt when a program needs it, the picom compositor and finally the emacs daemon.
-#+begin_src lua
 awful.util.spawn_with_shell("nitrogen --restore")
 awful.util.spawn_with_shell("lxpolkit")
 awful.util.spawn_with_shell("picom --experimental-backend --config ~/.config/picom.conf")
 awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
-#+end_src
