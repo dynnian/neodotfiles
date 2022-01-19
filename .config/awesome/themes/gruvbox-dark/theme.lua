@@ -18,9 +18,7 @@ local lgi   = require("lgi")
 local dpi   = require("beautiful.xresources").apply_dpi
 
 -- Custom libraries
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 
 local os = os
@@ -178,14 +176,6 @@ function theme.at_screen_connect(s)
             wibox.container.background(volume_widget{
             widget_type = 'icon_and_text',
             device = 'default'}, theme.bg_focus),
-            arrl_dl,
-            arrl_ld,
-            wibox.container.background(battery_widget(), theme.bg_focus),
-            arrl_dl,
-            arrl_ld,
-            wibox.container.background(brightness_widget{
-            type = 'icon_and_text',
-            program = 'xbacklight'}, theme.bg_focus),
             arrl_dl,
             arrl_ld,
             wibox.container.background(logout_menu_widget{
