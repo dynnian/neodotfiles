@@ -1,18 +1,11 @@
---  ____  ____  _  __
--- |  _ \|  _ \| |/ /
--- | | | | |_) | ' /	Clay Gomera (Drake)
--- | |_| |  _ <| . \	This is my awesome config for my dekstop computer
--- |____/|_| \_\_|\_\
---
-
-
--- BEGINNING OF LIBRARIES --
--- Standard awesome library
+    -- Standard awesome library
 local gears         = require("gears") --Utilities such as color parsing and objects
 local awful         = require("awful") --Everything related to window managment
 require("awful.autofocus")
     -- Custom libraries
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
     -- Widget and layout library
 local wibox         = require("wibox")
@@ -23,17 +16,12 @@ local naughty       = require("naughty")
 naughty.config.defaults['icon_size'] = 100
     -- Lain library
 local lain          = require("lain")
--- END OF LIBRARIES --
-
--- BEGINNING OF VIM HOTKEYS --
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
 local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
--- END OF VIM HOTKEYS --
 
--- BEGINNNG OF ERROR HANDLING --
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
@@ -56,9 +44,7 @@ local function run_once(cmd_arr)
     end
 end
 run_once({ "unclutter -root" }) -- entries must be comma-separated
--- END OF ERROR HANDLING --
 
--- BEGINNIG OF THEMES --
 local themes = {
     "gruvbox-dark"  -- 1
 }
@@ -66,9 +52,7 @@ local chosen_theme = themes[1]
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
 beautiful.init(string.format(gears.filesystem.get_configuration_dir() .. "/themes/%s/theme.lua", chosen_theme))
--- END OF THEMES -- 
 
--- BEGINNING OF LAYOUTS
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -104,28 +88,34 @@ lain.layout.cascade.tile.offset_y      = 32
 lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
--- END OF LAYOUTS --
 
--- BEGINNING OF VARIABLES --
 awful.util.terminal = terminal
-local code		  = os.getenv("EDITOR") or "neovide"
-local terminal	= "alacritty"
-local file		  = "alacritty -e ./.config/vifm/scripts/vifmrun"
-local web		    = "librewolf"
-local music		  = "alacritty -e cmus"
-local chat		  = "alacritty -e gomuks"
-local game      = "retroarch"
+
+local emacs             = "emacsclient -c -a 'emacs'"
+local spacevim          = os.getenv("EDITOR") or "neovide"
+local terminal          = "alacritty"
+local filemanager       = "alacritty -e ./.config/vifm/scripts/vifmrun"
+local filemanagergui    = "pcmanfm"
+local audiomixer        = "alacritty -e pulsemixer"
+local audiomixer2       = "alacritty -e alsamixer"
+local browser           = "librewolf"
+local browser2          = "qutebrowser"
+local musicplayer       = "alacritty -e musikcube"
+local musicplayergui    = "lollypop"
+local emailclient       = "thunderbird"
+local chat1             = "element-desktop"
+local chat2             = "whatsapp-for-linux"
+local notes             = "joplin-desktop"
+local passwords         = "bitwarden-desktop"
+local screenlocker      = "betterlockscreen -l"
+
 -- Key bindings variables
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local modkey1      = "Control"
--- END OF VARIABLES --
 
--- BEGINNING OF TAG NAMES --
-awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " WORK ", " GAME " }
--- END OF TAG NAMES --
+awful.util.tagnames = { " CODE ", " WEB ", " MUSIC ", " CHAT ", " FILE ", " NOTES ", " WORK1 ", " WORK2 ", " GAME " }
 
--- BEGINNIG OF WIBOX STUFF --
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
@@ -175,9 +165,7 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
--- END OF WIBOX STUFF --
 
--- BEGINNIG OF BINDINGS --
 -- Mouse bindings
 root.buttons(gears.table.join(
     awful.button({ }, 4, awful.tag.viewnext),
@@ -261,9 +249,19 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "Return", function() awful.spawn(terminal) end,
         {description = "launch a terminal", group = "apps"}),
 
---  Dmenu
-    awful.key({ modkey }, "d", function () awful.spawn(string.format("dmenu_run", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
-        {description = "show dmenu", group = "hotkeys"}),
+--  Rofi
+    awful.key({ modkey }, "d", function () awful.spawn(string.format("rofi -show drun", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
+        {description = "show rofi drun menu", group = "hotkeys"}),
+    awful.key({ modkey }, "r", function () awful.spawn(string.format("rofi -show run", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
+        {description = "show rofi run menu", group = "hotkeys"}),
+    awful.key({ modkey }, "Tab", function () awful.spawn(string.format("rofi -show window", beautiful.bg_normal, beautiful.fg_normal, beautiful.bg_focus, beautiful.fg_focus)) end,
+        {description = "show rofi window menu", group = "hotkeys"}),
+    awful.key({ modkey }, "w", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-wifi-menu.sh") end,
+        {description = "show rofi wifi menu", group = "hotkeys"}),
+    awful.key({ modkey, altkey }, "Delete", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-power-menu.sh") end,
+        {description = "show rofi power menu", group = "hotkeys"}),
+    awful.key({ modkey, altkey }, "Print", function () awful.util.spawn("/home/drk/.shell-scripts/./rofi-scrot-menu.sh") end,
+        {description = "show rofi scrot menu", group = "hotkeys"}),
 
 --  Keyboard Layouts
     awful.key({ modkey, "Shift" }, "e", function () awful.util.spawn("setxkbmap -layout es") end,
@@ -273,37 +271,63 @@ globalkeys = my_table.join(
 
 --  Apps
                 -- code
-    awful.key({ modkey }, "F1", function () awful.spawn(code) end,
-        {description = "launch text editor", group = "apps"}),
+    awful.key({ modkey }, "F1", function () awful.spawn(emacs) end,
+        {description = "launch emacs", group = "apps"}),
+    awful.key({ modkey, "Shift" }, "F1", function () awful.spawn(spacevim) end,
+        {description = "launch spacevim", group = "apps"}),
                 -- web
-    awful.key({ modkey }, "F2", function () awful.spawn(web) end,
-        {description = "launch web browser", group = "apps"}),
+    awful.key({ modkey }, "F2", function () awful.spawn(browser) end,
+        {description = "launch firefox", group = "apps"}),
+    awful.key({ modkey, "Shift" }, "F2", function () awful.spawn(browser2) end,
+        {description = "launch qutebrowser", group = "apps"}),
                 -- music
-    awful.key({ modkey }, "F3", function () awful.spawn(music) end,
-        {description = "launch music player", group = "apps"}),
+    awful.key({ modkey }, "F3", function () awful.spawn(musicplayer) end,
+        {description = "launch musikcube", group = "apps"}),
+    awful.key({ modkey, "Shift" }, "F3", function () awful.spawn(musicplayergui) end,
+        {description = "launch lollypop", group = "apps"}),
                 -- chat
-    awful.key({ modkey }, "F4", function () awful.spawn(chat) end,
-        {description = "launch chat app", group = "apps"}),
+    awful.key({ modkey }, "F4", function () awful.spawn(chat1) end,
+        {description = "launch element", group = "apps"}),
+    awful.key({ modkey, "Shift" }, "F4", function () awful.spawn(chat2) end,
+        {description = "launch whatsapp", group = "apps"}),
                 -- file
-    awful.key({ modkey }, "F5", function () awful.spawn(file) end,
-        {description = "launch file manager", group = "apps"}),
+    awful.key({ modkey }, "F5", function () awful.spawn(filemanager) end,
+        {description = "launch vifm", group = "apps"}),
+    awful.key({ modkey, "Shift" }, "F5", function () awful.spawn(filemanagergui) end,
+        {description = "launch pcmanfm", group = "apps"}),
+                -- notes
+    awful.key({ modkey }, "F6", function () awful.spawn(notes) end,
+        {description = "launch joplin", group = "apps"}),
+                -- tag agnostic
+    awful.key({ modkey, "Shift" }, "m", function () awful.spawn(audiomixer) end,
+        {description = "launch pulsemixer", group = "apps"}),
+    awful.key({ modkey, altkey }, "m", function () awful.spawn(audiomixer2) end,
+        {description = "launch alsamixer", group = "apps"}),
+    awful.key({ modkey, altkey }, "p", function () awful.spawn(passwords) end,
+        {description = "launch bitwarden", group = "apps"}),
                 -- game
-    awful.key({ modkey }, "F7", function () awful.util.spawn(game) end,
+    awful.key({ modkey }, "F9", function () awful.util.spawn("retroarch") end,
         {description = "launch retroarch", group = "apps"}),
 
 -- Volume Control
-    awful.key({ modkey, modkey1 }, "=" , function() volume_widget:inc(5) end,
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(5) end,
         {description = "increase volume", group = "volume"}),
-    awful.key({ modkey, modkey1 }, "-", function() volume_widget:dec(5) end,
+    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(5) end,
         {description = "decrease volume", group = "volume"}),
-    awful.key({ modkey, modkey1 }, "0", function() volume_widget:toggle() end,
+    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
         {description = "mute volume", group = "volume"}),
 
 -- Screenshot
-    awful.key({ modkey }, "Print", function() awful.util.spawn("scrot") end,
+    awful.key({}, "Print", function() awful.util.spawn("scrot") end,
         {description = "take a complete screenshot", group = "screenshot"}),
-    awful.key({ modkey, modkey1 }, "Print", function() awful.util.spawn("scrot -s") end,
+    awful.key({"Control"}, "Print", function() awful.util.spawn("scrot -s") end,
         {description = "take an area screenshot", group = "screenshot"}),
+
+-- Brightness
+    awful.key({}, "XF86MonBrightnessUp", function () brightness_widget:inc(5) end,
+        {description = "increase brightness", group = "brightness"}),
+    awful.key({}, "XF86MonBrightnessDown", function () brightness_widget:dec(5) end,
+        {description = "decrease brightness", group = "brightness"}),
 
 -- Screen configuration
     awful.key({ modkey }, "p", function() awful.util.spawn("arandr") end,
@@ -467,9 +491,7 @@ clientbuttons = gears.table.join(
 
 -- Set keys
 root.keys(globalkeys)
--- END OF BINDINGS --
 
--- BEGINNING OF RULES --
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -515,9 +537,7 @@ awful.rules.rules = {
         }
       }, properties = { floating = true }},
 }
--- END OF RULES --
 
--- BEGINNING OF SIGNALS --
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c)
     -- Set the windows at the slave,
@@ -530,19 +550,15 @@ client.connect_signal("manage", function (c)
         awful.placement.no_offscreen(c)
     end
 end)
--- END OF SIGNALS --
 
--- BEGINNING OF MOUSE FOCUS SETTINGS --
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- END OF MOUSE FOCUS SETTINGS --
 
--- BEGINNING OF AUTOSTART --
-awful.util.spawn_with_shell("sh /home/drk/.config/scripts/feh.sh")
+awful.util.spawn_with_shell("nitrogen --restore")
 awful.util.spawn_with_shell("lxpolkit")
-awful.util.spawn_with_shell("sh /home/drk/.config/scripts/screen.sh")
--- END OF AUTOSTART --
+awful.util.spawn_with_shell("picom --experimental-backend --config ~/.config/picom.conf")
+awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
