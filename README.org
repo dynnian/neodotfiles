@@ -3,7 +3,7 @@
 #+DESCRIPTION: Here i store all my dotfiles
 
 * ABOUT
-This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify. The main thing you want to see here is my awesomewm config, so here's a link >>> [[file:config/awesome/config.org][Link to the awesome config.org]]
+This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify. The main thing you want to see here is my awesomewm config, so here's a link >>> [[file:.config/awesome/config.org][Link to the awesome config.org]]
 
 * Screenshots:
 #+CAPTION: An example screenshot
