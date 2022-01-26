@@ -3,7 +3,7 @@
 #+DESCRIPTION: Here i store all my dotfiles
 
 * ABOUT
-This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify. The main thing you want to see here is my awesomewm config, so here's a link >>> [[file:.config/awesome/config.org][Link to the awesome config.org]]
+This is just a personal repository where i store all my dotfiles, you're free clone them and edit them as you wish. Part of this work was based on other people's dotfiles (Distrotube for example), and it may contain scripts or binaries that they made or modify.
 
 * Screenshots:
 #+CAPTION: An example screenshot
@@ -19,27 +19,18 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 * Dependencies
 If you want to get the full experience you need theese things:
 - DOOM Emacs (The best emacs distribution and text editor)
-- Spacevim (Just in case you need it...)
-- Neovide (Spacevim gui)
 - mononoki Nerd Font (A really hard dependency for my config)
-- ani-cli (A great cli tool to watch anime)
-- ytfzf (A great cli tool to watch youtube videos)
-- xbacklight (For brightness control)
+- xbacklight or brightnessctl (For brightness control)
 - xbindkeys (For volume and brightness control with the "fn" key)
-- libinput & libinput-gestures (Better mouse support)
+- libinput & xf86-input-libinput (Better mouse support)
 - acpi (For the battery icon)
-- pulsemixer & alsa-utils (For correct volume mixing)
-- musikcube (The best music player available in Linux)
-- cava & lolcat (The cool and colorful audio visualizing)
 - arc-icon-theme (Needed for the widgets)
-- gruvbox-dark-gtk & gruvbox-dark-icons-gtk (Available in the AUR)
 - lxappearance (To set gtk themes)
-- nitrogen (To set wallpapers)
+- feh (To set wallpapers)
 - scrot (To get screenshots)
-- betterlockscreen (to get screenlocking)
 - lxsession (To get password prompts)
 - picom (Those nice window effects and animations)
-- starship (The best shell prompt)
-- fish (The best shell)
-- alacritty (The best terminal emulator)
-- rofi (The best run prompt)
+- dmenu (The best run prompt)
+
+* Other dependencies
+- fd (Required by some of my dmenu scripts)
