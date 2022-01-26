@@ -11,8 +11,7 @@ end
 
 ### EXPORT
 set -U fish_greeting ""
-set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
-set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
+set EDITOR "nvim"                 # $EDITOR use neovim
 
 ### ADDING TO THE PATH
 # First line removes the path; second line sets it.  Without the first line,
@@ -47,14 +46,8 @@ alias .5='cd ../../../../..'
 # bat as cat
 alias cat='bat'
 
-# vim and DOOM emacs
+# neovim as vim
 alias vim='nvim'
-alias doom-sync="~/.emacs.d/bin/doom sync"
-alias doom-doctor="~/.emacs.d/bin/doom doctor"
-alias doom-upgrade="~/.emacs.d/bin/doom upgrade"
-alias doom-purge="~/.emacs.d/bin/doom purge"
-alias em='/usr/bin/emacs -nw'
-alias emacs="emacsclient -c -a 'emacs'"
 
 # Changing "ls" to "exa"
 alias ls='exa -al --color=always --group-directories-first' # my preferred listing
@@ -63,24 +56,13 @@ alias ll='exa -l --color=always --group-directories-first'  # long format
 alias lt='exa -aT --color=always --group-directories-first' # tree listing
 alias l.='exa -a | egrep "^\."'
 
-# pacman and yay
-alias pac-up='sudo pacman -Syyu'                      # update the whole system
-alias pac-get='sudo pacman -S --needed'               # install a program
-alias pac-qry-sync='sudo pacman -Ss'                  # query details about a program
-alias pac-qry='sudo pacman -Q'                        # query details about a program
-alias pac-rmv='sudo pacman -Rcns'                     # remove a package with all its dependencies (it may brake something)
-alias pac-rmv-sec='sudo pacman -Runs'                 # remove a package with all its dependencies (secure way)
-alias pac-cln='sudo pacman -Rns (pacman -Qtdq)'       # remove unnecesary packages
-alias pac-unlock='sudo rm /var/lib/pacman/db.lck'     # remove pacman lock
-alias yay-up='yay -Sua --noconfirm'                   # update only AUR pkgs (yay)
-alias yay-get='yay -S'                                # install a program for the AUR
-alias pac-cln-cache='yay -Scc'                        # clean package cache
-
-# get fastest mirrors
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+# xbps
+alias xb-up='sudo xbps-install -Su'                      	# update the whole system
+alias xb-get='sudo xbps-install -S'               		# install a program
+alias xb-qry='sudo xbps-query'                  		# query details about a program
+alias xb-rmv='sudo xbps-remove -R'                     		# remove a package with all its dependencies (it may brake something)
+alias xb-rmv-sec='sudo xbps-remove'                 		# remove a package with all its dependencies (secure way)
+alias xb-cln='sudo xbps-remove -o && sudo xbps-remove -O'       # remove unnecesary packages and clean cache
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -93,20 +75,17 @@ alias mv='mv -i'
 alias cp='cp -i'
 
 # git
-alias gt-cl='git clone'
+alias git-clone='git clone'
 
 # ani-cli
 alias ani='ani-cli'
 alias ani-q='ani-cli -q'    # to select video quality
 
 # ytfzf
-alias yt='ytfzf -f'
+alias yt='ytfzf -f -t'
 
 # notflix
 alias nt='notflix'
-
-# tty-clock
-alias clock='tty-clock'
 
 # mount and unmount drives
 alias mnt='sudo mount'
@@ -119,13 +98,10 @@ alias amx='alsamixer'
 # music player
 alias mk='musikcube'
 
-# battery (just for laptops)
-alias bt='acpi'
-
 # power management
-alias po='systemctl poweroff'
-alias sp='systemctl suspend'
-alias rb='systemctl reboot'
+alias po='loginctl poweroff'
+alias sp='loginctl suspend'
+alias rb='loginctl reboot'
 
 # file manager
 alias fm='/home/drk/.config/vifm/scripts/./vifmrun'
@@ -156,12 +132,6 @@ alias wfi-edit='nmtui-edit'
 alias wfi-on='nmcli radio wifi on'
 alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
-
-# cd to diferent directories
-alias games='cd /run/media/Storage/multimedia/games/linux && ls'
-alias anime='cd /run/media/Storage/multimedia/videos/anime/ && ls'
-alias manga='cd /run/media/Storage/multimedia/manga/ && ls'
-alias videos='cd /run/media/Storage/multimedia/videos/ && ls'
 
 # the terminal rickroll
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
