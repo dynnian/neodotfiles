@@ -8,7 +8,8 @@
 ### EXPORT
 export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
-export EDITOR="nvim"              		            # $EDITOR use neovim
+export EDITOR="emacsclient -t -a ''"              # $EDITOR use Emacs in terminal
+export VISUAL="emacsclient -c -a emacs"           # $VISUAL use Emacs in GUI mode
 
 ### SET MANPAGER
 ### "bat" as manpager
@@ -58,6 +59,53 @@ shopt -s checkwinsize # checks term size when bash regains control
 #ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
+### ARCHIVE EXTRACTION
+# usage: ex <file>
+ex ()
+{
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# navigation
+up () {
+  local d=""
+  local limit="$1"
+
+  # Default to limit of 1
+  if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
+    limit=1
+  fi
+
+  for ((i=1;i<=limit;i++)); do
+    d="../$d"
+  done
+
+  # perform cd. Show error if cd fails
+  if ! cd "$d"; then
+    echo "Couldn't go up $limit dirs.";
+  fi
+}
+
 ### ALIASES
 # navigation
 alias ..='cd ..'
@@ -69,8 +117,14 @@ alias .5='cd ../../../../..'
 # bat as cat
 alias cat='bat'
 
-# neovim as vim
+# editors
 alias vim='nvim'
+alias em="/usr/bin/emacs -nw"
+alias emacs="emacsclient -c -a 'emacs'"
+alias doomsync="~/.emacs.d/bin/doom sync"
+alias doomdoctor="~/.emacs.d/bin/doom doctor"
+alias doomupgrade="~/.emacs.d/bin/doom upgrade"
+alias doompurge="~/.emacs.d/bin/doom purge"
 
 # Changing "ls" to "exa"
 alias ls='exa -al --color=always --group-directories-first' # my preferred listing
@@ -80,12 +134,12 @@ alias lt='exa -aT --color=always --group-directories-first' # tree listing
 alias l.='exa -a | egrep "^\."'
 
 # xbps
-alias xb-up='sudo xbps-install -Su'                      	# update the whole system
-alias xb-get='sudo xbps-install -S'               		# install a program
-alias xb-qry='sudo xbps-query'                  		# query details about a program
-alias xb-rmv='sudo xbps-remove -R'                     		# remove a package with all its dependencies (it may brake something)
-alias xb-rmv-sec='sudo xbps-remove'                 		# remove a package with all its dependencies (secure way)
-alias xb-cln='sudo xbps-remove -o && sudo xbps-remove -O'       # remove unnecesary packages and clean cache
+alias xb-up='sudo xbps-install -Su && xcheckrestart'        # update the whole system
+alias xb-get='sudo xbps-install -S'                         # install a program
+alias xb-qry='sudo xbps-query'                              # query details about a program
+alias xb-rmv='sudo xbps-remove -R'                          # remove a package with all its dependencies (it may brake something)
+alias xb-rmv-sec='sudo xbps-remove'                         # remove a package with all its dependencies (secure way)
+alias xb-cln='sudo xbps-remove -o && sudo xbps-remove -O'   # remove unnecesary packages and clean cache
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'

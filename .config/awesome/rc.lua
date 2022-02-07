@@ -112,12 +112,10 @@ awful.util.terminal = terminal
 -- Terminal
 local terminal                  = "alacritty"
 -- Standard Apps
-local code                      = "emacsclient -c -a emacs"
+local edit                      = "emacsclient -c -a emacs"
 local file                      = "alacritty -e ./.config/vifm/scripts/vifmrun"
 local web                       = "firefox"
-local chat                      = "element-desktop"
 local music                     = "alacritty -e musikcube"
-local notes                     = "zim"
 local games                     = "retroarch"
 -- Specific Apps
 local libreoffice               = "libreoffice"
@@ -127,8 +125,9 @@ local krita                     = "krita"
 local audacity                  = "audacity"
 local obs                       = "obs"
 local thunderbird               = "thunderbird"
-local transmission              = "transmission-gtk"
-local pavucontrol               = "pavucontrol"
+local qbittorrent               = "qbittorrent"
+local pulsemixer                = "alacritty -e pulsemixer"
+local alsamixer                 = "alacritty -e alsamixer"
 -- Key bindings variables
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -140,15 +139,13 @@ local screenlocker              = "betterlockscreen -l"
 -- BEGINNING OF TAG NAMES --
 awful.util.tagnames = 
 { 
-" CODE ",   -- F1
+" EDIT ",   -- F1
 " FILE ",   -- F2
 " WEB ",    -- F3
-" CHAT ",   -- F4
-" MUSIC ",  -- F5
-" NOTES ",  -- F6
+" MUSIC ",  -- F4
 " WORK ",   -- XX
-" EXTRA ",  -- XX
-" GAMES "    -- F9
+" MISC ",   -- XX
+" GAMES "   -- F7
 }
 -- END OF TAG NAMES --
 
@@ -293,8 +290,8 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift" }, "u", function () awful.util.spawn("setxkbmap -layout us") end,
         {description = "Switch to US keyboard layout", group = "Quick Actions"}),
 --  Apps
-                -- code
-    awful.key({ modkey }, "F1", function () awful.spawn(code) end,
+                -- edit
+    awful.key({ modkey }, "F1", function () awful.spawn(edit) end,
         {description = "Launch text editor", group = "Standard Apps"}),
                 -- file
     awful.key({ modkey }, "F2", function () awful.spawn(file) end,
@@ -302,17 +299,11 @@ globalkeys = my_table.join(
                 -- web
     awful.key({ modkey }, "F3", function () awful.spawn(web) end,
         {description = "Launch web browser", group = "Standard Apps"}),
-                -- chat
-    awful.key({ modkey }, "F4", function () awful.spawn(chat) end,
-        {description = "Launch chat app", group = "Standard Apps"}),
                 -- music
-    awful.key({ modkey }, "F5", function () awful.spawn(music) end,
+    awful.key({ modkey }, "F4", function () awful.spawn(music) end,
         {description = "Launch music player", group = "Standard Apps"}),
-                -- notes
-    awful.key({ modkey }, "F6", function () awful.spawn(notes) end,
-        {description = "Launch note taking app", group = "Standard Apps"}),
                 -- games
-    awful.key({ modkey }, "F9", function () awful.util.spawn(games) end,
+    awful.key({ modkey }, "F7", function () awful.util.spawn(games) end,
         {description = "Launch gaming app", group = "Standard Apps"}),
 -- Specific Apps
                 -- libreoffice
@@ -333,15 +324,18 @@ globalkeys = my_table.join(
                 -- obs
     awful.key({ modkey, modkey1 }, "F6", function () awful.spawn(obs) end,
         {description = "Launch obs", group = "Specific Apps"}),
-                -- sylpheed
+                -- thunderbird
     awful.key({ modkey, modkey1 }, "F7", function () awful.spawn(thunderbird) end,
-        {description = "Launch sylpheed", group = "Specific Apps"}),
+        {description = "Launch thunderbird", group = "Specific Apps"}),
                 -- transmission
-    awful.key({ modkey, modkey1 }, "F8", function () awful.spawn(transmission) end,
-        {description = "Launch transmission", group = "Specific Apps"}),
-                -- pavucontrol
-    awful.key({ modkey, modkey1 }, "F9", function () awful.spawn(pavucontrol) end,
-        {description = "Launch pavucontrol", group = "Specific Apps"}),
+    awful.key({ modkey, modkey1 }, "F8", function () awful.spawn(qbittorrent) end,
+        {description = "Launch qbittorrent", group = "Specific Apps"}),
+                -- pulsemixer
+    awful.key({ modkey, modkey1 }, "F9", function () awful.spawn(pulsemixer) end,
+        {description = "Launch pulsemixer", group = "Specific Apps"}),
+                -- alsamixer
+    awful.key({ modkey, altkey }, "F9", function () awful.spawn(alsamixer) end,
+        {description = "Launch alsamixer", group = "Specific Apps"}),
 -- Volume
     awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(5) end,
         {description = "Increase volume", group = "Quick Actions"}),
@@ -590,6 +584,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- BEGINNING OF AUTOSTART --
 awful.util.spawn_with_shell("sh $HOME/.fehbg &")
 awful.util.spawn_with_shell("lxpolkit &")
-awful.util.spawn_with_shell("picom --config ~/.config/picom.conf &")
+awful.util.spawn_with_shell("picom --config ~/.config/picom/picom.conf &")
 awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
 -- END OF AUTOSTART --
