@@ -1,7 +1,7 @@
 ##     ____  ____  _  __
 ##    |  _ \|  _ \| |/ /
 ##    | | | | |_) | ' /  Clay Gomera (Drake)
-##    | |_| |  _ <| . \  This is my custom fish config for my laptop
+##    | |_| |  _ <| . \  My custom config.fish
 ##    |____/|_| \_\_|\_\
 ##
 

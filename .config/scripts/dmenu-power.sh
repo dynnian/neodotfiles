@@ -31,9 +31,9 @@ case "$action" in
     $option3)
         loginctl poweroff;;
     $option4)
-	loginctl suspend && betterlockscreen -l;;
+        loginctl suspend && betterlockscreen -l;;
     $option5)
         betterlockscreen -l;;
     $option6)
-	exit 0
+        exit 0
 esac

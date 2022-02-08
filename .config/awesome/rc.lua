@@ -1,7 +1,7 @@
 --  ____  ____  _  __
 -- |  _ \|  _ \| |/ /
 -- | | | | |_) | ' /    Clay Gomera (Drake)
--- | |_| |  _ <| . \    This is my awesome config for my dekstop computer
+-- | |_| |  _ <| . \    My custom awesome config
 -- |____/|_| \_\_|\_\
 --
 

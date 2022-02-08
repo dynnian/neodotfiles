@@ -1,7 +1,7 @@
 --     ____  ____  _  __
 --    |  _ \|  _ \| |/ /
 --    | | | | |_) | ' /  Clay Gomera (Drake)
---    | |_| |  _ <| . \  This is my custom awesomewm gruvbox-dark theme for my laptop
+--    | |_| |  _ <| . \  My custom awesomewm gruvbox-dark theme.
 --    |____/|_| \_\_|\_\
 --
 
