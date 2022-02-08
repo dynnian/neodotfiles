@@ -194,8 +194,9 @@ alias rb='loginctl reboot'
 alias fm='/home/drk/.config/vifm/scripts/./vifmrun'
 
 # system monitor
-alias tp='htop'
-alias top='htop'
+alias tp='btop'
+alias top='btop'
+alias htop='btop'
 
 # get error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
