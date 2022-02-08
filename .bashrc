@@ -1,7 +1,7 @@
 ##   ____  ____  _  __
 ##  |  _ \|  _ \| |/ /
 ##  | | | | |_) | ' /  Clay Gomera (Drake)
-  ##  | |_| |  _ <| . \  My custom bashrc
+##  | |_| |  _ <| . \  My custom bashrc
 ##  |____/|_| \_\_|\_\
 ##
 
