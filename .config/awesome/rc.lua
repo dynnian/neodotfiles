@@ -114,20 +114,9 @@ local terminal                  = "alacritty"
 -- Standard Apps
 local edit                      = "emacsclient -c -a emacs"
 local file                      = "alacritty -e ./.config/vifm/scripts/vifmrun"
-local web                       = "firefox"
+local web                       = "qutebrowser"
 local music                     = "alacritty -e musikcube"
 local games                     = "retroarch"
--- Specific Apps
-local libreoffice               = "libreoffice"
-local gimp                      = "gimp"
-local inkscape                  = "inkscape"
-local krita                     = "krita"
-local audacity                  = "audacity"
-local obs                       = "obs"
-local thunderbird               = "thunderbird"
-local qbittorrent               = "qbittorrent"
-local pulsemixer                = "alacritty -e pulsemixer"
-local alsamixer                 = "alacritty -e alsamixer"
 -- Key bindings variables
 local modkey                    = "Mod4"
 local altkey                    = "Mod1"
@@ -292,50 +281,24 @@ globalkeys = my_table.join(
 --  Apps
                 -- edit
     awful.key({ modkey }, "F1", function () awful.spawn(edit) end,
-        {description = "Launch text editor", group = "Standard Apps"}),
+        {description = "Launch text editor", group = "Apps"}),
                 -- file
     awful.key({ modkey }, "F2", function () awful.spawn(file) end,
-        {description = "Launch file manager", group = "Standard Apps"}),
+        {description = "Launch file manager", group = "Apps"}),
                 -- web
     awful.key({ modkey }, "F3", function () awful.spawn(web) end,
-        {description = "Launch web browser", group = "Standard Apps"}),
+        {description = "Launch web browser", group = "Apps"}),
                 -- music
     awful.key({ modkey }, "F4", function () awful.spawn(music) end,
-        {description = "Launch music player", group = "Standard Apps"}),
+        {description = "Launch music player", group = "Apps"}),
                 -- games
     awful.key({ modkey }, "F7", function () awful.util.spawn(games) end,
-        {description = "Launch gaming app", group = "Standard Apps"}),
--- Specific Apps
-                -- libreoffice
-    awful.key({ modkey, modkey1 }, "F1", function () awful.spawn(libreoffice) end,
-        {description = "Launch libreoffice", group = "Specific Apps"}),
-                -- gimp
-    awful.key({ modkey, modkey1 }, "F2", function () awful.spawn(gimp) end,
-        {description = "Launch gimp", group = "Specific Apps"}),
-                -- inkscape
-    awful.key({ modkey, modkey1 }, "F3", function () awful.spawn(inkscape) end,
-        {description = "Launch inkscape", group = "Specific Apps"}),
-                -- krita
-    awful.key({ modkey, modkey1 }, "F4", function () awful.spawn(krita) end,
-        {description = "Launch krita", group = "Specific Apps"}),
-                -- audacity
-    awful.key({ modkey, modkey1 }, "F5", function () awful.spawn(audacity) end,
-        {description = "Launch audacity", group = "Specific Apps"}),
-                -- obs
-    awful.key({ modkey, modkey1 }, "F6", function () awful.spawn(obs) end,
-        {description = "Launch obs", group = "Specific Apps"}),
-                -- thunderbird
-    awful.key({ modkey, modkey1 }, "F7", function () awful.spawn(thunderbird) end,
-        {description = "Launch thunderbird", group = "Specific Apps"}),
-                -- transmission
-    awful.key({ modkey, modkey1 }, "F8", function () awful.spawn(qbittorrent) end,
-        {description = "Launch qbittorrent", group = "Specific Apps"}),
-                -- pulsemixer
-    awful.key({ modkey, modkey1 }, "F9", function () awful.spawn(pulsemixer) end,
-        {description = "Launch pulsemixer", group = "Specific Apps"}),
-                -- alsamixer
-    awful.key({ modkey, altkey }, "F9", function () awful.spawn(alsamixer) end,
-        {description = "Launch alsamixer", group = "Specific Apps"}),
+        {description = "Launch gaming app", group = "Apps"}),
+                -- misc
+    awful.key({ modkey, "Shift" }, "p", function () awful.util.spawn("alacritty -e pulsemixer") awful.util.spawn("alacritty -e alsamixer") end,
+        {description = "Launch mixers", group = "Apps"}),
+    awful.key({ modkey, altkey }, "w", function () awful.util.spawn("alacritty -e nmtui connect") end,
+        {description = "Launch mixers", group = "Apps"}),
 -- Volume
     awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(5) end,
         {description = "Increase volume", group = "Quick Actions"}),
