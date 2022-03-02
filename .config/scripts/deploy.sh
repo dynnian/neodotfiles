@@ -8,7 +8,6 @@ dir3="$HOME/.config/picom/"
 dir4="$HOME/.config/vifm/"
 dir6="$HOME/.config/doom/"
 dir7="$HOME/.config/scripts/"
-dir8="$HOME/.config/zsh/"
 
 # File List
 newsboaturl="$HOME/.newsboat/urls"
@@ -42,7 +41,6 @@ echo "Deploying the vifm config";
 cp -r "$dir4" "$deploydir/.config/";
 echo "Deploying the zsh config";
 cp "$zshrc" "$deploydir/";
-cp -r "$dir8" "$deploydir/.config/";
 echo "Deploying the starship config";
 cp "$starshiprc" "$deploydir/.config/";
 echo "Deploying the bash config";

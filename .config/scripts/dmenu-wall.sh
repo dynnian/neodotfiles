@@ -14,12 +14,12 @@
 
 
 ## MAIN VARIABLES AND COMMANDS ##
-walldir="$HOME/Pictures/Wallpapers/" # wallpapers folder, change it to yours, make sure that it ends with a /
+walldir="Pictures/Wallpapers/" # wallpapers folder, change it to yours, make sure that it ends with a /
 cd "$walldir" || exit
 
 ## SELECT PICTURE FUNCTION ##
 selectpic() {
-    wallpaper=$(fd --full-path "$walldir" | dmenu -l 10 -b -i -p "Select a wallpaper:")
+    wallpaper=$(fd -p "$walldir" | dmenu -l 10 -b -i -p "Select a wallpaper:")
     if [ "$wallpaper" ]; then
         chosenwall=$wallpaper
     else
