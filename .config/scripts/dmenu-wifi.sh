@@ -29,6 +29,7 @@ selectnet() {
     exit 0
   fi
 }
+selectnet
 
 # Typing password
 selectpass() {
@@ -39,11 +40,11 @@ selectpass() {
     exit 0
   fi
 }
-selectnet
 selectpass
 
 # Main connection command
-nmcli dev wifi connect "$query" password ""$passqry""
+nmcli device wifi connect "$query" password "$passqry" || nmcli device wifi connect "$query"
+
 # Check notification
   notify-send "Checking if the connection was successful"
 

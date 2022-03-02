@@ -5,10 +5,6 @@
 --    |____/|_| \_\_|\_\
 --
 
---[[
-  VARIABLES  
-]]
-
 local gears = require("gears")
 local lain  = require("lain")
 local lain_helpers = require("lain.helpers")
@@ -16,12 +12,6 @@ local awful = require("awful")
 local wibox = require("wibox")
 local lgi   = require("lgi")
 local dpi   = require("beautiful.xresources").apply_dpi
-
--- Custom libraries
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
@@ -123,6 +113,84 @@ local clock = awful.widget.watch(
         widget:set_markup(" " .. markup.font(theme.font, stdout))
     end
 )
+
+-- Battery
+local baticon = wibox.widget.imagebox(theme.widget_battery)
+local bat = lain.widget.bat({
+    settings = function()
+        if bat_now.status and bat_now.status ~= "N/A" then
+            if bat_now.ac_status == 1 then
+                baticon:set_image(theme.widget_ac)
+            elseif not bat_now.perc and tonumber(bat_now.perc) <= 5 then
+                baticon:set_image(theme.widget_battery_empty)
+            elseif not bat_now.perc and tonumber(bat_now.perc) <= 15 then
+                baticon:set_image(theme.widget_battery_low)
+            else
+                baticon:set_image(theme.widget_battery)
+            end
+            widget:set_markup(markup.font(theme.font, " " .. bat_now.perc .. "% "))
+        else
+            widget:set_markup(markup.font(theme.font, " AC "))
+            baticon:set_image(theme.widget_ac)
+        end
+    end
+})
+
+-- CPU
+local cpuicon = wibox.widget.imagebox(theme.widget_cpu)
+local cpu = lain.widget.cpu({
+    settings = function()
+        widget:set_markup(markup.font(theme.font, " " .. cpu_now.usage .. "% "))
+    end
+})
+
+-- MEM
+local memicon = wibox.widget.imagebox(theme.widget_mem)
+local mem = lain.widget.mem({
+    settings = function()
+        widget:set_markup(markup.font(theme.font, " " .. mem_now.used .. "MB "))
+    end
+})
+
+-- Net
+local neticon = wibox.widget.imagebox(theme.widget_net)
+local net = lain.widget.net({
+    settings = function()
+        widget:set_markup(markup.font(theme.font,
+                          markup("#7AC82E", "DN: " .. string.format("%2.fK", net_now.received))
+                          .. " | " ..
+                          markup("#46A8C3", "UP: " .. string.format("%2.fK", net_now.sent) .. " ")))
+    end
+})
+
+-- ALSA volume
+local volicon = wibox.widget.imagebox(theme.widget_vol)
+theme.volume = lain.widget.alsa({
+    settings = function()
+        if volume_now.status == "off" then
+            volicon:set_image(theme.widget_vol_mute)
+        elseif tonumber(volume_now.level) == 0 then
+            volicon:set_image(theme.widget_vol_no)
+        elseif tonumber(volume_now.level) <= 50 then
+            volicon:set_image(theme.widget_vol_low)
+        else
+            volicon:set_image(theme.widget_vol)
+        end
+
+        widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
+    end
+})
+theme.volume.widget:buttons(awful.util.table.join(
+                               awful.button({}, 4, function ()
+                                     awful.util.spawn("amixer set Master 1%+")
+                                     theme.volume.update()
+                               end),
+                               awful.button({}, 5, function ()
+                                     awful.util.spawn("amixer set Master 1%-")
+                                     theme.volume.update()
+                               end)
+))
+
 -- Separators
 local spr     = wibox.widget.textbox(' ')
 local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
@@ -175,21 +243,24 @@ function theme.at_screen_connect(s)
             wibox.container.background(mykeyboardlayout, theme.bg_focus),
             arrl_dl,
             arrl_ld,
-            wibox.container.background(volume_widget{
-            widget_type = 'icon_and_text',
-            device = 'default'}, theme.bg_focus),
+            wibox.container.background(volicon, theme.bg_focus),
+            wibox.container.background(theme.volume.widget, theme.bg_focus),
             arrl_dl,
             arrl_ld,
-            wibox.container.background(battery_widget(), theme.bg_focus),
+            wibox.container.background(baticon, theme.bg_focus),
+            wibox.container.background(bat.widget, theme.bg_focus),
             arrl_dl,
             arrl_ld,
-            wibox.container.background(brightness_widget{
-            type = 'icon_and_text',
-            program = 'xbacklight'}, theme.bg_focus),
+            wibox.container.background(cpuicon, theme.bg_focus),
+            wibox.container.background(cpu.widget, theme.bg_focus),
             arrl_dl,
             arrl_ld,
-            wibox.container.background(logout_menu_widget{
-            font = 'mononoki Nerd Font'}, theme.bg_focus),
+            wibox.container.background(memicon, theme.bg_focus),
+            wibox.container.background(mem.widget, theme.bg_focus),
+            arrl_dl,
+            arrl_ld,
+            wibox.container.background(neticon, theme.bg_focus),
+            wibox.container.background(net.widget, theme.bg_focus),
         },
         },
         {

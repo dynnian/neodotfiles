@@ -1,21 +1,15 @@
---  ____  ____  _  __
+--  ____  ____  _  _
 -- |  _ \|  _ \| |/ /
 -- | | | | |_) | ' /    Clay Gomera (Drake)
 -- | |_| |  _ <| . \    My custom awesome config
 -- |____/|_| \_\_|\_\
 --
 
-
 -- BEGINNING OF LIBRARIES --
 -- Standard awesome library
 local gears         = require("gears") --Utilities such as color parsing and objects
 local awful         = require("awful") --Everything related to window managment
 require("awful.autofocus")
-    -- Custom libraries
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
-local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
-local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
     -- Widget and layout library
 local wibox         = require("wibox")
     -- Theme handling library
@@ -115,7 +109,7 @@ local terminal                  = "alacritty"
 local edit                      = "emacsclient -c -a emacs"
 local file                      = "alacritty -e ./.config/vifm/scripts/vifmrun"
 local web                       = "qutebrowser"
-local music                     = "alacritty -e musikcube"
+local music                     = "alacritty -e mocp"
 local games                     = "retroarch"
 -- Key bindings variables
 local modkey                    = "Mod4"
@@ -294,31 +288,18 @@ globalkeys = my_table.join(
                 -- games
     awful.key({ modkey }, "F7", function () awful.util.spawn(games) end,
         {description = "Launch gaming app", group = "Apps"}),
-                -- misc
-    awful.key({ modkey, "Shift" }, "p", function () awful.util.spawn("alacritty -e pulsemixer") awful.util.spawn("alacritty -e alsamixer") end,
-        {description = "Launch mixers", group = "Apps"}),
-    awful.key({ modkey, altkey }, "w", function () awful.util.spawn("alacritty -e nmtui connect") end,
-        {description = "Launch mixers", group = "Apps"}),
 -- Volume
-    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(5) end,
+    awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("amixer set Master 5%+") end,
         {description = "Increase volume", group = "Quick Actions"}),
-    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(5) end,
+    awful.key({}, "XF86AudioLowerVolume", function() awful.spawn("amixer set Master 5%-") end,
         {description = "Decrease volume", group = "Quick Actions"}),
-    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
+    awful.key({}, "XF86AudioMute", function() awful.spawn("amixer set Master toggle") end,
         {description = "Mute volume", group = "Quick Actions"}),
 -- Brightness
-    awful.key({}, "XF86MonBrightnessUp", function () brightness_widget:inc(5) end,
+    awful.key({}, "XF86MonBrightnessUp", function () awful.spawn("xbacklight -inc 10") end,
         {description = "Increase brightness", group = "Quick Actions"}),
-    awful.key({}, "XF86MonBrightnessDown", function () brightness_widget:dec(5) end,
+    awful.key({}, "XF86MonBrightnessDown", function () awful.spawn("xbacklight -dec 10") end,
         {description = "Decrease brightness", group = "Quick Actions"}),
--- Screenshots
-    awful.key({ modkey }, "Print", function() awful.util.spawn("scrot") end,
-        {description = "Take a screenshot (Complete screen mode)", group = "Quick Actions"}),
-    awful.key({ modkey, modkey1 }, "Print", function() awful.util.spawn("scrot -s") end,
-        {description = "Take a screenshot (Area selection mode)", group = "Quick Actions"}),
--- Screen configuration tool
-    awful.key({ modkey }, "p", function() awful.util.spawn("arandr") end,
-        {description = "Launch screen configuration tool", group = ("Quick Actions")}),
 -- Screenlocker
     awful.key({ modkey, modkey1 }, "l", function() awful.spawn(screenlocker) end,
         {description = "Lock the screen", group = "Quick Actions"}),
@@ -547,6 +528,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- BEGINNING OF AUTOSTART --
 awful.util.spawn_with_shell("sh $HOME/.fehbg &")
 awful.util.spawn_with_shell("lxpolkit &")
-awful.util.spawn_with_shell("picom --config ~/.config/picom/picom.conf &")
 awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
+awful.util.spawn_with_shell("pulseaudio &")
+awful.util.spawn_with_shell("picom --config $HOME/.config/picom/picom.conf &")
 -- END OF AUTOSTART --

@@ -6,12 +6,14 @@
 
 * TABLE OF CONTENTS :toc:
 - [[#about-this-config][ABOUT THIS CONFIG]]
+- [[#beacon][BEACON]]
 - [[#bookmarks-and-buffers][BOOKMARKS AND BUFFERS]]
   - [[#bookmarks][Bookmarks]]
   - [[#buffers][Buffers]]
   - [[#keybindings-within-ibuffer-mode][Keybindings within ibuffer mode]]
 - [[#calendar][CALENDAR]]
 - [[#centaur-tabs][CENTAUR-TABS]]
+- [[#clippy][CLIPPY]]
 - [[#dashboard][DASHBOARD]]
   - [[#configuring-dashboard][Configuring Dashboard]]
   - [[#dashboard-in-emacsclient][Dashboard in Emacsclient]]
@@ -32,6 +34,7 @@
   - [[#ivy-posframe][IVY-POSFRAME]]
   - [[#ivy-keybindings][IVY KEYBINDINGS]]
 - [[#line-settings][LINE SETTINGS]]
+- [[#minimap][MINIMAP]]
 - [[#modeline][MODELINE]]
 - [[#mouse-support][MOUSE SUPPORT]]
 - [[#neotree][NEOTREE]]
@@ -53,6 +56,13 @@
 
 * ABOUT THIS CONFIG
 This is my personal Doom Emacs config.  Doom Emacs is a distribution of Emacs that uses the "evil" keybindings (Vim keybindings) and includes a number of nice extensions and a bit of configuration out of the box.  I am maintaining this config not just for myself, but also for those that want to explore some of what is possible with Emacs.  I will add a lot of examples of plugins and settings, some of them I may not even use personally.  I do this because many people following me on YouTube look at my configs as "documentation". This config is a fork of DistroTube's config.
+
+* BEACON
+Never lose your cursor.  When you scroll, your cursor will shine!  This is a global minor-mode. Turn it on everywhere with:
+
+#+begin_src emacs-lisp
+(beacon-mode 1)
+#+end_src
 
 * BOOKMARKS AND BUFFERS
 Doom Emacs uses 'SPC b' for keybindings related to bookmarks and buffers.
@@ -206,6 +216,22 @@ To use tabs in Doom Emacs, be sure to uncomment "tabs" in Doom's init.el.  Displ
                                                (kbd "g <down>")  'centaur-tabs-forward-group
                                                (kbd "g <up>")    'centaur-tabs-backward-group)
 #+END_SRC
+
+* CLIPPY
+Gives us a popup box with "Clippy, the paper clip". You can make him say various things by calling 'clippy-say' function.  But the more useful functions of clippy are the two describe functions provided: 'clippy-describe-function' and 'clippy-describe-variable'.  Hit the appropriate keybinding while the point is over a function/variable to call it.  A popup with helpful clippy will appear, telling you about the function/variable (using describe-function and describe-variable respectively).
+
+| COMMAND                  | DESCRIPTION                           | KEYBINDING |
+|--------------------------+---------------------------------------+------------|
+| clippy-describe-function | /Clippy describes function under point/ | SPC c h f  |
+| clippy-describe-variable | /Clippy describes variable under point/ | SPC c h v  |
+
+#+begin_src emacs-lisp
+(map! :leader
+      (:prefix ("c h" . "Help info from Clippy")
+       :desc "Clippy describes function under point" "f" #'clippy-describe-function
+       :desc "Clippy describes variable under point" "v" #'clippy-describe-variable))
+
+#+end_src
 
 * DASHBOARD
 Emacs Dashboard is an extensible startup screen showing you recent files, bookmarks, agenda items and an Emacs banner.
@@ -522,6 +548,7 @@ Some custom functions to insert the date.  The function 'insert-todays-date' can
         :desc "Insert any date" "a" #'dt/insert-any-date
         :desc "Insert todays date" "t" #'dt/insert-todays-date))
 #+end_src
+
 * IVY
 Ivy is a generic completion mechanism for Emacs.
 
@@ -592,6 +619,20 @@ I set comment-line to 'SPC TAB TAB' which is a rather comfortable keybinding for
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle truncate lines" "t" #'toggle-truncate-lines))
 #+END_SRC
+
+* MINIMAP
+A minimap sidebar displaying a smaller version of the current buffer on either the left or right side. It highlights the currently shown region and updates its position automatically.  Be aware that this minimap program does not work in Org documents.  This is not unusual though because I have tried several minimap programs and none of them can handle Org.
+
+| COMMAND      | DESCRIPTION                               | KEYBINDING |
+|--------------+-------------------------------------------+------------|
+| minimap-mode | /Toggle minimap-mode/                       | SPC t m    |
+
+#+begin_src emacs-lisp
+(setq minimap-window-location 'right)
+(map! :leader
+      (:prefix ("t" . "toggle")
+       :desc "Toggle minimap-mode" "m" #'minimap-mode))
+#+end_src
 
 * MODELINE
 The modeline is the bottom status bar that appears in Emacs windows.  For more information on what is available to configure in the Doom modeline, check out:
