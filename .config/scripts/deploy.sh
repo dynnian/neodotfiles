@@ -8,6 +8,7 @@ dir3="$HOME/.config/picom/"
 dir4="$HOME/.config/vifm/"
 dir6="$HOME/.config/doom/"
 dir7="$HOME/.config/scripts/"
+dir8="$HOME/.config/zsh/"
 
 # File List
 newsboaturl="$HOME/.newsboat/urls"
@@ -16,6 +17,8 @@ bashrc="$HOME/.bashrc"
 starshiprc="$HOME/.config/starship.toml"
 mocrc="$HOME/.moc/config"
 mocth="$HOME/.moc/themes/"
+qutepy="$HOME/.config/qutebrowser/config.py"
+qutegruvpy="$HOME/.config/qutebrowser/gruvbox.py"
 
 # Deploy directory
 echo "Checking the deploy directory, creating if it's not created"
@@ -26,6 +29,7 @@ mkdir -p "$HOME/.deploy/"
 mkdir -p "$HOME/.deploy/.config/"
 mkdir -p "$HOME/.deploy/.moc/"
 mkdir -p "$HOME/.deploy/.newsboat/"
+mkdir -p "$HOME/.deploy/.config/qutebrowser/"
 
 # Deploying
 echo "Deploying the awesomewm config";
@@ -38,6 +42,7 @@ echo "Deploying the vifm config";
 cp -r "$dir4" "$deploydir/.config/";
 echo "Deploying the zsh config";
 cp "$zshrc" "$deploydir/";
+cp -r "$dir8" "$deploydir/.config/";
 echo "Deploying the starship config";
 cp "$starshiprc" "$deploydir/.config/";
 echo "Deploying the bash config";
@@ -48,6 +53,9 @@ echo "Deploying the moc themes";
 cp -r "$mocth" "$deploydir/.moc/";
 echo "Deploying the DOOM Emacs config";
 cp -r "$dir6" "$deploydir/.config/";
+echo "Deploying the qutebrowser config";
+cp "$qutepy" "$deploydir/.config/qutebrowser/";
+cp "$qutegruvpy" "$deploydir/.config/qutebrowser/";
 echo "Deploying scripts";
 cp -r "$dir7" "$deploydir/.config/";
 echo "Deploying the newsboat config";

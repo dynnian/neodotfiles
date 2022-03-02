@@ -205,6 +205,7 @@ List of keybindings (SPC h b b)")
                      ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
                      ("https://betanews.com/feed" betanews linux)
                      ("http://lxer.com/module/newswire/headlines.rss" lxer linux)
+                     ("https://archlinux.org/feeds/news/" arch linux)
                      ("https://distrowatch.com/news/dwd.xml" distrowatch linux))))
 
 (emms-all)
