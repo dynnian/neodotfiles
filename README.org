@@ -33,4 +33,4 @@ If you want to get the full experience you need theese things:
 - dmenu (The best run prompt)
 
 * Other dependencies
-- fd (Required by some of my dmenu scripts)
+- fd (Required by some of my dmenu scripts and DOOM Emacs)

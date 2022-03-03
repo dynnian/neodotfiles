@@ -1,3 +1,34 @@
+#+TITLE: Drake's Awesome Window Manager Config
+#+AUTHOR: Clay Gomera
+#+DESCRIPTION: This is my personal awesome window manager literate config written in org mode inside Emacs.
+#+LANGUAGE: lua
+#+PROPERTY: header-args :tangle rc.lua
+
+* Table of contents :toc:
+- [[#about-this-config][ABOUT THIS CONFIG]]
+- [[#libraries][Libraries]]
+- [[#error-handling][Error Handling]]
+- [[#themes][Themes]]
+- [[#layouts][Layouts]]
+- [[#variables][Variables]]
+- [[#tag-names][Tag names]]
+- [[#wibox-settings][Wibox Settings]]
+- [[#key-bindings][Key Bindings]]
+- [[#rules][Rules]]
+- [[#signals][Signals]]
+- [[#client-focus-with-mouse][Client Focus With Mouse]]
+- [[#autorun][Autorun]]
+
+* ABOUT THIS CONFIG
+Awesome is a highly configurable, next generation framework window manager for X. It is very fast, extensible and licensed under the GNU GPLv2 license. It is primarily targeted at power users, developers and any people dealing with every day computing tasks and who want to have fine-grained control on their graphical environment. This is the Awesome configuration of Clay Gomera (Drake) fully written in ORG mode inside EMACS. This is just a personal hobby that gives me all the freedom and posibilites to learn how to code and use text editors like Emacs.
+
+#+CAPTION: An example screenshot
+#+NAME:   screenshot
+#+attr_org: :width 750
+[[./screenshot.png]]
+
+* Libraries
+#+BEGIN_SRC lua
 local awful         = require("awful") --Everything related to window managment
 local beautiful     = require("beautiful")
 local gears         = require("gears") --Utilities such as color parsing and objects
@@ -9,7 +40,10 @@ require("awful.autofocus")
 local wibox         = require("wibox")
 local naughty       = require("naughty")
 naughty.config.defaults['icon_size'] = 100
+#+END_SRC
 
+* Error Handling
+#+BEGIN_SRC lua
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
@@ -32,7 +66,10 @@ local function run_once(cmd_arr)
     end
 end
 run_once({ "unclutter -root" }) -- entries must be comma-separated
+#+END_SRC
 
+* Themes
+#+BEGIN_SRC lua
 local themes = {
     "gruvbox-dark"  -- 1
 }
@@ -40,7 +77,10 @@ local chosen_theme = themes[1]
 local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme)
 beautiful.init(theme_path)
 beautiful.init(string.format(gears.filesystem.get_configuration_dir() .. "/themes/%s/theme.lua", chosen_theme))
+#+END_SRC
 
+* Layouts
+#+BEGIN_SRC lua
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -75,7 +115,10 @@ lain.layout.cascade.tile.offset_y      = 32
 lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
+#+END_SRC
 
+* Variables
+#+BEGIN_SRC lua
 awful.util.terminal = terminal
 local terminal = "alacritty"
 edit           = "emacsclient -c -a emacs"
@@ -87,7 +130,10 @@ screenlocker   = "betterlockscreen -l"
 local modkey   = "Mod4"
 local altkey   = "Mod1"
 local modkey1  = "Control"
+#+END_SRC
 
+* Tag names
+#+BEGIN_SRC lua
 awful.util.tagnames =
 {
 " EDIT ",   -- F1
@@ -98,7 +144,10 @@ awful.util.tagnames =
 " MISC ",   -- XX
 " GAMES "   -- F7
 }
+#+END_SRC
 
+* Wibox Settings
+#+BEGIN_SRC lua
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
@@ -148,7 +197,10 @@ screen.connect_signal("property::geometry", function(s)
     end
 end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
+#+END_SRC
 
+* Key Bindings
+#+BEGIN_SRC lua
 -- Awesome things
 globalkeys = my_table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -413,7 +465,10 @@ clientbuttons = gears.table.join(
     end)
 )
 root.keys(globalkeys)
+#+END_SRC
 
+* Rules
+#+BEGIN_SRC lua
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
@@ -458,7 +513,10 @@ awful.rules.rules = {
         }
       }, properties = { floating = true }},
 }
+#+END_SRC
 
+* Signals
+#+BEGIN_SRC lua
 client.connect_signal("manage", function (c)
     if awesome.startup and
       not c.size_hints.user_position
@@ -466,15 +524,22 @@ client.connect_signal("manage", function (c)
         awful.placement.no_offscreen(c)
     end
 end)
+#+END_SRC
 
+* Client Focus With Mouse
+#+BEGIN_SRC lua
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+#+END_SRC
 
+* Autorun
+#+BEGIN_SRC lua
 awful.util.spawn_with_shell("sh $HOME/.fehbg &")
 awful.util.spawn_with_shell("lxpolkit &")
 awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
 awful.util.spawn_with_shell("pulseaudio --daemonize=no --exit-idle-time=-1 &")
 awful.util.spawn_with_shell("picom --config $HOME/.config/picom/picom.conf &")
+#+END_SRC

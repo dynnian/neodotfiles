@@ -1,8 +1,8 @@
-"  ____ _____ 
-" |  _ \_   _|  Derek Taylor (DistroTube)
-" | | | || |    http://www.youtube.com/c/DistroTube
-" | |_| || |    http://www.gitlab.com/dwt1/ 
-" |____/ |_|
+"        ____             __
+"       / __ \_________ _/ /_____
+"      / / / / ___/ __ `/ //_/ _ \
+"     / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
+"    /_____/_/   \__,_/_/|_|\___/   My custom vifm config
 
 " vim: filetype=vifm :
 " My config file for the vifm terminal file manager.
