@@ -221,7 +221,6 @@ This is the most important part of the config, and the most interesting one. As 
 |-----------+---------+-----+--------------+-------------------------------------------------|
 |         X | XXXXXXX | XX  | Tag agnostic | Super + r           = dmenu run prompt          |
 |         X | XXXXXXX | XX  | Tag agnostic | Super + d           = dmenu drun prompt         |
-|         X | XXXXXXX | XX  | Tag agnostic | Super + Alt + p     = alsa mixer and pulsemixer |
 |         X | XXXXXXX | XX  | Tag agnostic | Super + w           = dmenu wifi script         |
 |         X | XXXXXXX | XX  | Tag agnostic | Super + Control + w = dmenu wallpaper script    |
 |         X | XXXXXXX | XX  | Tag agnostic | Super + Control + q = dmenu power menu script   |
