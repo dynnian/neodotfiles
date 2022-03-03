@@ -76,7 +76,7 @@ lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
-awful.util.terminal = terminal
+awful.util.terminal = terminal -- do not remove/edit this
 local terminal = "alacritty"
 edit           = "emacsclient -c -a emacs"
 file           = "alacritty -e ./.config/vifm/scripts/vifmrun"

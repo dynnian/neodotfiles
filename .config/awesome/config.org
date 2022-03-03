@@ -5,21 +5,21 @@
 #+PROPERTY: header-args :tangle rc.lua
 
 * Table of contents :toc:
-- [[#about-this-config][ABOUT THIS CONFIG]]
+- [[#about][About]]
 - [[#libraries][Libraries]]
-- [[#error-handling][Error Handling]]
+- [[#error-handling][Error handling]]
 - [[#themes][Themes]]
 - [[#layouts][Layouts]]
 - [[#variables][Variables]]
 - [[#tag-names][Tag names]]
-- [[#wibox-settings][Wibox Settings]]
-- [[#key-bindings][Key Bindings]]
+- [[#wibox-settings][Wibox settings]]
+- [[#key-bindings][Key bindings]]
 - [[#rules][Rules]]
 - [[#signals][Signals]]
-- [[#client-focus-with-mouse][Client Focus With Mouse]]
+- [[#client-focus-with-mouse][Client focus with mouse]]
 - [[#autorun][Autorun]]
 
-* ABOUT THIS CONFIG
+* About
 Awesome is a highly configurable, next generation framework window manager for X. It is very fast, extensible and licensed under the GNU GPLv2 license. It is primarily targeted at power users, developers and any people dealing with every day computing tasks and who want to have fine-grained control on their graphical environment. This is the Awesome configuration of Clay Gomera (Drake) fully written in ORG mode inside EMACS. This is just a personal hobby that gives me all the freedom and posibilites to learn how to code and use text editors like Emacs.
 
 #+CAPTION: An example screenshot
@@ -28,6 +28,7 @@ Awesome is a highly configurable, next generation framework window manager for X
 [[./screenshot.png]]
 
 * Libraries
+Here you can add/remove libraries.
 #+BEGIN_SRC lua
 local awful         = require("awful") --Everything related to window managment
 local beautiful     = require("beautiful")
@@ -42,7 +43,8 @@ local naughty       = require("naughty")
 naughty.config.defaults['icon_size'] = 100
 #+END_SRC
 
-* Error Handling
+* Error handling
+Basic error handling.
 #+BEGIN_SRC lua
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
@@ -69,6 +71,7 @@ run_once({ "unclutter -root" }) -- entries must be comma-separated
 #+END_SRC
 
 * Themes
+Here you can set your themes.
 #+BEGIN_SRC lua
 local themes = {
     "gruvbox-dark"  -- 1
@@ -80,6 +83,7 @@ beautiful.init(string.format(gears.filesystem.get_configuration_dir() .. "/theme
 #+END_SRC
 
 * Layouts
+Window manager layouts, i just use the very basic ones.
 #+BEGIN_SRC lua
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
@@ -118,8 +122,9 @@ lain.layout.cascade.tile.ncol          = 2
 #+END_SRC
 
 * Variables
+In this section you can customize your default apps and modkeys.
 #+BEGIN_SRC lua
-awful.util.terminal = terminal
+awful.util.terminal = terminal -- do not remove/edit this
 local terminal = "alacritty"
 edit           = "emacsclient -c -a emacs"
 file           = "alacritty -e ./.config/vifm/scripts/vifmrun"
@@ -133,6 +138,7 @@ local modkey1  = "Control"
 #+END_SRC
 
 * Tag names
+Here you can change the tag names. It is possible to modify tags on the fly with some bindings, but i don't do it very often, so this is for me my perfect setup. Each tag is set to an specific key to open it's specific app. In this case i have set F1-F7 as my launch keys.
 #+BEGIN_SRC lua
 awful.util.tagnames =
 {
@@ -146,7 +152,8 @@ awful.util.tagnames =
 }
 #+END_SRC
 
-* Wibox Settings
+* Wibox settings
+Some wibox and wallpaper setting stuff.
 #+BEGIN_SRC lua
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
@@ -199,7 +206,27 @@ end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 #+END_SRC
 
-* Key Bindings
+* Key bindings
+This is the most important part of the config, and the most interesting one. As i said, each tag is meant to be used with an specific app, so here's how i did it:
+|-----------+---------+-----+--------------+-------------------------------------------------|
+| Tagnumber | Tagname | Key | Type         | App                                             |
+|-----------+---------+-----+--------------+-------------------------------------------------|
+|         1 | EDIT    | F1  | Text editor  | Super + F1 = Emacs                              |
+|         2 | FILE    | F2  | File manager | Super + F2 = vifm                               |
+|         3 | WEB     | F3  | Web browser  | Super + F3 = qutebrowser                        |
+|         4 | MUSIC   | F4  | Music player | Super + F4 = moc                                |
+|         5 | WORK    | XX  | Can variate  | Super + d  = open dmenu                         |
+|         6 | MISC    | XX  | Can variate  | Super + d  = open dmenu                         |
+|         7 | GAMES   | F7  | Games        | Super + F7 = retroarch                          |
+|-----------+---------+-----+--------------+-------------------------------------------------|
+|         X | XXXXXXX | XX  | Tag agnostic | Super + r           = dmenu run prompt          |
+|         X | XXXXXXX | XX  | Tag agnostic | Super + d           = dmenu drun prompt         |
+|         X | XXXXXXX | XX  | Tag agnostic | Super + Alt + p     = alsa mixer and pulsemixer |
+|         X | XXXXXXX | XX  | Tag agnostic | Super + w           = dmenu wifi script         |
+|         X | XXXXXXX | XX  | Tag agnostic | Super + Control + w = dmenu wallpaper script    |
+|         X | XXXXXXX | XX  | Tag agnostic | Super + Control + q = dmenu power menu script   |
+|-----------+---------+-----+--------------+-------------------------------------------------|
+
 #+BEGIN_SRC lua
 -- Awesome things
 globalkeys = my_table.join(
@@ -468,6 +495,7 @@ root.keys(globalkeys)
 #+END_SRC
 
 * Rules
+In this section you can modify how the clients will behave, using rules.
 #+BEGIN_SRC lua
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -516,6 +544,7 @@ awful.rules.rules = {
 #+END_SRC
 
 * Signals
+Mainly this in this section i managed to keep focus on the master client when opening more clients.
 #+BEGIN_SRC lua
 client.connect_signal("manage", function (c)
     if awesome.startup and
@@ -526,7 +555,8 @@ client.connect_signal("manage", function (c)
 end)
 #+END_SRC
 
-* Client Focus With Mouse
+* Client focus with mouse
+Here are the options for mouse client focusing.
 #+BEGIN_SRC lua
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
@@ -536,6 +566,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 #+END_SRC
 
 * Autorun
+Apps that automatically runs when you log in.
 #+BEGIN_SRC lua
 awful.util.spawn_with_shell("sh $HOME/.fehbg &")
 awful.util.spawn_with_shell("lxpolkit &")
