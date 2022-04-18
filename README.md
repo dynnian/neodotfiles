@@ -13,6 +13,7 @@ If you want to get the full experience you need theese things:
 * [my dmenu scripts](https://github.com/d4r1us-drk/drk-dmenu_scripts)
 * [gruvbox-dark-gtk](https://github.com/jmattheis/gruvbox-dark-gtk)
 * [gruvbox-dark-icons-gtk](https://github.com/jmattheis/gruvbox-dark-icons-gtk)
+* [volantes-cursors](https://github.com/varlesh/volantes-cursors)
 * mononoki Nerd Font
 * xbacklight
 * libinput & xf86-input-libinput
