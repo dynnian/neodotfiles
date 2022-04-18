@@ -9,9 +9,11 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 If you want to get the full experience you need theese things:
 * my dwm build (comming)
 * my dmenu build (comming)
+* my dwmblocks build (comming)
 * my dmenu_scripts (comming)
 * mononoki Nerd Font
 * xbacklight
 * libinput & xf86-input-libinput
 * lxsession
 * picom
+* dunst
