@@ -358,7 +358,7 @@ env:
 
 ## Window settigns
 window:
-  opacity: 0.93
+  opacity: 0.70
   padding:
     x: 6
     y: 6
@@ -392,28 +392,11 @@ font:
     y: 1
 draw_bold_text_with_bright_colors: true
 
-
-######################################################################
-## SET THEME: Choose ONE color scheme from those in the above list. ##
-## ###################################################################
-# Available themes are:
-# *doom-one
-# *dracula
-# *gruvbox-dark
-# *monokai-pro
-# *nord
-# *oceanic-next
-# *palenight
-# *solarized-light
-# *solarized-dark
-# *tomorrow-night
-
-
 cursor:
   style: Underline
 
 shell:
-  program: /bin/zsh
+  program: /bin/bash
 
 key_bindings:
     # (Windows, Linux, and BSD only)

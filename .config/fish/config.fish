@@ -2,117 +2,123 @@
 ##      / __ \_________ _/ /_____
 ##     / / / / ___/ __ `/ //_/ _ \
 ##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
-##   /_____/_/   \__,_/_/|_|\___/   My custom bash config
+##   /_____/_/   \__,_/_/|_|\___/   My custom fish config
 ##
 
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+
 ### EXPORT
-export TERM="xterm-256color"                      # getting proper colors
-export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
-export EDITOR="nvim"                              # $EDITOR use neovim
-export READER="zathura"
-export TERMINAL="alacritty"
-export BROWSER="qutebrowser"
-export WM="dwm"
-export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
+set -U fish_greeting ""
+set EDITOR "nvim"                                 # $EDITOR use neovim
+set READER "zathura"
+set TERMINAL "alacritty"
+set BROWSER "qutebrowser"
+set WM "dwm"
+set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
-# Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
-    . /usr/share/bash-completion/bash_completion
+### ADDING TO THE PATH
+# First line removes the path; second line sets it.  Without the first line,
+# your path gets massive and fish becomes very slow.
+set -e fish_user_paths
+set -U fish_user_paths $HOME/.local/bin $HOME/Applications $fish_user_paths
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+# Vi mode
+function fish_user_key_bindings
+  # fish_default_key_bindings
+  fish_vi_key_bindings
+end
 
-### SET VI MODE ###
-# Comment this line out to enable default emacs-like bindings
-set -o vi
-bind -m vi-command 'Control-l: clear-screen'
-bind -m vi-insert 'Control-l: clear-screen'
+### AUTOCOMPLETE AND HIGHLIGHT COLORS ###
+set fish_color_normal brcyan
+set fish_color_autosuggestion '#7d7d7d'
+set fish_color_command brcyan
+set fish_color_error '#ff6c6b'
+set fish_color_param brcyan
 
-### PATH
-if [ -d "$HOME/.bin" ] ;
-  then PATH="$HOME/.bin:$PATH"
-fi
+### FUNCTIONS
+# Functions needed for !! and !$
+function __history_previous_command
+  switch (commandline -t)
+  case "!"
+    commandline -t $history[1]; commandline -f repaint
+  case "*"
+    commandline -i !
+  end
+end
 
-if [ -d "$HOME/.local/bin" ] ;
-  then PATH="$HOME/.local/bin:$PATH"
-fi
+function __history_previous_command_arguments
+  switch (commandline -t)
+  case "!"
+    commandline -t ""
+    commandline -f history-token-search-backward
+  case "*"
+    commandline -i '$'
+  end
+end
+# The bindings for !! and !$
+if [ $fish_key_bindings = "fish_vi_key_bindings" ];
+  bind -Minsert ! __history_previous_command
+  bind -Minsert '$' __history_previous_command_arguments
+else
+  bind ! __history_previous_command
+  bind '$' __history_previous_command_arguments
+end
 
-if [ -d "$HOME/Applications" ] ;
-  then PATH="$HOME/Applications:$PATH"
-fi
+# Function for creating a backup file
+# ex: backup file.txt
+# result: copies file as file.txt.bak
+function backup --argument filename
+    cp $filename $filename.bak
+end
 
-### CHANGE TITLE OF TERMINALS
-case ${TERM} in
-  xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st|konsole*)
-    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
-        ;;
-  screen*)
-    PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
-    ;;
-esac
+# Function for copying files and directories, even recursively.
+# ex: copy DIRNAME LOCATIONS
+# result: copies the directory and all of its contents.
+function copy
+    set count (count $argv | tr -d \n)
+    if test "$count" = 2; and test -d "$argv[1]"
+	set from (echo $argv[1] | trim-right /)
+	set to (echo $argv[2])
+        command cp -r $from $to
+    else
+        command cp $argv
+    end
+end
 
-### SHOPT
-shopt -s autocd # change to named directory
-shopt -s cdspell # autocorrects cd misspellings
-shopt -s cmdhist # save multi-line commands in history as single line
-shopt -s dotglob
-shopt -s histappend # do not overwrite history
-shopt -s expand_aliases # expand aliases
-shopt -s checkwinsize # checks term size when bash regains control
+# Function for printing a column (splits input on whitespace)
+# ex: echo 1 2 3 | coln 3
+# output: 3
+function coln
+    while read -l input
+        echo $input | awk '{print $'$argv[1]'}'
+    end
+end
 
-#ignore upper and lowercase when TAB completion
-bind "set completion-ignore-case on"
+# Function for printing a row
+# ex: seq 3 | rown 3
+# output: 3
+function rown --argument index
+    sed -n "$index p"
+end
 
-### ARCHIVE EXTRACTION
-# usage: ex <file>
-ex ()
-{
-  if [ -f "$1" ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1   ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *.deb)       ar x $1      ;;
-      *.tar.xz)    tar xf $1    ;;
-      *.tar.zst)   unzstd $1    ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
+# Function for ignoring the first 'n' lines
+# ex: seq 10 | skip 5
+# results: prints everything but the first 5 lines
+function skip --argument n
+    tail +(math 1 + $n)
+end
+
+# Function for taking the first 'n' lines
+# ex: seq 10 | take 5
+# results: prints only the first 5 lines
+function take --argument number
+    head -$number
+end
 
 ### ALIASES
 # navigation
-up () {
-  local d=""
-  local limit="$1"
-
-  # Default to limit of 1
-  if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
-    limit=1
-  fi
-
-  for ((i=1;i<=limit;i++)); do
-    d="../$d"
-  done
-
-  # perform cd. Show error if cd fails
-  if ! cd "$d"; then
-    echo "Couldn't go up $limit dirs.";
-  fi
-}
-
 alias ..='cd ..'
 alias .2='cd ../..'
 alias .3='cd ../../..'
@@ -175,7 +181,6 @@ alias ani-q='ani-cli -q'    # to select video quality
 
 # ytfzf
 alias yt='ytfzf -f -t'
-alias yt-m='ytfzf -m'
 
 # notflix
 alias nt='notflix'
@@ -189,7 +194,7 @@ alias mx='pulsemixer'
 alias amx='alsamixer'
 
 # music player
-alias mk='mocp'
+alias mk='cmus'
 
 # power management
 alias po='loginctl poweroff'

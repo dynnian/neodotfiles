@@ -8,8 +8,15 @@
 ### EXPORT
 export TERM="xterm-256color"                      # getting proper colors
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
-export EDITOR="emacsclient -t -a ''"              # $EDITOR use Emacs in terminal
-export VISUAL="emacsclient -c -a emacs"           # $VISUAL use Emacs in GUI mode
+export EDITOR="nvim"                              # $EDITOR use neovim
+export READER="zathura"
+export TERMINAL="alacritty"
+export BROWSER="qutebrowser"
+export WM="dwm"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:="$HOME/.cache"}
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:="$HOME/.config"}
 
 ### SET MANPAGER
 ### "bat" as manpager
@@ -120,13 +127,6 @@ alias cat='bat'
 
 # editors
 alias vim='nvim'
-alias em='/usr/bin/emacs -nw'
-alias emacs='emacsclient -c -a emacs'
-alias doomsync='~/.emacs.d/bin/doom sync'
-alias doomdoctor='~/.emacs.d/bin/doom doctor'
-alias doomupgrade='~/.emacs.d/bin/doom upgrade'
-alias doompurge='~/.emacs.d/bin/doom purge'
-alias doominstall='~/.emacs.d/bin/doom install'
 
 # Changing "ls" to "exa"
 alias ls='exa -al --color=always --group-directories-first' # my preferred listing
@@ -136,12 +136,12 @@ alias lt='exa -aT --color=always --group-directories-first' # tree listing
 alias l.='exa -a | egrep "^\."'
 
 # xbps
-alias xb-up='sudo xbps-install -Su && xcheckrestart'        # update the whole system
-alias xb-get='sudo xbps-install -S'                         # install a program
-alias xb-qry='sudo xbps-query'                              # query details about a program
-alias xb-rmv='sudo xbps-remove -R'                          # remove a package with all its dependencies (it may brake something)
-alias xb-rmv-sec='sudo xbps-remove'                         # remove a package with all its dependencies (secure way)
-alias xb-cln='sudo xbps-remove -o && sudo xbps-remove -O'   # remove unnecesary packages and clean cache
+alias xb-up='sudo xbps-install -Su && xcheckrestart'                     # Refresh pkglist & update standard pkgs
+alias xb-get='sudo xbps-install -S'                                      # Install a package
+alias xb-rmv='sudo xbps-remove -R'                                       # Remove a package with all its dependencies
+alias xb-rmv-sec='sudo xbps-remove'                                      # Remove a package with all its dependencies (secure way)
+alias xb-qry='sudo xbps-query'                                           # Repo query
+alias xb-cln='sudo xbps-remove -o && sudo xbps-remove -O'                # remove orphaned packages
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -168,8 +168,9 @@ alias tag='git tag'
 alias newtag='git tag -a'
 
 # adding flags
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
+alias df='df -h'                          			# human-readable sizes
+alias free='free -m'                      			# show sizes in MB
+alias newsboat='newsboat -u ~/.config/newsboat/urls'		# start newsboat with my urls file
 
 # ani-cli
 alias ani='ani-cli'
@@ -190,7 +191,7 @@ alias mx='pulsemixer'
 alias amx='alsamixer'
 
 # music player
-alias mk='mocp'
+alias mk='cmus'
 
 # power management
 alias po='loginctl poweroff'
@@ -200,11 +201,6 @@ alias rb='loginctl reboot'
 # file manager
 alias fm='./.config/vifm/scripts/vifmrun'
 alias vifm='./.config/vifm/scripts/vifmrun'
-
-# system monitor
-alias tp='btop'
-alias top='btop'
-alias htop='btop'
 
 # ps
 alias psa="ps auxf"
@@ -235,12 +231,5 @@ alias wfi-on='nmcli radio wifi on'
 alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
 
-# the terminal rickroll
-alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
-
-# Deploy script
-alias deploynow='sh $HOME/.config/scripts/deploy.sh'
-
 ### SETTING THE STARSHIP PROMPT ###
-eval "$(starship init zsh)"
-
+eval "$(starship init bash)"

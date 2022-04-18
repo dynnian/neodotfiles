@@ -1,3 +1,11 @@
+--       ____             __
+--      / __ \_________ _/ /_____
+--     / / / / ___/ __ `/ //_/ _ \
+--    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
+--   /_____/_/   \__,_/_/|_|\___/   My custom awesome window manager config
+--
+
+--[[ LIBRARIES ]]--
 local awful         = require("awful") --Everything related to window managment
 local beautiful     = require("beautiful")
 local gears         = require("gears") --Utilities such as color parsing and objects
@@ -10,6 +18,7 @@ local wibox         = require("wibox")
 local naughty       = require("naughty")
 naughty.config.defaults['icon_size'] = 100
 
+--[[ ERROR HANDLING ]]--
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
@@ -33,6 +42,7 @@ local function run_once(cmd_arr)
 end
 run_once({ "unclutter -root" }) -- entries must be comma-separated
 
+--[[ THEMES ]]--
 local themes = {
     "gruvbox-dark"  -- 1
 }
@@ -41,6 +51,7 @@ local theme_path = string.format("%s/.config/awesome/themes/%s/theme.lua", os.ge
 beautiful.init(theme_path)
 beautiful.init(string.format(gears.filesystem.get_configuration_dir() .. "/themes/%s/theme.lua", chosen_theme))
 
+--[[ LAYOUTS ]]--
 awful.layout.suit.tile.left.mirror = true
 awful.layout.layouts = {
     awful.layout.suit.tile,
@@ -76,29 +87,34 @@ lain.layout.cascade.tile.extra_padding = 5
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
+--[[ VARIABLES ]]--
 awful.util.terminal = terminal -- do not remove/edit this
 local terminal = "alacritty"
-edit           = "emacsclient -c -a emacs"
+edit           = "alacritty -e nvim"
 file           = "alacritty -e ./.config/vifm/scripts/vifmrun"
 web            = "qutebrowser"
-music          = "alacritty -e mocp"
+chat           = "alacritty -e gomuks"
+music          = "alacritty -e cmus"
 games          = "retroarch"
 screenlocker   = "betterlockscreen -l"
 local modkey   = "Mod4"
 local altkey   = "Mod1"
 local modkey1  = "Control"
 
+--[[ TAG NAMES ]]--
 awful.util.tagnames =
 {
 " EDIT ",   -- F1
 " FILE ",   -- F2
 " WEB ",    -- F3
-" MUSIC ",  -- F4
+" CHAT ",   -- F4
+" MUSIC ",  -- F5
 " WORK ",   -- XX
 " MISC ",   -- XX
-" GAMES "   -- F7
+" GAMES "   -- F8
 }
 
+--[[ WIBOX & MISC STUFF ]]--
 awful.util.taglist_buttons = my_table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
@@ -149,6 +165,7 @@ screen.connect_signal("property::geometry", function(s)
 end)
 awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 
+--[[ KEY BINDINGS ]]--
 -- Awesome things
 globalkeys = my_table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -221,15 +238,15 @@ globalkeys = my_table.join(
 --  Dmenu
     awful.key({ modkey }, "r", function () awful.util.spawn_with_shell("dmenu_run -l 10 -b -i -p Launch:") end,
         {description = "Show Run Launcher", group = "Hotkeys"}),
-    awful.key({ modkey }, "d", function () awful.util.spawn_with_shell("sh $HOME/.config/scripts/dmenu-drun.sh") end,
+    awful.key({ modkey }, "d", function () awful.util.spawn_with_shell("$HOME/.local/bin/dmenu_drun") end,
         {description = "Show App Launcher", group = "Hotkeys"}),
-    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("sh $HOME/.config/scripts/dmenu-wifi.sh") end,
+    awful.key({ modkey }, "w", function () awful.util.spawn_with_shell("$HOME/.local/bin/dmenu_wifi") end,
         {description = "Configure WiFi", group = "Hotkeys"}),
-    awful.key({ modkey, modkey1 }, "q", function () awful.util.spawn_with_shell("sh $HOME/.config/scripts/dmenu-power.sh") end,
+    awful.key({ modkey, modkey1 }, "q", function () awful.util.spawn_with_shell("$HOME/.local/bin/dmenu_power") end,
         {description = "Show Logout menu", group = "Hotkeys"}),
-    awful.key({ modkey, modkey1 }, "w", function () awful.util.spawn_with_shell("sh $HOME/.config/scripts/dmenu-wall.sh") end,
+    awful.key({ modkey, modkey1 }, "w", function () awful.util.spawn_with_shell("$HOME/.local/bin/dmenu_wall") end,
         {description = "Show Logout menu", group = "Hotkeys"}),
-    awful.key({}, "Print", function () awful.util.spawn_with_shell("sh $HOME/.config/scripts/dmenu-scrot.sh") end,
+    awful.key({}, "Print", function () awful.util.spawn_with_shell("$HOME/.local/bin/dmenu_scrot") end,
         {description = "Take screenshots", group = "Hotkeys"}),
 --  Keyboard Layouts
     awful.key({ modkey, "Shift" }, "e", function () awful.util.spawn("setxkbmap -layout es") end,
@@ -246,11 +263,14 @@ globalkeys = my_table.join(
                 -- web
     awful.key({ modkey }, "F3", function () awful.spawn(web) end,
         {description = "Launch web browser", group = "Apps"}),
+                -- chat
+    awful.key({ modkey }, "F4", function () awful.spawn(chat) end,
+        {description = "Launch matrix client (chat)", group = "Apps"}),
                 -- music
-    awful.key({ modkey }, "F4", function () awful.spawn(music) end,
+    awful.key({ modkey }, "F5", function () awful.spawn(music) end,
         {description = "Launch music player", group = "Apps"}),
                 -- games
-    awful.key({ modkey }, "F7", function () awful.util.spawn(games) end,
+    awful.key({ modkey }, "F8", function () awful.util.spawn(games) end,
         {description = "Launch gaming app", group = "Apps"}),
 -- Volume
     awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("amixer set Master 5%+") end,
@@ -414,6 +434,7 @@ clientbuttons = gears.table.join(
 )
 root.keys(globalkeys)
 
+--[[ RULES ]]--
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
@@ -459,6 +480,7 @@ awful.rules.rules = {
       }, properties = { floating = true }},
 }
 
+--[[ SIGNALS ]]--
 client.connect_signal("manage", function (c)
     if awesome.startup and
       not c.size_hints.user_position
@@ -467,14 +489,15 @@ client.connect_signal("manage", function (c)
     end
 end)
 
+-- [[ MOUSE FOCUS ]]--
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
+--[[ AUTOSTART ]]--
 awful.util.spawn_with_shell("sh $HOME/.fehbg &")
 awful.util.spawn_with_shell("lxpolkit &")
-awful.util.spawn_with_shell("/usr/bin/emacs --daemon &")
 awful.util.spawn_with_shell("pulseaudio --daemonize=no --exit-idle-time=-1 &")
 awful.util.spawn_with_shell("picom --config $HOME/.config/picom/picom.conf &")

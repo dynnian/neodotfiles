@@ -436,7 +436,7 @@ List of keybindings (SPC h b b)")
        :desc "Increment register" "+" #'increment-register
        :desc "Point to register" "SPC" #'point-to-register))
 
-(setq shell-file-name "/bin/zsh"
+(setq shell-file-name "/bin/bash"
       vterm-max-scrollback 5000)
 (setq eshell-rc-script "~/.config/doom/eshell/profile"
       eshell-aliases-file "~/.config/doom/eshell/aliases"

@@ -1,8 +1,8 @@
---     ____  ____  _  __
---    |  _ \|  _ \| |/ /
---    | | | | |_) | ' /  Clay Gomera (Drake)
---    | |_| |  _ <| . \  My custom awesomewm gruvbox-dark theme.
---    |____/|_| \_\_|\_\
+--       ____             __
+--      / __ \_________ _/ /_____
+--     / / / / ___/ __ `/ //_/ _ \
+--    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
+--   /_____/_/   \__,_/_/|_|\___/   My custom awesome window manager gruvbox theme
 --
 
 local gears = require("gears")
