@@ -9,6 +9,8 @@
 export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 export EDITOR="nvim"                              # $EDITOR use neovim
+#export EDITOR="emacsclient -t -a ''"              # $EDITOR use Emacs in terminal
+#export VISUAL="emacsclient -c -a emacs"           # $VISUAL use Emacs in GUI mode
 export READER="zathura"
 export TERMINAL="alacritty"
 export BROWSER="qutebrowser"
@@ -135,6 +137,15 @@ alias \
 # bat as cat
 [ -x "$(command -v bat)" ] && alias cat="bat"
 
+# DOOM Emacs
+[ -x "$(command -v emacs)" ] && alias \
+	em="/usr/bin/emacs -nw" \
+	emacs="emacsclient -c -a 'emacs'" \
+	doomsync="~/.emacs.d/bin/doom sync" \
+	doomdoctor="~/.emacs.d/bin/doom doctor" \
+	doomupgrade="~/.emacs.d/bin/doom upgrade" \
+	doompurge="~/.emacs.d/bin/doom purge"
+
 # Changing "ls" to "exa"
 alias \
 	ls="exa -al --color=always --group-directories-first" \
@@ -144,13 +155,22 @@ alias \
 	l.='exa -a | egrep "^\."'
 
 # xbps
-alias \
+[ -x "$(command -v xbps-query)" ] && alias \
 	xb-up="sudo xbps-install -Su && xcheckrestart" \
 	xb-get="sudo xbps-install -S" \
 	xb-rmv="sudo xbps-remove -R" \
 	xb-rmv-sec="sudo xbps-remove" \
 	xb-qry="sudo xbps-query" \
 	xb-cln="sudo xbps-remove -o && sudo xbps-remove -O"
+
+# pacman
+[ -x "$(command -v pacman)" ] && alias \
+	pac-up="sudo pacman -Syyu" \
+	pac-get="sudo pacman -S" \
+	pac-rmv="sudo pacman -Rcns" \
+	pac-rmv-sec="sudo pacman -Runs" \
+	pac-qry="sudo pacman -Ss" \
+	pac-cln="sudo pacman -Scc"
 
 # colorize grep output (good for log files)
 alias \
