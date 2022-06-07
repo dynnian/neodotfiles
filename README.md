@@ -15,3 +15,4 @@ If you want to get the full experience you need theese things:
 * lxsession
 * picom
 * dunst
+* pamixer
