@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# ***This script was made by Clay Gomera (Drake)***
+#  - Description: A simple power menu dmenu script
+#  - Dependencies: dmenu (Everything else can be changed)
+
+## OPTIONS ##
+option1=" Logout"
+option2=" Reboot"
+option3=" Power off"
+option4="💤 Suspend"
+option5="🔒lock"
+option6="❌Cancel"
+
+## OPTIONS ARRAY ##
+options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6"
+
+## MAIN ACTION COMMAND ##
+action=$(echo -e "$options" | dmenu -b -i -p " ")
+case "$action" in
+    $option1*)
+        whoami | xargs -I % sh -c 'pkill -KILL -u %';;
+    $option2*)
+        loginctl reboot || systemctl reboot;;
+    $option3*)
+        loginctl poweroff || systemctl poweroff;;
+    $option4*)
+        betterlockscreen -l &
+        sleep 2
+        loginctl suspend || systemctl suspend;;
+    $option5*)
+        betterlockscreen -l;;
+    $option6*)
+        exit 0
+esac

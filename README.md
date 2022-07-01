@@ -7,12 +7,21 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 
 # Dependencies
 If you want to get the full experience you need theese things:
-* [my dmenu scripts](https://github.com/d4r1us-drk/drk-dmenu_scripts)
 * [gruvbox-dark-gtk](https://github.com/jmattheis/gruvbox-dark-gtk)
 * [gruvbox-dark-icons-gtk](https://github.com/jmattheis/gruvbox-dark-icons-gtk)
 * [volantes-cursors](https://github.com/varlesh/volantes-cursors)
+* [ani-cli](https://github.com/pystardust/ani-cli)
+* [ytfzf](https://github.com/pystardust/ytfzf)
+* [flix-cli](https://github.com/d4r1us-drk/flix-cli)
 * mononoki Nerd Font
 * lxsession
 * picom
 * dunst
 * pamixer
+* fd
+* feh
+* scrot
+* NetworkManager
+* j4-dmenu-desktop
+* betterlockscreen
+* xbacklight

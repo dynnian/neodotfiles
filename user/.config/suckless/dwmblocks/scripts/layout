@@ -1,0 +1,3 @@
+#!/bin/sh
+layout=$(setxkbmap -query | grep -oP 'layout:\s*\K\w+');
+echo " ⌨ $layout ";
