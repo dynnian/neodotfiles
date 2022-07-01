@@ -3,7 +3,6 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 
 * Screenshots:
 ![Screenshot1](screenshot1.png "Screenshot 1")
-![Screenshot2](screenshot2.png "Screenshot 2")
 
 # Dependencies
 If you want to get the full experience you need theese things:
