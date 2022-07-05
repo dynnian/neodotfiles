@@ -174,7 +174,7 @@ static Key keys[] = {
 	/* File manager */
 	{ MODKEY,               XK_a,      XK_2,      spawn,          CMD("alacritty -e $HOME/.config/vifm/scripts/vifmrun") },
 	/* Web browser */
-	{ MODKEY,               XK_a,      XK_3,      spawn,          CMD("librewolf") },
+	{ MODKEY,               XK_a,      XK_3,      spawn,          CMD("qutebrowser") },
 	/* Chat app */
 	{ MODKEY,               XK_a,      XK_4,      spawn,          CMD("alacritty -e gomuks") },
 	/* Music player */
@@ -193,6 +193,8 @@ static Key keys[] = {
 	{ MODKEY,               XK_a,      XK_F4,      spawn,          CMD("alacritty -e ani-cli") },
 	/* Flix-cli */
 	{ MODKEY,               XK_a,      XK_F5,      spawn,          CMD("alacritty -e flix-cli") },
+	/* Castero */
+	{ MODKEY,               XK_a,      XK_F6,      spawn,          CMD("alacritty -e castero") },
 
 /* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
 	/* dmenu */
@@ -209,7 +211,8 @@ static Key keys[] = {
 	{ MODKEY,               XK_p,      XK_s,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_scrot") },
 	/* dmenu_drun */
 	{ MODKEY,               XK_p,      XK_d,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_drun") },
-
+	/* dmenu_blue */
+	{ MODKEY,               XK_p,      XK_b,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
 
 /* DWM BOOTSTRAP */
 	{ MODKEY|ShiftMask,     -1,        XK_q,      quit,           {0} },

@@ -5,6 +5,9 @@
        :desc "List bookmarks" "L" #'list-bookmarks
        :desc "Save current bookmarks to bookmark file" "w" #'bookmark-save))
 
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers t)
+
 (evil-define-key 'normal ibuffer-mode-map
   (kbd "f c") 'ibuffer-filter-by-content
   (kbd "f d") 'ibuffer-filter-by-directory
@@ -212,7 +215,7 @@ List of keybindings (SPC h b b)")
 (emms-default-players)
 (emms-mode-line 1)
 (emms-playing-time 1)
-(setq emms-source-file-default-directory "/run/media/Storage/multimedia/music"
+(setq emms-source-file-default-directory "~/Music/"
       emms-playlist-buffer-name "*Music*"
       emms-info-asynchronously t
       emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
@@ -226,6 +229,23 @@ List of keybindings (SPC h b b)")
 
 (use-package emojify
   :hook (after-init . global-emojify-mode))
+
+(map! :leader
+      (:prefix ("e". "evaluate/ERC/EWW")
+       :desc "Launch ERC with TLS connection" "E" #'erc-tls))
+
+(setq erc-prompt (lambda () (concat "[" (buffer-name) "]"))
+      erc-server "irc.libera.chat"
+      erc-nick "distrotube"
+      erc-user-full-name "Derek Taylor"
+      erc-track-shorten-start 24
+      erc-autojoin-channels-alist '(("irc.libera.chat" "#archlinux" "#linux" "#emacs"))
+      erc-kill-buffer-on-part t
+      erc-fill-column 100
+      erc-fill-function 'erc-fill-static
+      erc-fill-static-center 20
+      ;; erc-auto-query 'bury
+      )
 
 (map! :leader
       (:prefix ("e". "evaluate/EWW")
@@ -244,7 +264,7 @@ List of keybindings (SPC h b b)")
        :desc "Eww reload page" "R" #'eww-reload))
 
 (setq doom-font (font-spec :family "mononoki Nerd Font" :size 15)
-      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15)
+      doom-variable-pitch-font (font-spec :family "mononoki Nerd Font" :size 15)
       doom-big-font (font-spec :family "mononoki Nerd Font" :size 20))
 (after! doom-themes
   (setq doom-themes-enable-bold t
@@ -304,12 +324,21 @@ List of keybindings (SPC h b b)")
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle truncate lines" "t" #'toggle-truncate-lines))
 
+(custom-set-faces
+ '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
+ '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.7))))
+ '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.6))))
+ '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.5))))
+ '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.4))))
+ '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.3))))
+ '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.2)))))
+
 (setq minimap-window-location 'right)
 (map! :leader
       (:prefix ("t" . "toggle")
        :desc "Toggle minimap-mode" "m" #'minimap-mode))
 
-(set-face-attribute 'mode-line nil :font "Ubuntu Mono-13")
+(set-face-attribute 'mode-line nil :font "mononoki Nerd Font-13")
 (setq doom-modeline-height 30     ;; sets modeline height
       doom-modeline-bar-width 5   ;; sets right bar width
       doom-modeline-persp-name t  ;; adds perspective name to modeline
@@ -367,13 +396,168 @@ List of keybindings (SPC h b b)")
              "DONE(d)"           ; Task has been completed
              "CANCELLED(c)" )))) ; Task has been cancelled
 
-(custom-set-faces
-  '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
-  '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
-  '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
-  '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
-  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
-)
+(defun dt/org-colors-doom-one ()
+  "Enable Doom One colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#51afef" ultra-bold)
+         (org-level-2 1.6 "#c678dd" extra-bold)
+         (org-level-3 1.5 "#98be65" bold)
+         (org-level-4 1.4 "#da8548" semi-bold)
+         (org-level-5 1.3 "#5699af" normal)
+         (org-level-6 1.2 "#a9a1e1" normal)
+         (org-level-7 1.1 "#46d9ff" normal)
+         (org-level-8 1.0 "#ff6c6b" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-dracula ()
+  "Enable Dracula colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#8be9fd" ultra-bold)
+         (org-level-2 1.6 "#bd93f9" extra-bold)
+         (org-level-3 1.5 "#50fa7b" bold)
+         (org-level-4 1.4 "#ff79c6" semi-bold)
+         (org-level-5 1.3 "#9aedfe" normal)
+         (org-level-6 1.2 "#caa9fa" normal)
+         (org-level-7 1.1 "#5af78e" normal)
+         (org-level-8 1.0 "#ff92d0" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-gruvbox-dark ()
+  "Enable Gruvbox Dark colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#458588" ultra-bold)
+         (org-level-2 1.6 "#b16286" extra-bold)
+         (org-level-3 1.5 "#98971a" bold)
+         (org-level-4 1.4 "#fb4934" semi-bold)
+         (org-level-5 1.3 "#83a598" normal)
+         (org-level-6 1.2 "#d3869b" normal)
+         (org-level-7 1.1 "#d79921" normal)
+         (org-level-8 1.0 "#8ec07c" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-monokai-pro ()
+  "Enable Monokai Pro colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#78dce8" ultra-bold)
+         (org-level-2 1.6 "#ab9df2" extra-bold)
+         (org-level-3 1.5 "#a9dc76" bold)
+         (org-level-4 1.4 "#fc9867" semi-bold)
+         (org-level-5 1.3 "#ff6188" normal)
+         (org-level-6 1.2 "#ffd866" normal)
+         (org-level-7 1.1 "#78dce8" normal)
+         (org-level-8 1.0 "#ab9df2" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-nord ()
+  "Enable Nord colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#81a1c1" ultra-bold)
+         (org-level-2 1.6 "#b48ead" extra-bold)
+         (org-level-3 1.5 "#a3be8c" bold)
+         (org-level-4 1.4 "#ebcb8b" semi-bold)
+         (org-level-5 1.3 "#bf616a" normal)
+         (org-level-6 1.2 "#88c0d0" normal)
+         (org-level-7 1.1 "#81a1c1" normal)
+         (org-level-8 1.0 "#b48ead" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-oceanic-next ()
+  "Enable Oceanic Next colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#6699cc" ultra-bold)
+         (org-level-2 1.6 "#c594c5" extra-bold)
+         (org-level-3 1.5 "#99c794" bold)
+         (org-level-4 1.4 "#fac863" semi-bold)
+         (org-level-5 1.3 "#5fb3b3" normal)
+         (org-level-6 1.2 "#ec5f67" normal)
+         (org-level-7 1.1 "#6699cc" normal)
+         (org-level-8 1.0 "#c594c5" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-palenight ()
+  "Enable Palenight colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#82aaff" ultra-bold)
+         (org-level-2 1.6 "#c792ea" extra-bold)
+         (org-level-3 1.5 "#c3e88d" bold)
+         (org-level-4 1.4 "#ffcb6b" semi-bold)
+         (org-level-5 1.3 "#a3f7ff" normal)
+         (org-level-6 1.2 "#e1acff" normal)
+         (org-level-7 1.1 "#f07178" normal)
+         (org-level-8 1.0 "#ddffa7" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-solarized-dark ()
+  "Enable Solarized Dark colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#268bd2" ultra-bold)
+         (org-level-2 1.6 "#d33682" extra-bold)
+         (org-level-3 1.5 "#859900" bold)
+         (org-level-4 1.4 "#b58900" semi-bold)
+         (org-level-5 1.3 "#cb4b16" normal)
+         (org-level-6 1.2 "#6c71c4" normal)
+         (org-level-7 1.1 "#2aa198" normal)
+         (org-level-8 1.0 "#657b83" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-solarized-light ()
+  "Enable Solarized Light colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#268bd2" ultra-bold)
+         (org-level-2 1.6 "#d33682" extra-bold)
+         (org-level-3 1.5 "#859900" bold)
+         (org-level-4 1.4 "#b58900" semi-bold)
+         (org-level-5 1.3 "#cb4b16" normal)
+         (org-level-6 1.2 "#6c71c4" normal)
+         (org-level-7 1.1 "#2aa198" normal)
+         (org-level-8 1.0 "#657b83" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+(defun dt/org-colors-tomorrow-night ()
+  "Enable Tomorrow Night colors for Org headers."
+  (interactive)
+  (dolist
+      (face
+       '((org-level-1 1.7 "#81a2be" ultra-bold)
+         (org-level-2 1.6 "#b294bb" extra-bold)
+         (org-level-3 1.5 "#b5bd68" bold)
+         (org-level-4 1.4 "#e6c547" semi-bold)
+         (org-level-5 1.3 "#cc6666" normal)
+         (org-level-6 1.2 "#70c0ba" normal)
+         (org-level-7 1.1 "#b77ee0" normal)
+         (org-level-8 1.0 "#9ec400" normal)))
+    (set-face-attribute (nth 0 face) nil :font doom-variable-pitch-font :weight (nth 3 face) :height (nth 1 face) :foreground (nth 2 face)))
+    (set-face-attribute 'org-table nil :font doom-font :weight 'normal :height 1.0 :foreground "#bfafdf"))
+
+;; Load our desired dt/org-colors-* theme on startup
+(dt/org-colors-gruvbox-dark)
 
 (use-package ox-man)
 (use-package ox-gemini)
@@ -386,27 +570,12 @@ List of keybindings (SPC h b b)")
 
 (setq org-publish-use-timestamps-flag nil)
 (setq org-export-with-broken-links t)
-(setq org-publish-project-alist
-      '(("distro.tube"
-         :base-directory "~/nc/gitlab-repos/distro.tube/"
-         :base-extension "org"
-         :publishing-directory "~/nc/gitlab-repos/distro.tube/html/"
-         :recursive t
-         :exclude "org-html-themes/.*"
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4             ; Just the default for this project.
-         :auto-preamble t)
-         ("org-static"
-         :base-directory "~/Org/website"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-         :publishing-directory "~/public_html/"
-         :recursive t
-         :exclude ".*/org-html-themes/.*"
-         :publishing-function org-publish-attachment)
-      ))
 
-(after! org-roam
-  (setq org-roam-directory "~/nc/Roam"))
+(use-package! org-auto-tangle
+  :defer t
+  :hook (org-mode . org-auto-tangle-mode)
+  :config
+  (setq org-auto-tangle-default t))
 
 (use-package! password-store)
 

@@ -181,8 +181,8 @@ c.tabs.show = 'always'
 
 # Setting default page for when opening new tabs or new windows with
 # commands like :open -t and :open -w .
-c.url.default_page = 'https://search.brave.com/'
-c.url.start_pages = 'https://search.brave.com/'
+c.url.default_page = '~/.config/qutebrowser/homepage/homepage.html'
+c.url.start_pages = '~/.config/qutebrowser/homepage/homepage.html'
 
 # Search engines which can be used via the address bar.  Maps a search
 # engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}`

@@ -72,6 +72,7 @@
 (package! mw-thesaurus)
 (package! org-board)
 (package! org-web-tools)
+(package! org-auto-tangle)
 (package! ox-gemini)
 (package! pacmacs)
 (package! peep-dired)
@@ -85,3 +86,4 @@
 (package! beacon)
 (package! clippy)
 (package! minimap)
+(package! olivetti)
