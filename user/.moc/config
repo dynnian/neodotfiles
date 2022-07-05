@@ -1,3 +1,10 @@
+##       ____             __
+##      / __ \_________ _/ /_____
+##     / / / / ___/ __ `/ //_/ _ \
+##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
+##   /_____/_/   \__,_/_/|_|\___/   My custom moc config
+##
+
 # This is a configuration file for the MOC player.  It should be named
 # 'config' and placed in the ~/.moc directory.  As this file can specify
 # commands which invoke other applications, MOC will refuse to start if it

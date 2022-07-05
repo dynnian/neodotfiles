@@ -1,3 +1,10 @@
+##       ____             __
+##      / __ \_________ _/ /_____
+##     / / / / ___/ __ `/ //_/ _ \
+##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
+##   /_____/_/   \__,_/_/|_|\___/   My custom zathura config
+##
+
 set font                        "mononoki Nerd Font 9"
 set default-bg                  "#262626" #00
 set default-fg                  "#ebdbb2" #01
