@@ -21,13 +21,13 @@ case "$action" in
     $option1*)
         whoami | xargs -I % sh -c 'pkill -KILL -u %';;
     $option2*)
-        loginctl reboot || systemctl reboot;;
+        systemctl reboot;;
     $option3*)
-        loginctl poweroff || systemctl poweroff;;
+        systemctl poweroff;;
     $option4*)
         betterlockscreen -l &
         sleep 2
-        loginctl suspend || systemctl suspend;;
+        systemctl suspend;;
     $option5*)
         betterlockscreen -l;;
     $option6*)

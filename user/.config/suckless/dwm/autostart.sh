@@ -10,4 +10,3 @@ dwmblocks &
 sh "$HOME"/.fehbg &
 picom --config ~/.config/picom/picom.conf &
 dunst --config ~/.config/dunst/dunstrc &
-/usr/bin/emacs --daemon &

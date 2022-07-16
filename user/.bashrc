@@ -62,7 +62,7 @@ shopt -s checkwinsize # checks term size when bash regains control
 bind "set completion-ignore-case on"
 
 # sudo not required for some system commands
-for command in mount umount poweroff reboot ; do
+for command in cryptsetup mount umount poweroff reboot ; do
 alias $command="sudo $command"
 done; unset command
 
@@ -142,23 +142,16 @@ alias \
   lt="exa -aT --color=always --group-directories-first" \
   l.='exa -a | egrep "^\."'
 
-# xbps
-[ -x "$(command -v xbps-query)" ] && alias \
-  xb-up="sudo xbps-install -Su && xcheckrestart" \
-  xb-get="sudo xbps-install -S" \
-  xb-rmv="sudo xbps-remove -R" \
-  xb-rmv-sec="sudo xbps-remove" \
-  xb-qry="sudo xbps-query" \
-  xb-cln="sudo xbps-remove -o && sudo xbps-remove -O"
-
 # pacman
-[ -x "$(command -v pacman)" ] && alias \
+alias \
   pac-up="sudo pacman -Syyu" \
   pac-get="sudo pacman -S" \
   pac-rmv="sudo pacman -Rcns" \
   pac-rmv-sec="sudo pacman -Runs" \
   pac-qry="sudo pacman -Ss" \
-  pac-cln="sudo pacman -Scc"
+  pac-cln="sudo pacman -Scc" \
+  par-get="paru -S" \
+  par-cln="paru -Scc"
 
 # colorize grep output (good for log files)
 alias \
@@ -202,11 +195,7 @@ alias \
   music="cmus"
 
 # power management
-[ -x "$(command -v xbps-query)" ] && alias \
-  po="loginctl poweroff" \
-  sp="loginctl suspend" \
-  rb="loginctl reboot"
-[ -x "$(command -v pacman)" ] && alias \
+alias \
   po="systemctl poweroff" \
   sp="systemctl suspend" \
   rb="systemctl reboot"

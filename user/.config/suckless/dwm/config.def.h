@@ -151,16 +151,22 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,     -1,        XK_period, tagmon,         {.i = +1 } },
 
 /* VOLUME CONTROL */
-	/* Increase volume by 5% */
-	{ MODKEY|ShiftMask,     -1,        XK_equal,  spawn,          CMD("pamixer -i 5") },
+	/* Toggle mute */
+	{ MODKEY,               -1,        XK_F1,  spawn,          CMD("pamixer -t") },
 	/* Decrease volume by 5% */
-	{ MODKEY|ShiftMask,     -1,        XK_minus,  spawn,          CMD("pamixer -d 5") },
+	{ MODKEY,               -1,        XK_F2,  spawn,          CMD("pamixer -d 5") },
+	/* Increase volume by 5% */
+	{ MODKEY,               -1,        XK_F3,  spawn,          CMD("pamixer -i 5") },
+	/* Toggle microphone mute */
+	{ MODKEY,               -1,        XK_F4,  spawn,          CMD("pamixer --default-source -t") },
 
 /* BRIGHTNESS CONTROL */
-	/* Increase brightness by 5% */
-	{ MODKEY|ControlMask,   -1,        XK_equal,  spawn,          CMD("xbacklight -inc 5") },
 	/* Decrease brightness by 5% */
-	{ MODKEY|ControlMask,   -1,        XK_minus,  spawn,          CMD("xbacklight -dec 5") },
+	{ MODKEY,               -1,        XK_F5,  spawn,          CMD("xbacklight -dec 5") },
+	/* Increase brightness by 5% */
+	{ MODKEY,               -1,        XK_F6,  spawn,          CMD("xbacklight -inc 5") },
+	/* Set screen backlight to off */
+	{ MODKEY,               -1,        XK_F7,  spawn,          CMD("xbacklight -set 0") },
 
 /* KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key" */
 	/* Switch to the spanish keyboard layout */
@@ -184,17 +190,19 @@ static Key keys[] = {
 
 /* MISC PROGRAMS launched with emacs-style keychords SUPER + m (app) followed by "key" */
 	/* Audio mixer */
-	{ MODKEY,               XK_a,      XK_F1,      spawn,          CMD("alacritty -e pulsemixer") },
+	{ MODKEY,               XK_a,      XK_F1,      spawn,          CMD("alacritty -e btop") },
+	/* Audio mixer */
+	{ MODKEY,               XK_a,      XK_F2,      spawn,          CMD("alacritty -e pulsemixer") },
 	/* Rss reader */
-	{ MODKEY,               XK_a,      XK_F2,      spawn,          CMD("alacritty -e newsboat") },
+	{ MODKEY,               XK_a,      XK_F3,      spawn,          CMD("alacritty -e newsboat") },
 	/* Ytfzf */
-	{ MODKEY,               XK_a,      XK_F3,      spawn,          CMD("alacritty -e ytfzf -flst") },
+	{ MODKEY,               XK_a,      XK_F4,      spawn,          CMD("alacritty -e ytfzf -flst") },
 	/* Ani-cli */
-	{ MODKEY,               XK_a,      XK_F4,      spawn,          CMD("alacritty -e ani-cli") },
+	{ MODKEY,               XK_a,      XK_F5,      spawn,          CMD("alacritty -e ani-cli") },
 	/* Flix-cli */
-	{ MODKEY,               XK_a,      XK_F5,      spawn,          CMD("alacritty -e flix-cli") },
+	{ MODKEY,               XK_a,      XK_F6,      spawn,          CMD("alacritty -e flix-cli") },
 	/* Castero */
-	{ MODKEY,               XK_a,      XK_F6,      spawn,          CMD("alacritty -e castero") },
+	{ MODKEY,               XK_a,      XK_F7,      spawn,          CMD("alacritty -e castero") },
 
 /* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
 	/* dmenu */
@@ -202,9 +210,9 @@ static Key keys[] = {
 	/* dmenu_power */
 	{ MODKEY,               XK_p,      XK_q,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") },
 	/* dmenu_wifi */
-	{ MODKEY,               XK_p,      XK_w,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wifi") },
+	{ MODKEY,               XK_p,      XK_i,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wifi") },
 	/* dmenu_wall */
-	{ MODKEY,               XK_p,      XK_b,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wall") },
+	{ MODKEY,               XK_p,      XK_w,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wall") },
 	/* dmenu_edit */
 	{ MODKEY,               XK_p,      XK_e,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_edit") },
 	/* dmenu_scrot */
