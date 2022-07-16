@@ -26,3 +26,4 @@ If you want to get the full experience you need theese things:
 * j4-dmenu-desktop
 * betterlockscreen
 * xbacklight
+* xbindkeys
