@@ -38,7 +38,7 @@ static const unsigned int alphas[][3] = {
 };
 
 /* |||--- TAG NAMES ---||| */
-static const char *tags[] = { "EDIT", "FILE", "WEB", "CHAT", "MUSIC", "GAMES", "WORK1", "WORK2", "MISC" };
+static const char *tags[] = { "edt", "exp", "web", "cht", "msc", "gms", "vrt", "wrk", "msc" };
 
 /* |||--- RULES ---||| */
 static const Rule rules[] = {
@@ -47,8 +47,15 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            0,           -1 },
-	{ "Firefox",  NULL,       NULL,       3 << 7,       0,           -1 },
+	{ "Emacs",        NULL,       NULL,              1,       0,           -1 },
+	{ "qjackctl",     NULL,       NULL,              0,       1,           -1 },
+	{ "exp",          NULL,       NULL,         1 << 1,       0,           -1 },
+	{ "qutebrowser",  NULL,       NULL,         1 << 2,       0,           -1 },
+	{ "cht",          NULL,       NULL,         1 << 3,       0,           -1 },
+	{ "msc",          NULL,       NULL,         1 << 4,       0,           -1 },
+	{ "retroarch",    NULL,       NULL,         1 << 5,       0,           -1 },
+	{ "Virt-manager", NULL,       NULL,         1 << 6,       0,           -1 },
+	{ "misc",         NULL,       NULL,         1 << 8,       0,           -1 },
 };
 
 /* |||--- LAYOUTS ---||| */
@@ -107,7 +114,7 @@ static Key keys[] = {
 	TAGKEYS(                -1,        XK_8,                      7)
 	TAGKEYS(                -1,        XK_9,                      8)
 	/* Close Window */
-	{ MODKEY|ShiftMask,     -1,        XK_c,      killclient,     {0} },
+	{ MODKEY,               -1,        XK_q,      killclient,     {0} },
 	/* Cycle between tags */
 	{ MODKEY|ControlMask,   -1,        XK_Tab,    view,           {0} },
 	/* Window moving */
@@ -152,21 +159,21 @@ static Key keys[] = {
 
 /* VOLUME CONTROL */
 	/* Toggle mute */
-	{ MODKEY,               -1,        XK_F1,  spawn,          CMD("pamixer -t") },
+	{ MODKEY,               -1,        XK_F1,     spawn,          CMD("pamixer -t") },
 	/* Decrease volume by 5% */
-	{ MODKEY,               -1,        XK_F2,  spawn,          CMD("pamixer -d 5") },
+	{ MODKEY,               -1,        XK_F2,     spawn,          CMD("pamixer -d 5") },
 	/* Increase volume by 5% */
-	{ MODKEY,               -1,        XK_F3,  spawn,          CMD("pamixer -i 5") },
+	{ MODKEY,               -1,        XK_F3,     spawn,          CMD("pamixer -i 5") },
 	/* Toggle microphone mute */
-	{ MODKEY,               -1,        XK_F4,  spawn,          CMD("pamixer --default-source -t") },
+	{ MODKEY,               -1,        XK_F4,     spawn,          CMD("pamixer --default-source -t") },
 
 /* BRIGHTNESS CONTROL */
 	/* Decrease brightness by 5% */
-	{ MODKEY,               -1,        XK_F5,  spawn,          CMD("xbacklight -dec 5") },
+	{ MODKEY,               -1,        XK_F5,     spawn,          CMD("xbacklight -dec 10") },
 	/* Increase brightness by 5% */
-	{ MODKEY,               -1,        XK_F6,  spawn,          CMD("xbacklight -inc 5") },
+	{ MODKEY,               -1,        XK_F6,     spawn,          CMD("xbacklight -inc 10") },
 	/* Set screen backlight to off */
-	{ MODKEY,               -1,        XK_F7,  spawn,          CMD("xbacklight -set 0") },
+	{ MODKEY,               -1,        XK_F7,     spawn,          CMD("xbacklight -set 0") },
 
 /* KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key" */
 	/* Switch to the spanish keyboard layout */
@@ -174,35 +181,45 @@ static Key keys[] = {
 	/* Switch to the english keyboard layout */
 	{ MODKEY,               XK_k,      XK_u,      spawn,          CMD("setxkbmap -layout us") },
 
+/* EMACS PROGRAMS launched with emacs-style heychords SUPER + e (app) followed by "key" */
+	{ MODKEY,               XK_e,      XK_e,      spawn,          CMD("emacsclient -c -a 'emacs'") },
+ 	{ MODKEY,               XK_e,      XK_b,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(ibuffer)'") },
+ 	{ MODKEY,               XK_e,      XK_d,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(dired nil)'") },
+ 	{ MODKEY,               XK_e,      XK_t,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'") },
+ 	{ MODKEY,               XK_e,      XK_w,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(eww \"gnu.org\"))'") },
+  	{ MODKEY,               XK_e,      XK_s,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(eshell)'") },
+
 /* PROGRAMS launched with emacs-style keychords SUPER + a (app) followed by "key" */
-	/* Text editor */
-	{ MODKEY,               XK_a,      XK_1,      spawn,          CMD("/usr/bin/emacsclient -c -a emacs") },
 	/* File manager */
-	{ MODKEY,               XK_a,      XK_2,      spawn,          CMD("alacritty -e $HOME/.config/vifm/scripts/vifmrun") },
+	{ MODKEY,               XK_a,      XK_f,      spawn,          CMD("alacritty -t exp --class exp,exp -e $HOME/.config/vifm/scripts/vifmrun") },
 	/* Web browser */
-	{ MODKEY,               XK_a,      XK_3,      spawn,          CMD("qutebrowser") },
+	{ MODKEY,               XK_a,      XK_w,      spawn,          CMD("qutebrowser") },
 	/* Chat app */
-	{ MODKEY,               XK_a,      XK_4,      spawn,          CMD("alacritty -e gomuks") },
+	{ MODKEY,               XK_a,      XK_c,      spawn,          CMD("alacritty -t cht --class cht,cht -e gomuks") },
 	/* Music player */
-	{ MODKEY,               XK_a,      XK_5,      spawn,          CMD("alacritty -e cmus") },
+	{ MODKEY,               XK_a,      XK_m,      spawn,          CMD("alacritty -t msc --class msc,msc -e cmus") },
 	/* Game app */
-	{ MODKEY,               XK_a,      XK_6,      spawn,          CMD("retroarch") },
+	{ MODKEY,               XK_a,      XK_g,      spawn,          CMD("retroarch") },
+	/* Virtual machine manager */
+	{ MODKEY,               XK_a,      XK_v,      spawn,          CMD("virt-manager") },
 
 /* MISC PROGRAMS launched with emacs-style keychords SUPER + m (app) followed by "key" */
 	/* Audio mixer */
-	{ MODKEY,               XK_a,      XK_F1,      spawn,          CMD("alacritty -e btop") },
-	/* Audio mixer */
-	{ MODKEY,               XK_a,      XK_F2,      spawn,          CMD("alacritty -e pulsemixer") },
+	{ MODKEY,               XK_s,      XK_b,      spawn,          CMD("alacritty -t misc --class misc,misc -e btop") },
+	/* Pulse mixer */
+	{ MODKEY,               XK_s,      XK_p,      spawn,          CMD("alacritty -t misc --class misc,misc -e pulsemixer") },
+	/* Alsa mixer */
+	{ MODKEY,               XK_s,      XK_m,      spawn,          CMD("alacritty -t misc --class misc,misc -e alsamixer") },
 	/* Rss reader */
-	{ MODKEY,               XK_a,      XK_F3,      spawn,          CMD("alacritty -e newsboat") },
+	{ MODKEY,               XK_s,      XK_n,      spawn,          CMD("alacritty -t misc --class misc,misc -e newsboat") },
 	/* Ytfzf */
-	{ MODKEY,               XK_a,      XK_F4,      spawn,          CMD("alacritty -e ytfzf -flst") },
+	{ MODKEY,               XK_s,      XK_y,      spawn,          CMD("alacritty -t misc --class misc,misc -e ytfzf -flst") },
 	/* Ani-cli */
-	{ MODKEY,               XK_a,      XK_F5,      spawn,          CMD("alacritty -e ani-cli") },
+	{ MODKEY,               XK_s,      XK_a,      spawn,          CMD("alacritty -t misc --class misc,misc -e ani-cli") },
 	/* Flix-cli */
-	{ MODKEY,               XK_a,      XK_F6,      spawn,          CMD("alacritty -e flix-cli") },
+	{ MODKEY,               XK_s,      XK_f,      spawn,          CMD("alacritty -t misc --class misc,misc -e flix-cli") },
 	/* Castero */
-	{ MODKEY,               XK_a,      XK_F7,      spawn,          CMD("alacritty -e castero") },
+	{ MODKEY,               XK_s,      XK_c,      spawn,          CMD("alacritty -t misc --class misc,misc -e castero") },
 
 /* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
 	/* dmenu */
@@ -223,8 +240,8 @@ static Key keys[] = {
 	{ MODKEY,               XK_p,      XK_b,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
 
 /* DWM BOOTSTRAP */
-	{ MODKEY|ShiftMask,     -1,        XK_q,      quit,           {0} },
-    { MODKEY|ControlMask,   -1,        XK_r,      quit,           {1} },
+	{ MODKEY|ShiftMask|ControlMask,    -1,        XK_q,      quit,           {0} },
+    { MODKEY|ControlMask,              -1,        XK_r,      quit,           {1} },
 };
 
 /* button definitions */

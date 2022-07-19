@@ -9,7 +9,8 @@
 ### STARTING XSESSION
 if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]
 then
-  startx
+  startx -- vt1 -keeptty &>/dev/null
+  logout
 fi
 
 ### ENVIRONMENT VARIABLES

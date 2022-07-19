@@ -8,5 +8,5 @@
 lxsession &
 dwmblocks &
 sh "$HOME"/.fehbg &
-picom --config ~/.config/picom/picom.conf &
+picom --experimental-backends --config ~/.config/picom/picom.conf &
 dunst --config ~/.config/dunst/dunstrc &
