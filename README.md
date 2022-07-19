@@ -16,7 +16,7 @@ If you want to get the full experience you need theese things:
 * [castero](https://github.com/xgi/castero)
 * mononoki Nerd Font
 * lxsession
-* picom
+* picom-jonaburg
 * dunst
 * pamixer
 * fd
