@@ -48,7 +48,8 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Emacs",        NULL,       NULL,              1,       0,           -1 },
-	{ "qjackctl",     NULL,       NULL,              0,       1,           -1 },
+	{ "QjackCtl",     NULL,       NULL,              0,       1,           -1 },
+	{ "Galculator",   NULL,       NULL,              0,       1,           -1 },
 	{ "exp",          NULL,       NULL,         1 << 1,       0,           -1 },
 	{ "qutebrowser",  NULL,       NULL,         1 << 2,       0,           -1 },
 	{ "cht",          NULL,       NULL,         1 << 3,       0,           -1 },
@@ -204,8 +205,10 @@ static Key keys[] = {
 	{ MODKEY,               XK_a,      XK_v,      spawn,          CMD("virt-manager") },
 
 /* MISC PROGRAMS launched with emacs-style keychords SUPER + m (app) followed by "key" */
-	/* Audio mixer */
+	/* System monitor btop */
 	{ MODKEY,               XK_s,      XK_b,      spawn,          CMD("alacritty -t misc --class misc,misc -e btop") },
+	/* System monitor htop */
+	{ MODKEY,               XK_s,      XK_h,      spawn,          CMD("alacritty -t misc --class misc,misc -e htop") },
 	/* Pulse mixer */
 	{ MODKEY,               XK_s,      XK_p,      spawn,          CMD("alacritty -t misc --class misc,misc -e pulsemixer") },
 	/* Alsa mixer */
@@ -238,6 +241,8 @@ static Key keys[] = {
 	{ MODKEY,               XK_p,      XK_d,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_drun") },
 	/* dmenu_blue */
 	{ MODKEY,               XK_p,      XK_b,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
+	/* dmenu_emoji */
+	{ MODKEY,               XK_p,      XK_z,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_emoji") },
 
 /* DWM BOOTSTRAP */
 	{ MODKEY|ShiftMask|ControlMask,    -1,        XK_q,      quit,           {0} },
