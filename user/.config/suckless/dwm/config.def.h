@@ -193,9 +193,9 @@ static Keychord keychords[] = {
 
 /* KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key" */
 	/* Switch to the spanish keyboard layout */
-	{2, {{MODKEY, XK_k}, {0, XK_e}},        spawn,          SHCMD("setxkbmap -layout es") },
+	{2, {{MODKEY, XK_x}, {0, XK_e}},        spawn,          SHCMD("setxkbmap -layout es") },
 	/* Switch to the english keyboard layout */
-	{2, {{MODKEY, XK_k}, {0, XK_u}},        spawn,          SHCMD("setxkbmap -layout us") },
+	{2, {{MODKEY, XK_x}, {0, XK_u}},        spawn,          SHCMD("setxkbmap -layout us") },
 
 /* EMACS PROGRAMS launched with emacs-style heychords SUPER + e (app) followed by "key" */
 	{2, {{MODKEY, XK_e}, {0, XK_e}},        spawn,          SHCMD("emacsclient -c -a 'emacs'") },
