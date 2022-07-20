@@ -63,7 +63,8 @@ static const Rule rules[] = {
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
-#include "layouts.c"
+static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
+#include "grid.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
@@ -77,13 +78,12 @@ static const Layout layouts[] = {
 /* |||--- VARIABLES ---||| */
 /* key definitions */
 #define MODKEY Mod4Mask
-#define TAGKEYS(CHAIN,KEY,TAG) \
-	{ MODKEY,                       CHAIN,    KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           CHAIN,    KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             CHAIN,    KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, CHAIN,    KEY,      toggletag,      {.ui = 1 << TAG} },
+#define TAGKEYS(KEY,TAG)												\
+	{1, {{MODKEY, KEY}},								view,           {.ui = 1 << TAG} },	\
+	{1, {{MODKEY|ControlMask, KEY}},					toggleview,     {.ui = 1 << TAG} }, \
+	{1, {{MODKEY|ShiftMask, KEY}},						tag,            {.ui = 1 << TAG} }, \
+	{1, {{MODKEY|ControlMask|ShiftMask, KEY}},			toggletag,      {.ui = 1 << TAG} },
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define CMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 /* dmenu */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -93,160 +93,160 @@ static const char *termcmd[]     = { "alacritty", NULL };
 
 
 /* |||--- KEY BIDINGS ---||| */
-static Key keys[] = {
+static Keychord keychords[] = {
 /* modifier             chain key      key        function        argument */
 
 /* Terminal */
-	{ MODKEY,               -1,        XK_Return, spawn,          {.v = termcmd } },
+	{1, {{MODKEY, XK_Return}},			 spawn,           {.v = termcmd } },
 
 /* Top bar toggle */
-	{ MODKEY,               -1,        XK_b,      togglebar,      {0} },
+	{1, {{MODKEY|ShiftMask, XK_b}},		  togglebar,      {0} },
 
 /* WINDOW TAG AND LAYOUT MANIPULATION */
 
 	/* Tag Bindings */
-	TAGKEYS(                -1,        XK_1,                      0)
-	TAGKEYS(                -1,        XK_2,                      1)
-	TAGKEYS(                -1,        XK_3,                      2)
-	TAGKEYS(                -1,        XK_4,                      3)
-	TAGKEYS(                -1,        XK_5,                      4)
-	TAGKEYS(                -1,        XK_6,                      5)
-	TAGKEYS(                -1,        XK_7,                      6)
-	TAGKEYS(                -1,        XK_8,                      7)
-	TAGKEYS(                -1,        XK_9,                      8)
+	TAGKEYS(                        XK_1,                      0)
+	TAGKEYS(                        XK_2,                      1)
+	TAGKEYS(                        XK_3,                      2)
+	TAGKEYS(                        XK_4,                      3)
+	TAGKEYS(                        XK_5,                      4)
+	TAGKEYS(                        XK_6,                      5)
+	TAGKEYS(                        XK_7,                      6)
+	TAGKEYS(                        XK_8,                      7)
+	TAGKEYS(                        XK_9,                      8)
 	/* Close Window */
-	{ MODKEY,               -1,        XK_q,      killclient,     {0} },
+	{1, {{MODKEY|ShiftMask, XK_c}},		    killclient,     {0} },
 	/* Cycle between tags */
-	{ MODKEY|ControlMask,   -1,        XK_Tab,    view,           {0} },
+	{1, {{MODKEY|ControlMask, XK_Tab}},     view,           {0} },
 	/* Window moving */
-	{ MODKEY|ShiftMask,     -1,        XK_j,      rotatestack,    {.i = +1 } },
-	{ MODKEY|ShiftMask,     -1,        XK_k,      rotatestack,    {.i = -1 } },
+	{1, {{MODKEY|ShiftMask, XK_j}},		    rotatestack,    {.i = +1 } },
+	{1, {{MODKEY|ShiftMask, XK_k}},		    rotatestack,    {.i = -1 } },
 	/* Window focusing */
-	{ MODKEY,               -1,        XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,               -1,        XK_k,      focusstack,     {.i = -1 } },
+	{1, {{MODKEY, XK_j}},				    focusstack,     {.i = +1 } },
+	{1, {{MODKEY, XK_k}},				    focusstack,     {.i = -1 } },
 	/* Increase and decrease master windows count */
-	{ MODKEY,               -1,        XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,               -1,        XK_d,      incnmaster,     {.i = -1 } },
+	{1, {{MODKEY, XK_i}},				    incnmaster,     {.i = +1 } },
+	{1, {{MODKEY, XK_d}},				    incnmaster,     {.i = -1 } },
 	/* Increase and decrease master window size */
-	{ MODKEY,               -1,        XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,               -1,        XK_l,      setmfact,       {.f = +0.05} },
+	{1, {{MODKEY, XK_h}},				    setmfact,       {.f = -0.05} },
+	{1, {{MODKEY, XK_l}},				    setmfact,       {.f = +0.05} },
 	/* Move window to master */
-	{ MODKEY|ControlMask,   -1,        XK_Return, zoom,           {0} },
+	{1, {{MODKEY|ControlMask, XK_Return}},  zoom,           {0} },
 	/* Cycle between layouts fowards and backwards */
-	{ MODKEY,               -1,        XK_Tab,    cyclelayout,    {.i = -1 } },
-	{ MODKEY|ShiftMask,     -1,        XK_Tab,    cyclelayout,    {.i = +1 } },
-	/* Cycle between recently used layouts */
-	{ MODKEY,               -1,        XK_space,  setlayout,      {0} },
+	{1, {{ MODKEY, XK_Tab}},                cyclelayout,    {.i = -1 } },
+	{1, {{ MODKEY|ShiftMask, XK_Tab}},      cyclelayout,    {.i = +1 } },
 	/* Switch to tiling layout */
-	{ MODKEY,               -1,        XK_t,      setlayout,      {.v = &layouts[0]} },
+	{1, {{MODKEY, XK_t}},				    setlayout,      {.v = &layouts[0]} },
 	/* Switch to floating layout */
-	{ MODKEY,               -1,        XK_f,      setlayout,      {.v = &layouts[1]} },
+	{1, {{MODKEY, XK_f}},				    setlayout,      {.v = &layouts[1]} },
 	/* Switch to monocle layout */
-	{ MODKEY,               -1,        XK_m,      setlayout,      {.v = &layouts[2]} },
+	{1, {{MODKEY, XK_m}},   		        setlayout,      {.v = &layouts[2]} },
 	/* Switch to grid layout */
-	{ MODKEY,               -1,        XK_g,      setlayout,      {.v = &layouts[3]} },
+	{1, {{MODKEY, XK_g}},				    setlayout,      {.v = &layouts[3]} },
 	/* Toggle floating mode */
-	{ MODKEY|ShiftMask,     -1,        XK_space,  togglefloating, {0} },
+	{1, {{MODKEY|ShiftMask, XK_f}},	        togglefloating, {0} },
+	/* Toggle fullscreen mode */
+	{1, {{MODKEY, XK_space}},	            togglefullscr,  {0} },
 	/* View all windows of all tags in the current tag */
-	{ MODKEY,               -1,        XK_0,      view,           {.ui = ~0 } },
+	{1, {{MODKEY, XK_0}},				    view,           {.ui = ~0 } },
 	/* Show focused window on all tags */
-	{ MODKEY|ShiftMask,     -1,        XK_0,      tag,            {.ui = ~0 } },
+	{1, {{MODKEY|ShiftMask, XK_0}},		    tag,            {.ui = ~0 } },
 	/* Focusing between monitors */
-	{ MODKEY,               -1,        XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,               -1,        XK_period, focusmon,       {.i = +1 } },
+	{1, {{MODKEY, XK_comma}},               focusmon,       {.i = -1 } },
+	{1, {{MODKEY, XK_period}},              focusmon,       {.i = +1 } },
 	/* Move focused window between monitors */
-	{ MODKEY|ShiftMask,     -1,        XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,     -1,        XK_period, tagmon,         {.i = +1 } },
+	{1, {{MODKEY|ShiftMask, XK_comma}},	    tagmon,         {.i = -1 } },
+	{1, {{MODKEY|ShiftMask, XK_period}},    tagmon,         {.i = +1 } },
 
 /* VOLUME CONTROL */
 	/* Toggle mute */
-	{ MODKEY,               -1,        XK_F1,     spawn,          CMD("pamixer -t") },
+    {1, {{MODKEY, XK_F1}},                  spawn,          SHCMD("pamixer -t") },
 	/* Decrease volume by 5% */
-	{ MODKEY,               -1,        XK_F2,     spawn,          CMD("pamixer -d 5") },
+    {1, {{MODKEY, XK_F2}},                  spawn,          SHCMD("pamixer -d 5") },
 	/* Increase volume by 5% */
-	{ MODKEY,               -1,        XK_F3,     spawn,          CMD("pamixer -i 5") },
+    {1, {{MODKEY, XK_F3}},                  spawn,          SHCMD("pamixer -i 5") },
 	/* Toggle microphone mute */
-	{ MODKEY,               -1,        XK_F4,     spawn,          CMD("pamixer --default-source -t") },
+    {1, {{MODKEY, XK_F4}},                  spawn,          SHCMD("pamixer --default-source -t") },
 
 /* BRIGHTNESS CONTROL */
 	/* Decrease brightness by 5% */
-	{ MODKEY,               -1,        XK_F5,     spawn,          CMD("xbacklight -dec 10") },
+    {1, {{MODKEY, XK_F5}},                  spawn,          SHCMD("xbacklight -dec 10") },
 	/* Increase brightness by 5% */
-	{ MODKEY,               -1,        XK_F6,     spawn,          CMD("xbacklight -inc 10") },
+    {1, {{MODKEY, XK_F6}},                  spawn,          SHCMD("xbacklight -inc 10") },
 	/* Set screen backlight to off */
-	{ MODKEY,               -1,        XK_F7,     spawn,          CMD("xbacklight -set 0") },
+    {1, {{MODKEY, XK_F7}},                  spawn,          SHCMD("xbacklight -set 0") },
 
 /* KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key" */
 	/* Switch to the spanish keyboard layout */
-	{ MODKEY,               XK_k,      XK_e,      spawn,          CMD("setxkbmap -layout es") },
+	{2, {{MODKEY, XK_k}, {0, XK_e}},        spawn,          SHCMD("setxkbmap -layout es") },
 	/* Switch to the english keyboard layout */
-	{ MODKEY,               XK_k,      XK_u,      spawn,          CMD("setxkbmap -layout us") },
+	{2, {{MODKEY, XK_k}, {0, XK_u}},        spawn,          SHCMD("setxkbmap -layout us") },
 
 /* EMACS PROGRAMS launched with emacs-style heychords SUPER + e (app) followed by "key" */
-	{ MODKEY,               XK_e,      XK_e,      spawn,          CMD("emacsclient -c -a 'emacs'") },
- 	{ MODKEY,               XK_e,      XK_b,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(ibuffer)'") },
- 	{ MODKEY,               XK_e,      XK_d,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(dired nil)'") },
- 	{ MODKEY,               XK_e,      XK_t,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'") },
- 	{ MODKEY,               XK_e,      XK_w,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(eww \"gnu.org\"))'") },
-  	{ MODKEY,               XK_e,      XK_s,      spawn,          CMD("emacsclient -c -a 'emacs' --eval '(eshell)'") },
+	{2, {{MODKEY, XK_e}, {0, XK_e}},        spawn,          SHCMD("emacsclient -c -a 'emacs'") },
+	{2, {{MODKEY, XK_e}, {0, XK_b}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(ibuffer)'") },
+	{2, {{MODKEY, XK_e}, {0, XK_d}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(dired nil)'") },
+	{2, {{MODKEY, XK_e}, {0, XK_v}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'") },
+	{2, {{MODKEY, XK_e}, {0, XK_s}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(eshell)'") },
+	{2, {{MODKEY, XK_e}, {0, XK_w}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(eww \"gnu.org\"))'") },
 
 /* PROGRAMS launched with emacs-style keychords SUPER + a (app) followed by "key" */
 	/* File manager */
-	{ MODKEY,               XK_a,      XK_f,      spawn,          CMD("alacritty -t exp --class exp,exp -e $HOME/.config/vifm/scripts/vifmrun") },
+	{2, {{MODKEY, XK_a}, {0, XK_f}},        spawn,          SHCMD("alacritty -t exp --class exp,exp -e $HOME/.config/vifm/scripts/vifmrun") },
 	/* Web browser */
-	{ MODKEY,               XK_a,      XK_w,      spawn,          CMD("qutebrowser") },
+	{2, {{MODKEY, XK_a}, {0, XK_w}},        spawn,          SHCMD("qutebrowser") },
 	/* Chat app */
-	{ MODKEY,               XK_a,      XK_c,      spawn,          CMD("alacritty -t cht --class cht,cht -e gomuks") },
+	{2, {{MODKEY, XK_a}, {0, XK_c}},        spawn,          SHCMD("alacritty -t cht --class cht,cht -e gomuks") },
 	/* Music player */
-	{ MODKEY,               XK_a,      XK_m,      spawn,          CMD("alacritty -t msc --class msc,msc -e cmus") },
+	{2, {{MODKEY, XK_a}, {0, XK_m}},        spawn,          SHCMD("alacritty -t msc --class msc,msc -e cmus") },
 	/* Game app */
-	{ MODKEY,               XK_a,      XK_g,      spawn,          CMD("retroarch") },
+	{2, {{MODKEY, XK_a}, {0, XK_g}},        spawn,          SHCMD("retroarch") },
 	/* Virtual machine manager */
-	{ MODKEY,               XK_a,      XK_v,      spawn,          CMD("virt-manager") },
+	{2, {{MODKEY, XK_a}, {0, XK_v}},        spawn,          SHCMD("virt-manager") },
 
 /* MISC PROGRAMS launched with emacs-style keychords SUPER + m (app) followed by "key" */
 	/* System monitor btop */
-	{ MODKEY,               XK_s,      XK_b,      spawn,          CMD("alacritty -t misc --class misc,misc -e btop") },
+	{2, {{MODKEY, XK_s}, {0, XK_b}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e btop") },
 	/* System monitor htop */
-	{ MODKEY,               XK_s,      XK_h,      spawn,          CMD("alacritty -t misc --class misc,misc -e htop") },
+	{2, {{MODKEY, XK_s}, {0, XK_h}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e htop") },
 	/* Pulse mixer */
-	{ MODKEY,               XK_s,      XK_p,      spawn,          CMD("alacritty -t misc --class misc,misc -e pulsemixer") },
+	{2, {{MODKEY, XK_s}, {0, XK_p}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e pulsemixer") },
 	/* Alsa mixer */
-	{ MODKEY,               XK_s,      XK_m,      spawn,          CMD("alacritty -t misc --class misc,misc -e alsamixer") },
+	{2, {{MODKEY, XK_s}, {0, XK_m}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e alsamixer") },
 	/* Rss reader */
-	{ MODKEY,               XK_s,      XK_n,      spawn,          CMD("alacritty -t misc --class misc,misc -e newsboat") },
+	{2, {{MODKEY, XK_s}, {0, XK_n}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e newsboat") },
 	/* Ytfzf */
-	{ MODKEY,               XK_s,      XK_y,      spawn,          CMD("alacritty -t misc --class misc,misc -e ytfzf -flst") },
+	{2, {{MODKEY, XK_s}, {0, XK_y}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ytfzf -flst") },
 	/* Ani-cli */
-	{ MODKEY,               XK_s,      XK_a,      spawn,          CMD("alacritty -t misc --class misc,misc -e ani-cli") },
+	{2, {{MODKEY, XK_s}, {0, XK_a}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ani-cli") },
 	/* Flix-cli */
-	{ MODKEY,               XK_s,      XK_f,      spawn,          CMD("alacritty -t misc --class misc,misc -e flix-cli") },
+	{2, {{MODKEY, XK_s}, {0, XK_f}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e flix-cli") },
 	/* Castero */
-	{ MODKEY,               XK_s,      XK_c,      spawn,          CMD("alacritty -t misc --class misc,misc -e castero") },
+	{2, {{MODKEY, XK_s}, {0, XK_c}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e castero") },
 
 /* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
 	/* dmenu */
-	{ MODKEY,               XK_p,      XK_r,      spawn,          {.v = dmenucmd } },
+	{2, {{MODKEY, XK_p}, {0, XK_r}},        spawn,          {.v = dmenucmd } },
 	/* dmenu_power */
-	{ MODKEY,               XK_p,      XK_q,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") },
+	{2, {{MODKEY, XK_p}, {0, XK_q}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") },
 	/* dmenu_wifi */
-	{ MODKEY,               XK_p,      XK_i,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wifi") },
+	{2, {{MODKEY, XK_p}, {0, XK_i}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wifi") },
 	/* dmenu_wall */
-	{ MODKEY,               XK_p,      XK_w,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wall") },
+	{2, {{MODKEY, XK_p}, {0, XK_w}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wall") },
 	/* dmenu_edit */
-	{ MODKEY,               XK_p,      XK_e,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_edit") },
+	{2, {{MODKEY, XK_p}, {0, XK_e}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_edit") },
 	/* dmenu_scrot */
-	{ MODKEY,               XK_p,      XK_s,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_scrot") },
+	{2, {{MODKEY, XK_p}, {0, XK_s}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_scrot") },
 	/* dmenu_drun */
-	{ MODKEY,               XK_p,      XK_d,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_drun") },
+	{2, {{MODKEY, XK_p}, {0, XK_d}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_drun") },
 	/* dmenu_blue */
-	{ MODKEY,               XK_p,      XK_b,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
+	{2, {{MODKEY, XK_p}, {0, XK_b}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
 	/* dmenu_emoji */
-	{ MODKEY,               XK_p,      XK_z,      spawn,          CMD("$HOME/.config/suckless/dmenu/scripts/dmenu_emoji") },
+	{2, {{MODKEY, XK_p}, {0, XK_z}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_emoji") },
 
 /* DWM BOOTSTRAP */
-	{ MODKEY|ShiftMask|ControlMask,    -1,        XK_q,      quit,           {0} },
-    { MODKEY|ControlMask,              -1,        XK_r,      quit,           {1} },
+	{1, {{MODKEY|ControlMask, XK_r}},		quit,           {1} },
+	{1, {{MODKEY|ShiftMask, XK_q}},		    quit,           {0} },
 };
 
 /* button definitions */

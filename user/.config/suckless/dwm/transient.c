@@ -1,10 +1,5 @@
-/*       ____             __                                               */
-/*      / __ \_________ _/ /_____                                          */
-/*     / / / / ___/ __ `/ //_/ _ \                                         */
-/*    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)                    */
-/*   /_____/_/   \__,_/_/|_|\___/   My custom dwm build                    */
-
 /* cc transient.c -o transient -lX11 */
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <X11/Xlib.h>

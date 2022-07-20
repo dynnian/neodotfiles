@@ -1,9 +1,3 @@
-/*       ____             __                                               */
-/*      / __ \_________ _/ /_____                                          */
-/*     / / / / ___/ __ `/ //_/ _ \                                         */
-/*    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)                    */
-/*   /_____/_/   \__,_/_/|_|\___/   My custom dwm build                    */
-
 void
 grid(Monitor *m) {
 	unsigned int i, n, cx, cy, cw, ch, aw, ah, cols, rows;
@@ -31,3 +25,4 @@ grid(Monitor *m) {
 		i++;
 	}
 }
+

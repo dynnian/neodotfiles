@@ -1,9 +1,4 @@
-/*       ____             __                                               */
-/*      / __ \_________ _/ /_____                                          */
-/*     / / / / ___/ __ `/ //_/ _ \                                         */
-/*    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)                    */
-/*   /_____/_/   \__,_/_/|_|\___/   My custom dwm build                    */
-
+/* See LICENSE file for copyright and license details. */
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,4 +33,3 @@ die(const char *fmt, ...) {
 
 	exit(1);
 }
-

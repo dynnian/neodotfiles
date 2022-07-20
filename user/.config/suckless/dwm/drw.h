@@ -1,8 +1,4 @@
-/*       ____             __                                               */
-/*      / __ \_________ _/ /_____                                          */
-/*     / / / / ___/ __ `/ //_/ _ \                                         */
-/*    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)                    */
-/*   /_____/_/   \__,_/_/|_|\___/   My custom dwm build                    */
+/* See LICENSE file for copyright and license details. */
 
 typedef struct {
 	Cursor cursor;
@@ -42,6 +38,7 @@ void drw_free(Drw *drw);
 Fnt *drw_fontset_create(Drw* drw, const char *fonts[], size_t fontcount);
 void drw_fontset_free(Fnt* set);
 unsigned int drw_fontset_getwidth(Drw *drw, const char *text);
+unsigned int drw_fontset_getwidth_clamp(Drw *drw, const char *text, unsigned int n);
 void drw_font_getexts(Fnt *font, const char *text, unsigned int len, unsigned int *w, unsigned int *h);
 
 /* Colorscheme abstraction */
@@ -62,4 +59,3 @@ int drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned in
 
 /* Map functions */
 void drw_map(Drw *drw, Window win, int x, int y, unsigned int w, unsigned int h);
-
