@@ -38,7 +38,7 @@ static const unsigned int alphas[][3] = {
 };
 
 /* |||--- TAG NAMES ---||| */
-static const char *tags[] = { "edt", "exp", "web", "cht", "msc", "gms", "vrt", "wrk", "msc" };
+static const char *tags[] = { "dev", "exp", "web", "cht", "msc", "gms", "vrt", "wrk", "msc" };
 
 /* |||--- RULES ---||| */
 static const Rule rules[] = {
@@ -65,12 +65,19 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 #include "grid.c"
+#include "tcl.c"
+#include "fbc.c"
+#include "tlwide.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 	{ "HHH",      grid },
+	{ "|||",      tcl },
+ 	{ "[@]",      spiral },
+ 	{ "[\\]",     dwindle },
+	{ "[][]=",    tilewide },
 	{ NULL,       NULL },
 };
 
@@ -125,8 +132,8 @@ static Keychord keychords[] = {
 	{1, {{MODKEY, XK_j}},				    focusstack,     {.i = +1 } },
 	{1, {{MODKEY, XK_k}},				    focusstack,     {.i = -1 } },
 	/* Increase and decrease master windows count */
-	{1, {{MODKEY, XK_i}},				    incnmaster,     {.i = +1 } },
-	{1, {{MODKEY, XK_d}},				    incnmaster,     {.i = -1 } },
+	{1, {{MODKEY, XK_equal}},				    incnmaster,     {.i = +1 } },
+	{1, {{MODKEY, XK_minus}},				    incnmaster,     {.i = -1 } },
 	/* Increase and decrease master window size */
 	{1, {{MODKEY, XK_h}},				    setmfact,       {.f = -0.05} },
 	{1, {{MODKEY, XK_l}},				    setmfact,       {.f = +0.05} },
@@ -143,6 +150,14 @@ static Keychord keychords[] = {
 	{1, {{MODKEY, XK_m}},   		        setlayout,      {.v = &layouts[2]} },
 	/* Switch to grid layout */
 	{1, {{MODKEY, XK_g}},				    setlayout,      {.v = &layouts[3]} },
+	/* Switch to three column layout */
+	{1, {{MODKEY, XK_c}},				    setlayout,      {.v = &layouts[4]} },
+	/* Switch to fibonacci spiral layout */
+	{1, {{MODKEY, XK_s}},				    setlayout,      {.v = &layouts[5]} },
+	/* Switch to fibonacci dwindle layout */
+	{1, {{MODKEY, XK_d}},				    setlayout,      {.v = &layouts[6]} },
+	/* Switch to tilewide layout */
+	{1, {{MODKEY, XK_w}},				    setlayout,      {.v = &layouts[7]} },
 	/* Toggle floating mode */
 	{1, {{MODKEY|ShiftMask, XK_f}},	        togglefloating, {0} },
 	/* Toggle fullscreen mode */
@@ -206,23 +221,23 @@ static Keychord keychords[] = {
 
 /* MISC PROGRAMS launched with emacs-style keychords SUPER + m (app) followed by "key" */
 	/* System monitor btop */
-	{2, {{MODKEY, XK_s}, {0, XK_b}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e btop") },
+	{2, {{MODKEY, XK_z}, {0, XK_b}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e btop") },
 	/* System monitor htop */
-	{2, {{MODKEY, XK_s}, {0, XK_h}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e htop") },
+	{2, {{MODKEY, XK_z}, {0, XK_h}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e htop") },
 	/* Pulse mixer */
-	{2, {{MODKEY, XK_s}, {0, XK_p}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e pulsemixer") },
+	{2, {{MODKEY, XK_z}, {0, XK_p}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e pulsemixer") },
 	/* Alsa mixer */
-	{2, {{MODKEY, XK_s}, {0, XK_m}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e alsamixer") },
+	{2, {{MODKEY, XK_z}, {0, XK_m}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e alsamixer") },
 	/* Rss reader */
-	{2, {{MODKEY, XK_s}, {0, XK_n}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e newsboat") },
+	{2, {{MODKEY, XK_z}, {0, XK_n}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e newsboat") },
 	/* Ytfzf */
-	{2, {{MODKEY, XK_s}, {0, XK_y}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ytfzf -flst") },
+	{2, {{MODKEY, XK_z}, {0, XK_y}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ytfzf -flst") },
 	/* Ani-cli */
-	{2, {{MODKEY, XK_s}, {0, XK_a}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ani-cli") },
+	{2, {{MODKEY, XK_z}, {0, XK_a}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ani-cli") },
 	/* Flix-cli */
-	{2, {{MODKEY, XK_s}, {0, XK_f}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e flix-cli") },
+	{2, {{MODKEY, XK_z}, {0, XK_f}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e flix-cli") },
 	/* Castero */
-	{2, {{MODKEY, XK_s}, {0, XK_c}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e castero") },
+	{2, {{MODKEY, XK_z}, {0, XK_c}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e castero") },
 
 /* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
 	/* dmenu */
