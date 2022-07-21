@@ -37,8 +37,38 @@ static const unsigned int alphas[][3] = {
 	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"alacritty", "-t", "sptrm", "--class", "sptrm,sptrm", NULL };
+const char *spcmd2[] = {"alacritty", "-t", "spmsc", "--class", "spmsc,spmsc", "-e", "cmus", NULL };
+const char *spcmd3[] = {"alacritty", "-t", "sptop", "--class", "sptop,sptop", "-e", "btop", NULL };
+const char *spcmd4[] = {"alacritty", "-t", "spfli", "--class", "spfli,spfli", "-e", "flix-cli", NULL };
+const char *spcmd5[] = {"alacritty", "-t", "spani", "--class", "spani,spani", "-e", "ani-cli", NULL };
+const char *spcmd6[] = {"alacritty", "-t", "spytf", "--class", "spytf,spytf", "-e", "ytfzf", "-flst", NULL };
+const char *spcmd7[] = {"alacritty", "-t", "spamx", "--class", "spamx,spamx", "-e", "alsamixer", NULL };
+const char *spcmd8[] = {"alacritty", "-t", "sppmx", "--class", "sppmx,sppmx", "-e", "pulsemixer", NULL };
+const char *spcmd9[] = {"alacritty", "-t", "spgmk", "--class", "spgmk,spgmk", "-e", "gomuks", NULL };
+const char *spcmd10[] = {"alacritty", "-t", "spnws", "--class", "spnws,spnws", "-e", "newsboat", NULL };
+const char *spcmd11[] = {"alacritty", "-t", "spcst", "--class", "spcst,spcst", "-e", "castero", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"sptrm",      spcmd1},
+	{"spmsc",      spcmd2},
+	{"sptop",      spcmd3},
+	{"spfli",      spcmd4},
+	{"spani",      spcmd5},
+	{"spytf",      spcmd6},
+	{"spamx",      spcmd7},
+	{"sppmx",      spcmd8},
+	{"spgmk",      spcmd9},
+	{"spnws",      spcmd10},
+	{"spcst",      spcmd11},
+};
+
 /* |||--- TAG NAMES ---||| */
-static const char *tags[] = { "dev", "exp", "web", "cht", "msc", "gms", "vrt", "wrk", "msc" };
+static const char *tags[] = { "dev", "exp", "web", "vdp", "adp", "ext", "gfx", "doc", "gms" };
 
 /* |||--- RULES ---||| */
 static const Rule rules[] = {
@@ -46,17 +76,43 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Emacs",        NULL,       NULL,              1,       0,           -1 },
-	{ "QjackCtl",     NULL,       NULL,              0,       1,           -1 },
-	{ "Galculator",   NULL,       NULL,              0,       1,           -1 },
-	{ "exp",          NULL,       NULL,         1 << 1,       0,           -1 },
-	{ "qutebrowser",  NULL,       NULL,         1 << 2,       0,           -1 },
-	{ "cht",          NULL,       NULL,         1 << 3,       0,           -1 },
-	{ "msc",          NULL,       NULL,         1 << 4,       0,           -1 },
-	{ "retroarch",    NULL,       NULL,         1 << 5,       0,           -1 },
-	{ "Virt-manager", NULL,       NULL,         1 << 6,       0,           -1 },
-	{ "misc",         NULL,       NULL,         1 << 8,       0,           -1 },
+	/* class                           instance                 title       tags mask     isfloating   monitor */
+	{ "Emacs",                            NULL,                 NULL,              1,       0,           -1 },
+	{ "Godot",                            NULL,                 NULL,              1,       0,           -1 },
+	{ "Virt-manager",                     NULL,                 NULL,              1,       0,           -1 },
+	{ "Galculator",                       NULL,                 NULL,              0,       1,           -1 },
+	{ "exp",                              NULL,                 NULL,         1 << 1,       0,           -1 },
+	{ "qutebrowser",                      NULL,                 NULL,         1 << 2,       0,           -1 },
+	{ "kdenlive",                         NULL,                 NULL,         1 << 3,       0,           -1 },
+	{ "Blender",                          NULL,                 NULL,         1 << 3,       0,           -1 },
+	{ "Natron",                           NULL,                 NULL,         1 << 3,       0,           -1 },
+	{ "SimpleScreenRecorder",             NULL,                 NULL,         1 << 3,       0,           -1 },
+	{ "Ghb",                              NULL,                 NULL,         1 << 3,       0,           -1 },
+	{ "obs",                              NULL,                 NULL,         1 << 3,       0,           -1 },
+	{ "Audacity",                         NULL,                 NULL,         1 << 4,       0,           -1 },
+	{ "Ardour",                           NULL,                 NULL,         1 << 4,       0,           -1 },
+	{ "Carla2",                           NULL,                 NULL,         1 << 4,       0,           -1 },
+	{ "Carla2-Control",                   NULL,                 NULL,         1 << 4,       0,           -1 },
+	{ "QjackCtl",                         NULL,                 NULL,         1 << 5,       1,           -1 },
+	{ "lsp-plugins",                      NULL,                 NULL,         1 << 5,       1,           -1 },
+	{ "qpwgraph",                         NULL,                 NULL,         1 << 5,       1,           -1 },
+	{ "Gimp-2.10",                        NULL,                 NULL,         1 << 6,       0,           -1 },
+	{ "krita",                            NULL,                 NULL,         1 << 6,       0,           -1 },
+	{ "Inkscape",                         NULL,                 NULL,         1 << 6,       0,           -1 },
+	{ "Xournalpp",                        NULL,                 NULL,         1 << 6,       0,           -1 },
+	{ "DesktopEditors",                   NULL,                 NULL,         1 << 7,       0,           -1 },
+	{ "retroarch",                        NULL,                 NULL,         1 << 8,       0,           -1 },
+	{ NULL,                            "sptrm",                 NULL,       SPTAG(0),       1,           -1 },
+	{ NULL,                            "spmsc",                 NULL,       SPTAG(1),       1,           -1 },
+	{ NULL,                            "sptop",                 NULL,       SPTAG(2),       1,           -1 },
+	{ NULL,                            "spfli",                 NULL,       SPTAG(3),       1,           -1 },
+	{ NULL,                            "spani",                 NULL,       SPTAG(4),       1,           -1 },
+	{ NULL,                            "spytf",                 NULL,       SPTAG(5),       1,           -1 },
+	{ NULL,                            "spamx",                 NULL,       SPTAG(6),       1,           -1 },
+	{ NULL,                            "sppmx",                 NULL,       SPTAG(7),       1,           -1 },
+	{ NULL,                            "spgmk",                 NULL,       SPTAG(8),       1,           -1 },
+	{ NULL,                            "spnws",                 NULL,       SPTAG(9),       1,           -1 },
+	{ NULL,                            "spcst",                 NULL,      SPTAG(10),       1,           -1 },
 };
 
 /* |||--- LAYOUTS ---||| */
@@ -210,34 +266,10 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_a}, {0, XK_f}},        spawn,          SHCMD("alacritty -t exp --class exp,exp -e $HOME/.config/vifm/scripts/vifmrun") },
 	/* Web browser */
 	{2, {{MODKEY, XK_a}, {0, XK_w}},        spawn,          SHCMD("qutebrowser") },
-	/* Chat app */
-	{2, {{MODKEY, XK_a}, {0, XK_c}},        spawn,          SHCMD("alacritty -t cht --class cht,cht -e gomuks") },
-	/* Music player */
-	{2, {{MODKEY, XK_a}, {0, XK_m}},        spawn,          SHCMD("alacritty -t msc --class msc,msc -e cmus") },
 	/* Game app */
 	{2, {{MODKEY, XK_a}, {0, XK_g}},        spawn,          SHCMD("retroarch") },
 	/* Virtual machine manager */
 	{2, {{MODKEY, XK_a}, {0, XK_v}},        spawn,          SHCMD("virt-manager") },
-
-/* MISC PROGRAMS launched with emacs-style keychords SUPER + m (app) followed by "key" */
-	/* System monitor btop */
-	{2, {{MODKEY, XK_z}, {0, XK_b}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e btop") },
-	/* System monitor htop */
-	{2, {{MODKEY, XK_z}, {0, XK_h}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e htop") },
-	/* Pulse mixer */
-	{2, {{MODKEY, XK_z}, {0, XK_p}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e pulsemixer") },
-	/* Alsa mixer */
-	{2, {{MODKEY, XK_z}, {0, XK_m}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e alsamixer") },
-	/* Rss reader */
-	{2, {{MODKEY, XK_z}, {0, XK_n}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e newsboat") },
-	/* Ytfzf */
-	{2, {{MODKEY, XK_z}, {0, XK_y}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ytfzf -flst") },
-	/* Ani-cli */
-	{2, {{MODKEY, XK_z}, {0, XK_a}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e ani-cli") },
-	/* Flix-cli */
-	{2, {{MODKEY, XK_z}, {0, XK_f}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e flix-cli") },
-	/* Castero */
-	{2, {{MODKEY, XK_z}, {0, XK_c}},        spawn,          SHCMD("alacritty -t misc --class misc,misc -e castero") },
 
 /* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
 	/* dmenu */
@@ -258,7 +290,21 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_p}, {0, XK_b}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
 	/* dmenu_emoji */
 	{2, {{MODKEY, XK_p}, {0, XK_z}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_emoji") },
+	/* dmenu_pipe */
+	{2, {{MODKEY, XK_p}, {0, XK_p}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_pipe") },
 
+/* SCRATCHPADS */
+	{2, {{MODKEY, XK_grave}, {0, XK_Return}},    togglescratch,  {.ui = 0 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_c}},         togglescratch,  {.ui = 1 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_b}},         togglescratch,  {.ui = 2 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_f}},         togglescratch,  {.ui = 3 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_a}},         togglescratch,  {.ui = 4 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_y}},         togglescratch,  {.ui = 5 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_m}},         togglescratch,  {.ui = 6 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_p}},         togglescratch,  {.ui = 7 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_g}},         togglescratch,  {.ui = 8 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_n}},         togglescratch,  {.ui = 9 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_x}},         togglescratch,  {.ui = 10 } },
 /* DWM BOOTSTRAP */
 	{1, {{MODKEY|ControlMask, XK_r}},		quit,           {1} },
 	{1, {{MODKEY|ShiftMask, XK_q}},		    quit,           {0} },
