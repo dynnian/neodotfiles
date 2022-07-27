@@ -1,7 +1,5 @@
-#!/bin/sh
-
+#!/bin/bash
 clock=$(date '+%I')
-
 case "$clock" in
 	"00") icon="🕛" ;;
 	"01") icon="🕐" ;;
@@ -17,6 +15,5 @@ case "$clock" in
 	"11") icon="🕚" ;;
 	"12") icon="🕛" ;;
 esac
-
 date=$(date "+%Y %b %d (%a) | $icon %I:%M%p")
 echo " $date"

@@ -178,7 +178,7 @@ static Keychord keychords[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	/* Close Window */
-	{1, {{MODKEY|ShiftMask, XK_c}},		    killclient,     {0} },
+	{1, {{MODKEY, XK_q}},                   killclient,     {0} },
 	/* Cycle between tags */
 	{1, {{MODKEY|ControlMask, XK_Tab}},     view,           {0} },
 	/* Window moving */
@@ -188,8 +188,8 @@ static Keychord keychords[] = {
 	{1, {{MODKEY, XK_j}},				    focusstack,     {.i = +1 } },
 	{1, {{MODKEY, XK_k}},				    focusstack,     {.i = -1 } },
 	/* Increase and decrease master windows count */
-	{1, {{MODKEY, XK_equal}},				    incnmaster,     {.i = +1 } },
-	{1, {{MODKEY, XK_minus}},				    incnmaster,     {.i = -1 } },
+	{1, {{MODKEY, XK_equal}},				incnmaster,     {.i = +1 } },
+	{1, {{MODKEY, XK_minus}},				incnmaster,     {.i = -1 } },
 	/* Increase and decrease master window size */
 	{1, {{MODKEY, XK_h}},				    setmfact,       {.f = -0.05} },
 	{1, {{MODKEY, XK_l}},				    setmfact,       {.f = +0.05} },
@@ -215,7 +215,7 @@ static Keychord keychords[] = {
 	/* Switch to tilewide layout */
 	{1, {{MODKEY, XK_w}},				    setlayout,      {.v = &layouts[7]} },
 	/* Toggle floating mode */
-	{1, {{MODKEY|ShiftMask, XK_f}},	        togglefloating, {0} },
+	{1, {{MODKEY|ControlMask, XK_f}},	        togglefloating, {0} },
 	/* Toggle fullscreen mode */
 	{1, {{MODKEY, XK_space}},	            togglefullscr,  {0} },
 	/* View all windows of all tags in the current tag */
@@ -294,17 +294,17 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_p}, {0, XK_p}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_pipe") },
 
 /* SCRATCHPADS */
-	{2, {{MODKEY, XK_grave}, {0, XK_Return}},    togglescratch,  {.ui = 0 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_c}},         togglescratch,  {.ui = 1 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_b}},         togglescratch,  {.ui = 2 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_f}},         togglescratch,  {.ui = 3 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_a}},         togglescratch,  {.ui = 4 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_y}},         togglescratch,  {.ui = 5 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_m}},         togglescratch,  {.ui = 6 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_p}},         togglescratch,  {.ui = 7 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_g}},         togglescratch,  {.ui = 8 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_n}},         togglescratch,  {.ui = 9 } },
-	{2, {{MODKEY, XK_grave}, {0, XK_x}},         togglescratch,  {.ui = 10 } },
+	{1, {{MODKEY|ShiftMask, XK_Return}},    togglescratch,  {.ui = 0 } },
+	{1, {{MODKEY|ShiftMask, XK_c}},         togglescratch,  {.ui = 1 } },
+	{1, {{MODKEY|ShiftMask, XK_b}},         togglescratch,  {.ui = 2 } },
+	{1, {{MODKEY|ShiftMask, XK_f}},         togglescratch,  {.ui = 3 } },
+	{1, {{MODKEY|ShiftMask, XK_a}},         togglescratch,  {.ui = 4 } },
+	{1, {{MODKEY|ShiftMask, XK_y}},         togglescratch,  {.ui = 5 } },
+	{1, {{MODKEY|ShiftMask, XK_m}},         togglescratch,  {.ui = 6 } },
+	{1, {{MODKEY|ShiftMask, XK_p}},         togglescratch,  {.ui = 7 } },
+	{1, {{MODKEY|ShiftMask, XK_g}},         togglescratch,  {.ui = 8 } },
+	{1, {{MODKEY|ShiftMask, XK_n}},         togglescratch,  {.ui = 9 } },
+	{1, {{MODKEY|ShiftMask, XK_x}},         togglescratch,  {.ui = 10 } },
 /* DWM BOOTSTRAP */
 	{1, {{MODKEY|ControlMask, XK_r}},		quit,           {1} },
 	{1, {{MODKEY|ShiftMask, XK_q}},		    quit,           {0} },
