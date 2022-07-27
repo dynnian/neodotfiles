@@ -19,7 +19,7 @@ options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6\n$option7"
 ## POWER PROFILE OPTIONS ##
 pwr1="🔥 Performance"
 pwr2="⚖ Balanced"
-pwr3="🔋 Power Saver"
+pwr3="⏱ Power Saver"
 pwr4="❌Cancel"
 
 ## POWER PROFILES ARRAY ##

@@ -95,7 +95,7 @@ static const Rule rules[] = {
 	{ "Carla2-Control",                   NULL,                 NULL,         1 << 4,       0,           -1 },
 	{ "QjackCtl",                         NULL,                 NULL,         1 << 5,       1,           -1 },
 	{ "lsp-plugins",                      NULL,                 NULL,         1 << 5,       1,           -1 },
-	{ "qpwgraph",                         NULL,                 NULL,         1 << 5,       1,           -1 },
+	{ "qpwgraph",                         NULL,                 NULL,         1 << 5,       0,           -1 },
 	{ "Gimp-2.10",                        NULL,                 NULL,         1 << 6,       0,           -1 },
 	{ "krita",                            NULL,                 NULL,         1 << 6,       0,           -1 },
 	{ "Inkscape",                         NULL,                 NULL,         1 << 6,       0,           -1 },

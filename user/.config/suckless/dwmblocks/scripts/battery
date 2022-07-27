@@ -1,5 +1,13 @@
 #!/bin/bash
 # Loop through all attached batteries and format the info
+currntpwr=$(powerprofilesctl get)
+if [ "${currntpwr}" = "performance" ]; then
+	pwr="| 🔥 Performance"
+elif [ "${currntpwr}" = "balanced" ]; then
+	pwr="| ⚖ Balanced"
+elif [ "${currntpwr}" = "power-saver" ]; then
+	pwr="| ⏱ Power Saver"
+fi
 for battery in /sys/class/power_supply/BAT?*; do
 	# If non-first battery, print a space separator.
 	[ -n "${capacity+x}" ] && printf " "
@@ -16,5 +24,5 @@ for battery in /sys/class/power_supply/BAT?*; do
 	# Will make a warn variable if discharging and low
 	[ "$status" = "🔋" ] && [ "$capacity" -le 25 ] && warn="❗"
 	# Prints the info
-	printf "%s%s%d%% " " $status" "$warn " "$capacity "; unset warn
+	printf "%s%s%d%%%s " " $status" "$warn " "$capacity " " $pwr"; unset warn
 done && printf "\\n"
