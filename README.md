@@ -14,6 +14,7 @@ If you want to get the full experience you need theese things:
 * [ytfzf](https://github.com/pystardust/ytfzf)
 * [flix-cli](https://github.com/d4r1us-drk/flix-cli)
 * [castero](https://github.com/xgi/castero)
+* [unclutter-xfixes] (https://github.com/nowrep/unclutter-xfixes)
 * mononoki Nerd Font
 * lxsession
 * picom-jonaburg

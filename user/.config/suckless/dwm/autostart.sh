@@ -9,4 +9,5 @@ lxsession &
 dwmblocks &
 sh "$HOME"/.fehbg &
 picom --experimental-backends --config ~/.config/picom/picom.conf &
+unclutter --hide-on-touch
 dunst --config ~/.config/dunst/dunstrc &
