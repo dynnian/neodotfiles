@@ -15,5 +15,5 @@ case "$clock" in
 	"11") icon="🕚" ;;
 	"12") icon="🕛" ;;
 esac
-date=$(date "+%Y %b %d (%a) | $icon %I:%M%p")
-echo " $date"
+date=$(date "+%Y %b %d (%a) - $icon %I:%M%p")
+echo " 📅 $date"
