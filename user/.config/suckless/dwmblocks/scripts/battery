@@ -2,11 +2,11 @@
 # Loop through all attached batteries and format the info
 currntpwr=$(powerprofilesctl get)
 if [ "${currntpwr}" = "performance" ]; then
-	pwr="| 🔥 Performance"
+	pwr="- 🔥 Performance"
 elif [ "${currntpwr}" = "balanced" ]; then
-	pwr="| ⚖ Balanced"
+	pwr="- ⚖ Balanced"
 elif [ "${currntpwr}" = "power-saver" ]; then
-	pwr="| ⏱ Power Saver"
+	pwr="- ⏱ Power Saver"
 fi
 for battery in /sys/class/power_supply/BAT?*; do
 	# If non-first battery, print a space separator.
