@@ -4,7 +4,7 @@
 /*    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)                    */
 /*   /_____/_/   \__,_/_/|_|\___/   My custom dwm build                    */
 
-/* |||--- APPEARANCE ---||| */
+// APPEARANCE
 static const unsigned int borderpx = 2;   /* border pixel of windows */
 static const unsigned int snap     = 32;  /* snap pixel */
 static const unsigned int gappx    = 6;   /* pixel gap between clients */
@@ -37,6 +37,7 @@ static const unsigned int alphas[][3] = {
 	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
+// SCRATCHPADS
 typedef struct {
 	const char *name;
 	const void *cmd;
@@ -61,16 +62,16 @@ static Sp scratchpads[] = {
 	{"sppmx",      spcmd8},
 };
 
-/* |||--- TAG NAMES ---||| */
+// TAG NAMES
 static const char *tags[] = { "dev", "exp", "web", "vdp", "adp", "ext", "gfx", "doc", "gms" };
 
-/* |||--- RULES ---||| */
+// RULES
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class                           instance                 title       tags mask     isfloating   monitor */
+	// class                           instance                 title       tags mask     isfloating   monitor
 	{ "Emacs",                            NULL,                 NULL,              1,       0,           -1 },
 	{ "Godot",                            NULL,                 NULL,              1,       0,           -1 },
 	{ "Virt-manager",                     NULL,                 NULL,              1,       0,           -1 },
@@ -106,7 +107,7 @@ static const Rule rules[] = {
 	{ NULL,                            "sppmx",                 NULL,       SPTAG(7),       1,           -1 },
 };
 
-/* |||--- LAYOUTS ---||| */
+// LAYOUTS
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
@@ -116,7 +117,7 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 #include "fbc.c"
 #include "tlwide.c"
 static const Layout layouts[] = {
-	/* symbol     arrange function */
+	// symbol     arrange function
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
@@ -129,7 +130,7 @@ static const Layout layouts[] = {
 };
 
 
-/* |||--- VARIABLES ---||| */
+// VARIABLES
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG)												\
@@ -146,19 +147,18 @@ static const char *dmenucmd[]    = { "dmenu_run", "-i", "-b", "-l", "10", "-p", 
 static const char *termcmd[]     = { "alacritty", NULL };
 
 
-/* |||--- KEY BIDINGS ---||| */
+// KEY BIDINGS
 static Keychord keychords[] = {
 /* modifier             chain key      key        function        argument */
 
-/* Terminal */
+// Terminal
 	{1, {{MODKEY, XK_Return}},			 spawn,           {.v = termcmd } },
 
-/* Top bar toggle */
+// Top bar toggle
 	{1, {{MODKEY|ControlMask, XK_b}},		  togglebar,      {0} },
 
-/* WINDOW TAG AND LAYOUT MANIPULATION */
-
-	/* Tag Bindings */
+// Windows, tags and layouts manipulation
+	// Tag Bindings
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -168,83 +168,83 @@ static Keychord keychords[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	/* Close Window */
+	// Close Window
 	{1, {{MODKEY, XK_q}},                   killclient,     {0} },
-	/* Cycle between tags */
+	// Cycle between tags
 	{1, {{MODKEY|ControlMask, XK_Tab}},     view,           {0} },
-	/* Window moving */
+	// Window moving
 	{1, {{MODKEY|ShiftMask, XK_j}},		    rotatestack,    {.i = +1 } },
 	{1, {{MODKEY|ShiftMask, XK_k}},		    rotatestack,    {.i = -1 } },
-	/* Window focusing */
+	// Window focusing
 	{1, {{MODKEY, XK_j}},				    focusstack,     {.i = +1 } },
 	{1, {{MODKEY, XK_k}},				    focusstack,     {.i = -1 } },
-	/* Increase and decrease master windows count */
+	// Increase and decrease master windows count
 	{1, {{MODKEY, XK_equal}},				incnmaster,     {.i = +1 } },
 	{1, {{MODKEY, XK_minus}},				incnmaster,     {.i = -1 } },
-	/* Increase and decrease master window size */
+	// Increase and decrease master window size
 	{1, {{MODKEY, XK_h}},				    setmfact,       {.f = -0.05} },
 	{1, {{MODKEY, XK_l}},				    setmfact,       {.f = +0.05} },
-	/* Move window to master */
+	// Move window to master
 	{1, {{MODKEY|ControlMask, XK_Return}},  zoom,           {0} },
-	/* Cycle between layouts fowards and backwards */
+	// Cycle between layouts fowards and backwards
 	{1, {{ MODKEY, XK_Tab}},                cyclelayout,    {.i = -1 } },
 	{1, {{ MODKEY|ShiftMask, XK_Tab}},      cyclelayout,    {.i = +1 } },
-	/* Switch to tiling layout */
+	// Switch to tiling layout
 	{1, {{MODKEY, XK_t}},				    setlayout,      {.v = &layouts[0]} },
-	/* Switch to floating layout */
+	// Switch to floating layout
 	{1, {{MODKEY, XK_f}},				    setlayout,      {.v = &layouts[1]} },
-	/* Switch to monocle layout */
+	// Switch to monocle layout
 	{1, {{MODKEY, XK_m}},   		        setlayout,      {.v = &layouts[2]} },
-	/* Switch to grid layout */
+	// Switch to grid layout
 	{1, {{MODKEY, XK_g}},				    setlayout,      {.v = &layouts[3]} },
-	/* Switch to three column layout */
+	// Switch to three column layout
 	{1, {{MODKEY, XK_c}},				    setlayout,      {.v = &layouts[4]} },
-	/* Switch to fibonacci spiral layout */
+	// Switch to fibonacci spiral layout
 	{1, {{MODKEY, XK_s}},				    setlayout,      {.v = &layouts[5]} },
-	/* Switch to fibonacci dwindle layout */
+	// Switch to fibonacci dwindle layout
 	{1, {{MODKEY, XK_d}},				    setlayout,      {.v = &layouts[6]} },
-	/* Switch to tilewide layout */
+	// Switch to tilewide layout
 	{1, {{MODKEY|ControlMask, XK_t}},       setlayout,      {.v = &layouts[7]} },
-	/* Toggle floating mode */
+	// Toggle floating mode
 	{1, {{MODKEY|ControlMask, XK_f}},       togglefloating, {0} },
-	/* Toggle fullscreen mode */
+	// Toggle fullscreen mode
 	{1, {{MODKEY, XK_space}},	            togglefullscr,  {0} },
-	/* View all windows of all tags in the current tag */
+	// View all windows of all tags in the current tag
 	{1, {{MODKEY, XK_0}},				    view,           {.ui = ~0 } },
-	/* Show focused window on all tags */
+	// Show focused window on all tags
 	{1, {{MODKEY|ShiftMask, XK_0}},		    tag,            {.ui = ~0 } },
-	/* Focusing between monitors */
+	// Focusing between monitors */
 	{1, {{MODKEY, XK_comma}},               focusmon,       {.i = -1 } },
 	{1, {{MODKEY, XK_period}},              focusmon,       {.i = +1 } },
-	/* Move focused window between monitors */
+	// Move focused window between monitors
 	{1, {{MODKEY|ShiftMask, XK_comma}},	    tagmon,         {.i = -1 } },
 	{1, {{MODKEY|ShiftMask, XK_period}},    tagmon,         {.i = +1 } },
 
-/* VOLUME CONTROL */
-	/* Toggle mute */
+// Volume control
+	// Toggle mute
     {1, {{MODKEY, XK_F1}},                  spawn,          SHCMD("pamixer -t") },
-	/* Decrease volume by 5% */
+	// Decrease volume by 5%
     {1, {{MODKEY, XK_F2}},                  spawn,          SHCMD("pamixer -d 5") },
-	/* Increase volume by 5% */
+	// Increase volume by 5%
     {1, {{MODKEY, XK_F3}},                  spawn,          SHCMD("pamixer -i 5") },
-	/* Toggle microphone mute */
+	// Toggle microphone mute
     {1, {{MODKEY, XK_F4}},                  spawn,          SHCMD("pamixer --default-source -t") },
 
-/* BRIGHTNESS CONTROL */
-	/* Decrease brightness by 5% */
+// Brightness control
+	// Decrease brightness by 5%
     {1, {{MODKEY, XK_F5}},                  spawn,          SHCMD("xbacklight -dec 10") },
-	/* Increase brightness by 5% */
+	// Increase brightness by 5%
     {1, {{MODKEY, XK_F6}},                  spawn,          SHCMD("xbacklight -inc 10") },
-	/* Set screen backlight to off */
+	// Set screen backlight to off
     {1, {{MODKEY, XK_F7}},                  spawn,          SHCMD("xbacklight -set 0") },
 
-/* KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key" */
-	/* Switch to the spanish keyboard layout */
+// KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key"
+	// Switch to the spanish keyboard layout
 	{2, {{MODKEY, XK_x}, {0, XK_e}},        spawn,          SHCMD("setxkbmap -layout es") },
-	/* Switch to the english keyboard layout */
+	// Switch to the english keyboard layout
 	{2, {{MODKEY, XK_x}, {0, XK_u}},        spawn,          SHCMD("setxkbmap -layout us") },
 
-/* EMACS PROGRAMS launched with emacs-style heychords SUPER + e (app) followed by "key" */
+// EMACS PROGRAMS launched with emacs-style heychords SUPER + e (app) followed by "key"
 	{2, {{MODKEY, XK_e}, {0, XK_e}},        spawn,          SHCMD("emacsclient -c -a 'emacs'") },
 	{2, {{MODKEY, XK_e}, {0, XK_b}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(ibuffer)'") },
 	{2, {{MODKEY, XK_e}, {0, XK_d}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(dired nil)'") },
@@ -252,53 +252,54 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_e}, {0, XK_s}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(eshell)'") },
 	{2, {{MODKEY, XK_e}, {0, XK_w}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(eww \"gnu.org\"))'") },
 
-/* WEB browser and web apps launched with emacs-style heychords SUPER + b (app) followed by "key" */
-	{2, {{MODKEY, XK_w}, {0, XK_w}},                  spawn,          SHCMD("librewolf") },
-	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_e}},       spawn,          SHCMD("librewolf --new-tab https://app.element.io") },
-	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_d}},       spawn,          SHCMD("librewolf --new-tab https://discord.com/channels/@me") },
-	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_w}},       spawn,          SHCMD("librewolf --new-tab https://web.whatsapp.com") },
-	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://web.telegram.org") },
-	{3, {{MODKEY, XK_w}, {0, XK_y}, {0, XK_y}},       spawn,          SHCMD("librewolf --new-tab https://youtube.com") },
-	{3, {{MODKEY, XK_w}, {0, XK_y}, {0, XK_m}},       spawn,          SHCMD("librewolf --new-tab https://music.youtube.com") },
-	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_a}},       spawn,          SHCMD("librewolf --new-tab https://lms.intec.edu.do") },
-	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_c}},       spawn,          SHCMD("librewolf --new-tab https://outlook.office.com") },
-	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_p}},       spawn,          SHCMD("librewolf --new-tab https://procesos.intec.edu.do") },
-	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_g}},       spawn,          SHCMD("librewolf --new-tab https://mail.google.com") },
-	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://mail.tutanota.com") },
-	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://outlook.live.com/mail") },
-	{3, {{MODKEY, XK_w}, {0, XK_a}, {0, XK_b}},       spawn,          SHCMD("librewolf --new-tab https://vault.bitwarden.com") },
+// WEB browser and web apps launched with emacs-style heychords SUPER + b (app) followed by "key"
+	{2, {{MODKEY, XK_w}, {0, XK_w}},                       spawn,          SHCMD("librewolf") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_e}},       spawn,          SHCMD("librewolf --new-tab https://app.element.io") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_d}},       spawn,          SHCMD("librewolf --new-tab https://discord.com/channels/@me") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_w}},       spawn,          SHCMD("librewolf --new-tab https://web.whatsapp.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://web.telegram.org") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_y}},       spawn,          SHCMD("librewolf --new-tab https://youtube.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://odysee.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_b}},       spawn,          SHCMD("librewolf --new-tab https://vault.bitwarden.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_m}},       spawn,          SHCMD("librewolf --new-tab https://music.youtube.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_i}, {0, XK_a}},       spawn,          SHCMD("librewolf --new-tab https://lms.intec.edu.do") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_i}, {0, XK_c}},       spawn,          SHCMD("librewolf --new-tab https://outlook.office.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_i}, {0, XK_p}},       spawn,          SHCMD("librewolf --new-tab https://procesos.intec.edu.do") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_m}, {0, XK_g}},       spawn,          SHCMD("librewolf --new-tab https://mail.google.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_m}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://mail.tutanota.com") },
+	{3, {{MODKEY, XK_w}, {MODKEY, XK_m}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://outlook.live.com/mail") },
 
-/* PROGRAMS launched with emacs-style keychords SUPER + a (app) followed by "key" */
-	/* File manager */
+// PROGRAMS launched with emacs-style keychords SUPER + a (app) followed by "key"
+	// File manager
 	{2, {{MODKEY, XK_a}, {0, XK_f}},        spawn,          SHCMD("alacritty -t exp --class exp,exp -e $HOME/.config/vifm/scripts/vifmrun") },
-	/* Game app */
+	// Game app
 	{2, {{MODKEY, XK_a}, {0, XK_g}},        spawn,          SHCMD("retroarch") },
-	/* Virtual machine manager */
+	// Virtual machine manager
 	{2, {{MODKEY, XK_a}, {0, XK_v}},        spawn,          SHCMD("virt-manager") },
 
-/* DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key" */
-	/* dmenu */
+// DMENU PROMPTS launched with emacs-style keychords SUPER + p (prompt) followed by "key"
+	// dmenu
 	{2, {{MODKEY, XK_p}, {0, XK_r}},        spawn,          {.v = dmenucmd } },
-	/* dmenu_power */
+	// dmenu_power
 	{2, {{MODKEY, XK_p}, {0, XK_q}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") },
-	/* dmenu_wifi */
+	// dmenu_wifi
 	{2, {{MODKEY, XK_p}, {0, XK_i}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wifi") },
-	/* dmenu_wall */
+	// dmenu_wall
 	{2, {{MODKEY, XK_p}, {0, XK_w}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_wall") },
-	/* dmenu_edit */
+	// dmenu_edit
 	{2, {{MODKEY, XK_p}, {0, XK_e}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_edit") },
-	/* dmenu_scrot */
+	// dmenu_scrot
 	{2, {{MODKEY, XK_p}, {0, XK_s}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_scrot") },
-	/* dmenu_drun */
+	// dmenu_drun
 	{2, {{MODKEY, XK_p}, {0, XK_d}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_drun") },
-	/* dmenu_blue */
+	// dmenu_blue
 	{2, {{MODKEY, XK_p}, {0, XK_b}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") },
-	/* dmenu_emoji */
+	// dmenu_emoji
 	{2, {{MODKEY, XK_p}, {0, XK_z}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_emoji") },
-	/* dmenu_pipe */
+	// dmenu_pipe
 	{2, {{MODKEY, XK_p}, {0, XK_p}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_pipe") },
 
-/* SCRATCHPADS */
+// Scratchpads
 	{1, {{MODKEY|ShiftMask, XK_Return}},    togglescratch,  {.ui = 0 } },
 	{1, {{MODKEY|ShiftMask, XK_c}},         togglescratch,  {.ui = 1 } },
 	{1, {{MODKEY|ShiftMask, XK_b}},         togglescratch,  {.ui = 2 } },
@@ -308,7 +309,7 @@ static Keychord keychords[] = {
 	{1, {{MODKEY|ShiftMask, XK_m}},         togglescratch,  {.ui = 6 } },
 	{1, {{MODKEY|ShiftMask, XK_p}},         togglescratch,  {.ui = 7 } },
 
-/* DWM BOOTSTRAP */
+// DWM BOOTSTRAP
 	{1, {{MODKEY|ControlMask, XK_r}},       quit,           {1} },
 	{1, {{MODKEY|ShiftMask,   XK_q}},       quit,           {0} },
 };
@@ -329,4 +330,3 @@ static Button buttons[] = {
 	{ ClkTagBar,       MODKEY,      Button1,        tag,            {0} },
 	{ ClkTagBar,       MODKEY,      Button3,        toggletag,      {0} },
 };
-

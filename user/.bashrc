@@ -38,6 +38,9 @@ fi
 if [ -d "$HOME/Applications" ] ;
   then PATH="$HOME/Applications:$PATH"
 fi
+if [ -d "$HOME/.emacs.d/bin" ] ;
+  then PATH="$HOME/.emacs.d/bin:$PATH"
+fi
 
 ### CHANGE TITLE OF TERMINALS ###
 case ${TERM} in
@@ -124,15 +127,6 @@ alias \
 
 # bat as cat
 [ -x "$(command -v bat)" ] && alias cat="bat"
-
-# DOOM Emacs
-[ -x "$(command -v emacs)" ] && alias \
-  em="/usr/bin/emacs -nw" \
-  emacs="emacsclient -c -a 'emacs'" \
-  doomsync="~/.emacs.d/bin/doom sync" \
-  doomdoctor="~/.emacs.d/bin/doom doctor" \
-  doomupgrade="~/.emacs.d/bin/doom upgrade" \
-  doompurge="~/.emacs.d/bin/doom purge"
 
 # Changing "ls" to "exa"
 alias \
