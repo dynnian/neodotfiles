@@ -35,9 +35,7 @@ case "$action" in
     $option3*)
         systemctl poweroff;;
     $option4*)
-        betterlockscreen -l &
-        sleep 2
-        systemctl suspend;;
+        betterlockscreen --suspend;;
     $option5*)
         betterlockscreen -l;;
     $option6*)

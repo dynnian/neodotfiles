@@ -49,9 +49,6 @@ const char *spcmd5[] = {"alacritty", "-t", "spani", "--class", "spani,spani", "-
 const char *spcmd6[] = {"alacritty", "-t", "spytf", "--class", "spytf,spytf", "-e", "ytfzf", "-flst", NULL };
 const char *spcmd7[] = {"alacritty", "-t", "spamx", "--class", "spamx,spamx", "-e", "alsamixer", NULL };
 const char *spcmd8[] = {"alacritty", "-t", "sppmx", "--class", "sppmx,sppmx", "-e", "pulsemixer", NULL };
-const char *spcmd9[] = {"alacritty", "-t", "spgmk", "--class", "spgmk,spgmk", "-e", "gomuks", NULL };
-const char *spcmd10[] = {"alacritty", "-t", "spnws", "--class", "spnws,spnws", "-e", "newsboat", NULL };
-const char *spcmd11[] = {"alacritty", "-t", "spcst", "--class", "spcst,spcst", "-e", "castero", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"sptrm",      spcmd1},
@@ -62,9 +59,6 @@ static Sp scratchpads[] = {
 	{"spytf",      spcmd6},
 	{"spamx",      spcmd7},
 	{"sppmx",      spcmd8},
-	{"spgmk",      spcmd9},
-	{"spnws",      spcmd10},
-	{"spcst",      spcmd11},
 };
 
 /* |||--- TAG NAMES ---||| */
@@ -82,7 +76,7 @@ static const Rule rules[] = {
 	{ "Virt-manager",                     NULL,                 NULL,              1,       0,           -1 },
 	{ "Galculator",                       NULL,                 NULL,              0,       1,           -1 },
 	{ "exp",                              NULL,                 NULL,         1 << 1,       0,           -1 },
-	{ "qutebrowser",                      NULL,                 NULL,         1 << 2,       0,           -1 },
+	{ "librewolf",                        NULL,                 NULL,         1 << 2,       0,           -1 },
 	{ "kdenlive",                         NULL,                 NULL,         1 << 3,       0,           -1 },
 	{ "Blender",                          NULL,                 NULL,         1 << 3,       0,           -1 },
 	{ "Natron",                           NULL,                 NULL,         1 << 3,       0,           -1 },
@@ -110,9 +104,6 @@ static const Rule rules[] = {
 	{ NULL,                            "spytf",                 NULL,       SPTAG(5),       1,           -1 },
 	{ NULL,                            "spamx",                 NULL,       SPTAG(6),       1,           -1 },
 	{ NULL,                            "sppmx",                 NULL,       SPTAG(7),       1,           -1 },
-	{ NULL,                            "spgmk",                 NULL,       SPTAG(8),       1,           -1 },
-	{ NULL,                            "spnws",                 NULL,       SPTAG(9),       1,           -1 },
-	{ NULL,                            "spcst",                 NULL,      SPTAG(10),       1,           -1 },
 };
 
 /* |||--- LAYOUTS ---||| */
@@ -163,7 +154,7 @@ static Keychord keychords[] = {
 	{1, {{MODKEY, XK_Return}},			 spawn,           {.v = termcmd } },
 
 /* Top bar toggle */
-	{1, {{MODKEY|ShiftMask, XK_b}},		  togglebar,      {0} },
+	{1, {{MODKEY|ControlMask, XK_b}},		  togglebar,      {0} },
 
 /* WINDOW TAG AND LAYOUT MANIPULATION */
 
@@ -213,9 +204,9 @@ static Keychord keychords[] = {
 	/* Switch to fibonacci dwindle layout */
 	{1, {{MODKEY, XK_d}},				    setlayout,      {.v = &layouts[6]} },
 	/* Switch to tilewide layout */
-	{1, {{MODKEY, XK_w}},				    setlayout,      {.v = &layouts[7]} },
+	{1, {{MODKEY|ControlMask, XK_t}},       setlayout,      {.v = &layouts[7]} },
 	/* Toggle floating mode */
-	{1, {{MODKEY|ControlMask, XK_f}},	        togglefloating, {0} },
+	{1, {{MODKEY|ControlMask, XK_f}},       togglefloating, {0} },
 	/* Toggle fullscreen mode */
 	{1, {{MODKEY, XK_space}},	            togglefullscr,  {0} },
 	/* View all windows of all tags in the current tag */
@@ -261,11 +252,25 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_e}, {0, XK_s}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(eshell)'") },
 	{2, {{MODKEY, XK_e}, {0, XK_w}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(eww \"gnu.org\"))'") },
 
+/* WEB browser and web apps launched with emacs-style heychords SUPER + b (app) followed by "key" */
+	{2, {{MODKEY, XK_w}, {0, XK_w}},                  spawn,          SHCMD("librewolf") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_e}},       spawn,          SHCMD("librewolf --new-tab https://app.element.io") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_d}},       spawn,          SHCMD("librewolf --new-tab https://discord.com/channels/@me") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_w}},       spawn,          SHCMD("librewolf --new-tab https://web.whatsapp.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://web.telegram.org") },
+	{3, {{MODKEY, XK_w}, {0, XK_y}, {0, XK_y}},       spawn,          SHCMD("librewolf --new-tab https://youtube.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_y}, {0, XK_m}},       spawn,          SHCMD("librewolf --new-tab https://music.youtube.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_a}},       spawn,          SHCMD("librewolf --new-tab https://lms.intec.edu.do") },
+	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_c}},       spawn,          SHCMD("librewolf --new-tab https://outlook.office.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_p}},       spawn,          SHCMD("librewolf --new-tab https://procesos.intec.edu.do") },
+	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_g}},       spawn,          SHCMD("librewolf --new-tab https://mail.google.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://mail.tutanota.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://outlook.live.com/mail") },
+	{3, {{MODKEY, XK_w}, {0, XK_a}, {0, XK_b}},       spawn,          SHCMD("librewolf --new-tab https://vault.bitwarden.com") },
+
 /* PROGRAMS launched with emacs-style keychords SUPER + a (app) followed by "key" */
 	/* File manager */
 	{2, {{MODKEY, XK_a}, {0, XK_f}},        spawn,          SHCMD("alacritty -t exp --class exp,exp -e $HOME/.config/vifm/scripts/vifmrun") },
-	/* Web browser */
-	{2, {{MODKEY, XK_a}, {0, XK_w}},        spawn,          SHCMD("qutebrowser") },
 	/* Game app */
 	{2, {{MODKEY, XK_a}, {0, XK_g}},        spawn,          SHCMD("retroarch") },
 	/* Virtual machine manager */
@@ -302,12 +307,10 @@ static Keychord keychords[] = {
 	{1, {{MODKEY|ShiftMask, XK_y}},         togglescratch,  {.ui = 5 } },
 	{1, {{MODKEY|ShiftMask, XK_m}},         togglescratch,  {.ui = 6 } },
 	{1, {{MODKEY|ShiftMask, XK_p}},         togglescratch,  {.ui = 7 } },
-	{1, {{MODKEY|ShiftMask, XK_g}},         togglescratch,  {.ui = 8 } },
-	{1, {{MODKEY|ShiftMask, XK_n}},         togglescratch,  {.ui = 9 } },
-	{1, {{MODKEY|ShiftMask, XK_x}},         togglescratch,  {.ui = 10 } },
+
 /* DWM BOOTSTRAP */
-	{1, {{MODKEY|ControlMask, XK_r}},		quit,           {1} },
-	{1, {{MODKEY|ShiftMask, XK_q}},		    quit,           {0} },
+	{1, {{MODKEY|ControlMask, XK_r}},       quit,           {1} },
+	{1, {{MODKEY|ShiftMask,   XK_q}},       quit,           {0} },
 };
 
 /* button definitions */

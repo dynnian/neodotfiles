@@ -31,6 +31,7 @@ fi
 
 ### ENVIRONMENT VARIABLES
 export GST_VAAPI_ALL_DRIVERS=1
+export MOZ_USE_XINPUT2=1
 export EDITOR="emacsclient -t -a ''"              # $EDITOR use Emacs in terminal
 export VISUAL="emacsclient -c -a emacs"           # $VISUAL use Emacs in GUI mode
 export READER="zathura"                           # Zathura as the pdf viewer
