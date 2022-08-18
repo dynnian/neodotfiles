@@ -12,7 +12,7 @@ static const int showbar           = 1;   /* 0 means no bar */
 static const int topbar            = 1;   /* 0 means bottom bar */
 static const int horizpadbar       = 6;   /* horizontal padding for statusbar */
 static const int vertpadbar        = 7;   /* vertical padding for statusbar */
-static const char *fonts[]     = {"mononoki Nerd Font:size=9:antialias=true:autohint=true"};
+static const char *fonts[]     = {"CaskaydiaCove Nerd Font:size=8:antialias=true:autohint=true"};
 static const char col_1[]  = "#1d2021"; /* background color of bar */
 static const char col_2[]  = "#928374"; /* border color unfocused windows */
 static const char col_3[]  = "#fbf1c7";
@@ -235,8 +235,9 @@ static Keychord keychords[] = {
     {1, {{MODKEY, XK_F5}},                  spawn,          SHCMD("xbacklight -dec 10") },
 	// Increase brightness by 5%
     {1, {{MODKEY, XK_F6}},                  spawn,          SHCMD("xbacklight -inc 10") },
-	// Set screen backlight to off
-    {1, {{MODKEY, XK_F7}},                  spawn,          SHCMD("xbacklight -set 0") },
+
+// Monitor settings
+    {1, {{MODKEY, XK_F7}},                  spawn,          SHCMD("arandr") },
 
 // KEYBOARD LAYOUTS changed with emacs-style keychords SUPER + k (keyboard) followed by "key"
 	// Switch to the spanish keyboard layout
@@ -253,21 +254,21 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_e}, {0, XK_w}},        spawn,          SHCMD("emacsclient -c -a 'emacs' --eval '(doom/window-maximize-buffer(eww \"gnu.org\"))'") },
 
 // WEB browser and web apps launched with emacs-style heychords SUPER + b (app) followed by "key"
-	{2, {{MODKEY, XK_w}, {0, XK_w}},                       spawn,          SHCMD("librewolf") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_e}},       spawn,          SHCMD("librewolf --new-tab https://app.element.io") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_d}},       spawn,          SHCMD("librewolf --new-tab https://discord.com/channels/@me") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_w}},       spawn,          SHCMD("librewolf --new-tab https://web.whatsapp.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_c}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://web.telegram.org") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_y}},       spawn,          SHCMD("librewolf --new-tab https://youtube.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://odysee.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_b}},       spawn,          SHCMD("librewolf --new-tab https://vault.bitwarden.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_a}, {0, XK_m}},       spawn,          SHCMD("librewolf --new-tab https://music.youtube.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_i}, {0, XK_a}},       spawn,          SHCMD("librewolf --new-tab https://lms.intec.edu.do") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_i}, {0, XK_c}},       spawn,          SHCMD("librewolf --new-tab https://outlook.office.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_i}, {0, XK_p}},       spawn,          SHCMD("librewolf --new-tab https://procesos.intec.edu.do") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_m}, {0, XK_g}},       spawn,          SHCMD("librewolf --new-tab https://mail.google.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_m}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://mail.tutanota.com") },
-	{3, {{MODKEY, XK_w}, {MODKEY, XK_m}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://outlook.live.com/mail") },
+	{2, {{MODKEY, XK_w}, {0, XK_w}},                  spawn,          SHCMD("librewolf") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_e}},       spawn,          SHCMD("librewolf --new-tab https://app.element.io") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_d}},       spawn,          SHCMD("librewolf --new-tab https://discord.com/channels/@me") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_w}},       spawn,          SHCMD("librewolf --new-tab https://web.whatsapp.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_c}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://web.telegram.org") },
+	{3, {{MODKEY, XK_w}, {0, XK_a}, {0, XK_y}},       spawn,          SHCMD("librewolf --new-tab https://youtube.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_a}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://odysee.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_a}, {0, XK_b}},       spawn,          SHCMD("librewolf --new-tab https://vault.bitwarden.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_a}, {0, XK_m}},       spawn,          SHCMD("librewolf --new-tab https://music.youtube.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_a}},       spawn,          SHCMD("librewolf --new-tab https://lms.intec.edu.do") },
+	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_c}},       spawn,          SHCMD("librewolf --new-tab https://outlook.office.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_i}, {0, XK_p}},       spawn,          SHCMD("librewolf --new-tab https://procesos.intec.edu.do") },
+	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_g}},       spawn,          SHCMD("librewolf --new-tab https://mail.google.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_t}},       spawn,          SHCMD("librewolf --new-tab https://mail.tutanota.com") },
+	{3, {{MODKEY, XK_w}, {0, XK_m}, {0, XK_o}},       spawn,          SHCMD("librewolf --new-tab https://outlook.live.com/mail") },
 
 // PROGRAMS launched with emacs-style keychords SUPER + a (app) followed by "key"
 	// File manager
@@ -300,14 +301,14 @@ static Keychord keychords[] = {
 	{2, {{MODKEY, XK_p}, {0, XK_p}},        spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_pipe") },
 
 // Scratchpads
-	{1, {{MODKEY|ShiftMask, XK_Return}},    togglescratch,  {.ui = 0 } },
-	{1, {{MODKEY|ShiftMask, XK_c}},         togglescratch,  {.ui = 1 } },
-	{1, {{MODKEY|ShiftMask, XK_b}},         togglescratch,  {.ui = 2 } },
-	{1, {{MODKEY|ShiftMask, XK_f}},         togglescratch,  {.ui = 3 } },
-	{1, {{MODKEY|ShiftMask, XK_a}},         togglescratch,  {.ui = 4 } },
-	{1, {{MODKEY|ShiftMask, XK_y}},         togglescratch,  {.ui = 5 } },
-	{1, {{MODKEY|ShiftMask, XK_m}},         togglescratch,  {.ui = 6 } },
-	{1, {{MODKEY|ShiftMask, XK_p}},         togglescratch,  {.ui = 7 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_Return}},    togglescratch,  {.ui = 0 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_c}},         togglescratch,  {.ui = 1 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_b}},         togglescratch,  {.ui = 2 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_f}},         togglescratch,  {.ui = 3 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_a}},         togglescratch,  {.ui = 4 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_y}},         togglescratch,  {.ui = 5 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_m}},         togglescratch,  {.ui = 6 } },
+	{2, {{MODKEY, XK_grave}, {0, XK_p}},         togglescratch,  {.ui = 7 } },
 
 // DWM BOOTSTRAP
 	{1, {{MODKEY|ControlMask, XK_r}},       quit,           {1} },

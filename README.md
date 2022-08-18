@@ -15,7 +15,8 @@ If you want to get the full experience you need theese things:
 * [flix-cli](https://github.com/d4r1us-drk/flix-cli)
 * [castero](https://github.com/xgi/castero)
 * [unclutter-xfixes](https://github.com/nowrep/unclutter-xfixes)
-* [picom-jonaburg](https://github.com/jonaburg/picom)
+* [picom-pijulius](https://github.com/pijulius/picom)
+* [io.elementary.capnet-assist](https://github.com/elementary/capnet-assist)
 * mononoki Nerd Font
 * lxsession
 * dunst
