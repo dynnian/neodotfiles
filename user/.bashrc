@@ -196,10 +196,10 @@ alias \
 
 # file management
 alias \
-  fm="./.config/vifm/scripts/vifmrun" \
-  file="./.config/vifm/scripts/vifmrun" \
-  flm="./.config/vifm/scripts/vifmrun" \
-  vifm="./.config/vifm/scripts/vifmrun" \
+  fm="$HOME/.config/vifm/scripts/vifmrun" \
+  file="$HOME/.config/vifm/scripts/vifmrun" \
+  flm="$HOME/.config/vifm/scripts/vifmrun" \
+  vifm="$HOME/.config/vifm/scripts/vifmrun" \
   rm="rm -vI" \
   mv="mv -iv" \
   cp="cp -iv" \
@@ -230,7 +230,7 @@ alias \
 alias \
   netstats="nmcli dev" \
   wfi="nmtui-connect" \
-  wfi-scan="nmcli dev wifi list" \
+  wfi-scan="nmcli dev wifi rescan && nmcli dev wifi list" \
   wfi-edit="nmtui-edit" \
   wfi-on="nmcli radio wifi on" \
   wfi-off="nmcli radio wifi off" \
