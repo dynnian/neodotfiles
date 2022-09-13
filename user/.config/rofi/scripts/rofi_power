@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# ***This script was made by Clay Gomera (Drake)***
+#  - Description: A simple power menu rofi script
+#  - Dependencies: rofi, power-profiles-daemon
+
+## OPTIONS ##
+option1="(L) Logout"
+option2="(R) Reboot"
+option3="(P) Power off"
+option4="(S) Suspend"
+option5="(K) Lock"
+option6="(C) Change power profile"
+option7="(X) Cancel"
+
+## OPTIONS ARRAY ##
+options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6\n$option7"
+
+## POWER PROFILE OPTIONS ##
+pwr1="(P) Performance"
+pwr2="(B) Balanced"
+pwr3="(S) Power Saver"
+pwr4="(X) Cancel"
+
+## POWER PROFILES ARRAY ##
+pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
+
+## MAIN ACTION COMMAND ##
+action=$(echo -e "$options" | rofi -dmenu -b -i -p " ")
+case "$action" in
+    $option1*)
+        whoami | xargs -I % sh -c 'pkill -KILL -u %';;
+    $option2*)
+        systemctl reboot;;
+    $option3*)
+        systemctl poweroff;;
+    $option4*)
+        betterlockscreen --suspend;;
+    $option5*)
+        betterlockscreen -l;;
+    $option6*)
+        currentpwr=$(powerprofilesctl get)
+        pwraction=$(echo -e "$pwrs" | rofi -dmenu -b -i -p "Current profile is: ${currentpwr} | Select profile:")
+        case "$pwraction" in
+            $pwr1*)
+                powerprofilesctl set performance && notify-send "Power profile switched to performance";;
+            $pwr2*)
+                powerprofilesctl set balanced && notify-send "Power profile switched to balanced";;
+            $pwr3*)
+                powerprofilesctl set power-saver && notify-send "Power profile switched to power saver";;
+            $pwr4*)
+                exit 0
+        esac;;
+    $option7*)
+        exit 0
+esac
