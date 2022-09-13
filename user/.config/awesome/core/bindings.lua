@@ -330,15 +330,15 @@ awful.keyboard.append_global_keybindings({
         awful.keygrabber.run(
           function(_, key, event)
             if event == "release" then return end
-            if     key == "d" then awful.spawn.with_shell("dmenu_drun")
-            elseif key == "r" then awful.spawn.with_shell("dmenu_run -b -l 10 -i")
-            elseif key == "e" then awful.spawn.with_shell("dmenu_edit")
-            elseif key == "q" then awful.spawn.with_shell("dmenu_power")
-            elseif key == "i" then awful.spawn.with_shell("dmenu_wifi")
-            elseif key == "b" then awful.spawn.with_shell("dmenu_blue")
-            elseif key == "s" then awful.spawn.with_shell("dmenu_scrot")
-            elseif key == "z" then awful.spawn.with_shell("dmenu_emoji")
-            elseif key == "w" then awful.spawn.with_shell("dmenu_wall")
+            if     key == "d" then awful.spawn.with_shell("rofi -show drun -show-icons")
+            elseif key == "r" then awful.spawn.with_shell("rofi -show run")
+            elseif key == "e" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_edit")
+            elseif key == "q" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_power")
+            elseif key == "i" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_wifi")
+            elseif key == "b" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_blue")
+            elseif key == "s" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_scrot")
+            elseif key == "z" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_emoji")
+            elseif key == "w" then awful.spawn.with_shell("$HOME/.config/rofi/scripts/rofi_wall")
             end
             awful.keygrabber.stop(grabber)
             end

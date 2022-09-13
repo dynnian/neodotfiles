@@ -26,21 +26,21 @@ pwr4="(X) Cancel"
 pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
 
 ## MAIN ACTION COMMAND ##
-action=$(echo -e "$options" | rofi -dmenu -b -i -p " ")
+action=$(echo -e "$options" | rofi -dmenu -b -l 7 -i -p " ")
 case "$action" in
     $option1*)
         whoami | xargs -I % sh -c 'pkill -KILL -u %';;
     $option2*)
-        systemctl reboot;;
+        systemctl reboot || loginctl reboot;;
     $option3*)
-        systemctl poweroff;;
+        systemctl poweroff || loginctl poweroff;;
     $option4*)
         betterlockscreen --suspend;;
     $option5*)
         betterlockscreen -l;;
     $option6*)
         currentpwr=$(powerprofilesctl get)
-        pwraction=$(echo -e "$pwrs" | rofi -dmenu -b -i -p "Current profile is: ${currentpwr} | Select profile:")
+        pwraction=$(echo -e "$pwrs" | rofi -dmenu -b -l 3 -i -p "Current profile is: ${currentpwr} | Select profile:")
         case "$pwraction" in
             $pwr1*)
                 powerprofilesctl set performance && notify-send "Power profile switched to performance";;
