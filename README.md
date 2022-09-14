@@ -3,13 +3,16 @@ This is just a personal repository where i store all my dotfiles, you're free cl
 
 * Screenshots:
 ![Screenshot1](screenshot1.png "Screenshot 1")
+![Screenshot2](screenshot2.png "Screenshot 2")
+![Screenshot3](screenshot3.png "Screenshot 3")
+![Screenshot4](screenshot3.png "Screenshot 4")
 
 # Dependencies
 If you want to get the full experience you need theese things:
-* [doom-emacs](https://github.com/doomemacs/doomemacs)
+* the awesome window manager
 * [gruvbox-dark-gtk](https://github.com/jmattheis/gruvbox-dark-gtk)
 * [gruvbox-dark-icons-gtk](https://github.com/jmattheis/gruvbox-dark-icons-gtk)
-* [volantes-cursors](https://github.com/varlesh/volantes-cursors)
+* [simp1e-cursors](https://gitlab.com/zoli111/simp1e)
 * [ani-cli](https://github.com/pystardust/ani-cli)
 * [ytfzf](https://github.com/pystardust/ytfzf)
 * [flix-cli](https://github.com/d4r1us-drk/flix-cli)
@@ -24,8 +27,8 @@ If you want to get the full experience you need theese things:
 * fd
 * feh
 * scrot
+* rofi
 * NetworkManager
-* j4-dmenu-desktop
 * betterlockscreen
 * xbacklight
 * xbindkeys
