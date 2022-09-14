@@ -6,7 +6,7 @@
 
 ## ROFI VARIABLES ##
 ROFI1="rofi -dmenu -l 10 -b -i -p"
-ROFI2="rofi -dmenu -b -p"
+ROFI2="rofi -dmenu -l 1 -b -p"
 ROFI3="rofi -dmenu -l 5 -b -i -p"
 
 ## MAIN OPTIONS ##

@@ -12,7 +12,7 @@ local theme = {}
 -- }}}
 
 -- {{{ theme font
-theme.font          = "mononoki Nerd Font 9"
+theme.font          = "mononoki Nerd Font 12"
 --- }}}
 
 -- {{{ bar colors
@@ -20,7 +20,8 @@ theme.bar_bg_one = "#427b58"
 theme.bar_bg_two = "#076678"
 theme.bar_bg_tre = "#b57614"
 theme.bar_bg_for = "#9d0006"
-theme.bar_clock = "#504945"
+theme.bar_bg_fiv = "#8f3f71"
+theme.bar_clock = "#3c3836"
 --- }}}
 
 
@@ -30,7 +31,7 @@ theme.fg_focus   = "#dfc4a1"
 theme.fg_urgent  = "#fbf1c7"
 theme.bg_normal  = "#1d2021"
 theme.bg_focus   = "#3c3836"
-theme.bg_urgent  = "#cc241d"
+theme.bg_urgent  = "#a89984"
 -- }}}
 
 -- {{{ Borders
@@ -42,16 +43,16 @@ theme.border_marked = "#9d0006"
 -- }}}
 
 -- {{{ Taglist
-theme.taglist_font          = "mononoki Nerd Font 9"
+theme.taglist_font          = "mononoki Nerd Font 14"
 theme.taglist_fg_focus      = "#fb4934"
 theme.taglist_fg_occupied   = "#8ec07c"
-theme.taglist_fg_urgent     = "#458588"
+theme.taglist_fg_urgent     = "#504945"
 theme.taglist_fg_empty      = "#a89984"
 theme.taglist_spacing       = 5
 -- }}}
 
 -- {{{ Notifications
-theme.notification_font     = "mononoki Nerd Font 9"
+theme.notification_font     = "mononoki Nerd Font 12"
 theme.notification_bg       = "#282828"
 theme.notification_fg       = "#fbf1c7"
 theme.notification_shape    = gears.shape.rounded_rect
@@ -64,8 +65,8 @@ theme.hotkeys_modifiers_fg  = "#458588"
 theme.hotkeys_label_bg      = "#fabd2f"
 theme.hotkeys_label_fg      = "#1d2021"
 theme.hotkeys_group_margin  = dpi(20)
-theme.hotkeys_description_font  = "mononoki Nerd Font 9"
-theme.hotkeys_font              = "mononoki Nerd Font 9"
+theme.hotkeys_description_font  = "mononoki Nerd Font 12"
+theme.hotkeys_font              = "mononoki Nerd Font 12"
 -- }}}
 
 -- {{{ Mouse finder

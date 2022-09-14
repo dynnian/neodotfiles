@@ -11,15 +11,15 @@ mytextclock = wibox.widget.textclock()
 
 screen.connect_signal("request::desktop_decoration", function(s)
 -- Tag names for each screen
-    awful.tag({ "E",
-                "F",
-                "W",
-                "C",
-                "M",
-                "V",
-                "X",
-                "D",
-                "G"
+    awful.tag({ "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
               }, s, awful.layout.layouts[1])
 
 --  Layoutbox widget
@@ -34,10 +34,11 @@ screen.connect_signal("request::desktop_decoration", function(s)
     }
 
 -- Custom widgets
-s.volume = awful.widget.watch(".config/awesome/core/bar/widgets/volume", 0.1)
-s.battery = awful.widget.watch(".config/awesome/core/bar/widgets/battery", 0.1)
-s.brightness = awful.widget.watch(".config/awesome/core/bar/widgets/brightness", 0.1)
-s.layout = awful.widget.watch(".config/awesome/core/bar/widgets/layout", 0.1)
+s.volume = awful.widget.watch(".config/awesome/core/bar/widgets/volume", 1)
+s.battery = awful.widget.watch(".config/awesome/core/bar/widgets/battery", 10)
+s.wifi = awful.widget.watch(".config/awesome/core/bar/widgets/wifi", 10)
+s.brightness = awful.widget.watch(".config/awesome/core/bar/widgets/brightness", 1)
+s.layout = awful.widget.watch(".config/awesome/core/bar/widgets/layout", 1)
 
 --  Taglist widget
     s.mytaglist = awful.widget.taglist {
@@ -80,15 +81,18 @@ s.layout = awful.widget.watch(".config/awesome/core/bar/widgets/layout", 0.1)
                 wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_one),
                 wibox.container.background(s.layout, theme.bar_bg_one),
                 wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_one),
-                wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_two),
-                wibox.container.background(s.battery, theme.bar_bg_two),
-                wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_two),
                 wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_tre),
                 wibox.container.background(s.volume, theme.bar_bg_tre),
                 wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_tre),
                 wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_for),
                 wibox.container.background(s.brightness, theme.bar_bg_for),
                 wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_for),
+                wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_two),
+                wibox.container.background(s.battery, theme.bar_bg_two),
+                wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_two),
+                wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_fiv),
+                wibox.container.background(s.wifi, theme.bar_bg_fiv),
+                wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_fiv),
             },
           },
             {

@@ -294,18 +294,18 @@ awful.keyboard.append_global_keybindings({
         awful.keygrabber.run(
           function(_, key, event)
             if event == "release" then return end
-            if     key == "e" then awful.util.spawn(apps.editor)
-            elseif key == "f" then awful.util.spawn(apps.file)
-            elseif key == "w" then awful.util.spawn(apps.browser)
-            elseif key == "c" then awful.util.spawn(apps.chat)
-            elseif key == "m" then awful.util.spawn(apps.music)
-            elseif key == "g" then awful.util.spawn(apps.game)
+            if     key == "1" then awful.util.spawn(apps.editor)
+            elseif key == "2" then awful.util.spawn(apps.file)
+            elseif key == "3" then awful.util.spawn(apps.browser)
+            elseif key == "4" then awful.util.spawn(apps.chat)
+            elseif key == "5" then awful.util.spawn(apps.music)
+            elseif key == "9" then awful.util.spawn(apps.game)
             end
             awful.keygrabber.stop(grabber)
             end
           )
         end,
-        {description = "followed by KEY (Look at the tag names)", group = "apps"}
+        {description = "followed by KEY", group = "apps"}
         ),
     -- Keyboard layouts (Super + x followed by KEY)
     awful.key({ modkey }, "x", function()

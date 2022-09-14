@@ -29,11 +29,11 @@ pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
 action=$(echo -e "$options" | rofi -dmenu -b -l 7 -i -p " ")
 case "$action" in
     $option1*)
-        whoami | xargs -I % sh -c 'pkill -KILL -u %';;
+        pkill X;;
     $option2*)
-        systemctl reboot || loginctl reboot;;
+        loginctl reboot;;
     $option3*)
-        systemctl poweroff || loginctl poweroff;;
+        loginctl poweroff;;
     $option4*)
         betterlockscreen --suspend;;
     $option5*)

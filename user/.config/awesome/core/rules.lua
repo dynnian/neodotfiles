@@ -55,27 +55,29 @@ ruled.client.connect_signal("request::rules", function()
                "Virt-manager"
                }
             },
-       properties = { tag = "E" },
+       properties = { tag = "" },
     }
 -- F TAG
     ruled.client.append_rule {
     rule = { class = "vifm" },
-       properties = { tag = "F" },
+       properties = { tag = "" },
     }
 -- W TAG
     ruled.client.append_rule {
       rule_any = { class = {
                      "Brave-browser",
                      "librewolf",
+                     "Firefox",
+                     "Chromium",
                      "qutebrowser"
                  }
             },
-       properties = { tag = "W" }
+       properties = { tag = "" }
     }
 -- C TAG
     ruled.client.append_rule {
     rule = { class = "gomuks" },
-       properties = { tag = "C" }
+       properties = { tag = "" }
     }
 -- M TAG
     ruled.client.append_rule {
@@ -87,7 +89,7 @@ ruled.client.connect_signal("request::rules", function()
                "Carla2-Control"
                }
             },
-       properties = { tag = "M" }
+       properties = { tag = "" }
     }
 -- V TAG
     ruled.client.append_rule {
@@ -101,7 +103,7 @@ ruled.client.connect_signal("request::rules", function()
                "mpv"
                }
              },
-       properties = { tag = "V" }
+       properties = { tag = "" }
     }
 -- X TAG
     ruled.client.append_rule {
@@ -116,7 +118,7 @@ ruled.client.connect_signal("request::rules", function()
                "Bitwarden"
                }
              },
-       properties = { tag = "X" }
+       properties = { tag = "" }
     }
 -- D TAG
     ruled.client.append_rule {
@@ -125,12 +127,12 @@ ruled.client.connect_signal("request::rules", function()
                "Joplin"
                }
              },
-       properties = { tag = "D" }
+       properties = { tag = "" }
     }
 -- G TAG
     ruled.client.append_rule {
     rule = { class =  "retroarch" },
-       properties = { tag = "G" }
+       properties = { tag = "" }
     }
 --}}}
     -- }

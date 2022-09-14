@@ -138,14 +138,12 @@ alias \
 
 # pacman
 alias \
-  pac-up="sudo pacman -Syyu" \
-  pac-get="sudo pacman -S" \
-  pac-rmv="sudo pacman -Rcns" \
-  pac-rmv-sec="sudo pacman -Runs" \
-  pac-qry="sudo pacman -Ss" \
-  pac-cln="sudo pacman -Scc" \
-  par-get="paru -S" \
-  par-cln="paru -Scc"
+  xb-up="sudo xbps-install -Su && xcheckrestart" \
+  xb-get="sudo xbps-install -S" \
+  xb-rmv="sudo xbps-remove -R" \
+  xb-rmv-sec="sudo xbps-remove" \
+  xb-qry="sudo xbps-query -R" \
+  xb-cln="sudo xbps-remove -Oo" \
 
 # colorize grep output (good for log files)
 alias \
@@ -190,9 +188,9 @@ alias \
 
 # power management
 alias \
-  po="systemctl poweroff" \
-  sp="systemctl suspend" \
-  rb="systemctl reboot"
+  po="loginctl poweroff" \
+  sp="loginctl suspend" \
+  rb="loginctl reboot"
 
 # file management
 alias \
