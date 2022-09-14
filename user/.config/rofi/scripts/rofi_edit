@@ -5,7 +5,7 @@
 #  - Dependencies: rofi (Everything else can be changed)
 
 # Show list of options
-EDITOR="emacsclient -c -a emacs"
+EDITOR="alacritty -e nvim"
 cd "$HOME" || exit 0
 file=1
 while [ "$file" ]; do

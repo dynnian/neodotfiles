@@ -7,15 +7,15 @@
 ## ROFI VARIABLES ##
 ROFI1="rofi -dmenu -l 10 -b -i -p"
 ROFI2="rofi -dmenu -l 1 -b -p"
-ROFI3="rofi -dmenu -l 5 -b -i -p"
+ROFI3="rofi -dmenu -l 6 -b -i -p"
 
 ## MAIN OPTIONS ##
-option1="(O) Turn on WiFi"
-option2="(F) Turn off WiFi"
-option3="(D) Disconnect WiFi"
-option4="(C) Connect WiFi"
-option5="(S) Setup captive portal"
-option6="(X) Exit"
+option1=" Turn on WiFi"
+option2=" Turn off WiFi"
+option3="睊 Disconnect WiFi"
+option4="直 Connect WiFi"
+option5="漣 Setup captive portal"
+option6=" Cancel"
 options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6"
 
 wlan=$(nmcli dev | grep wifi | sed 's/ \{2,\}/|/g' | cut -d '|' -f1 | head -1)

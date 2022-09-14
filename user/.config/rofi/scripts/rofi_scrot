@@ -9,16 +9,16 @@ mkdir -p "$HOME/Pictures/Screenshots"
 cd "$HOME/Pictures/Screenshots" || exit 0
 
 ## CHOICES ##
-cho1="(S) Entire screen"
-cho2="(D) Entire screen with delay"
-cho3="(W) Focused window"
-cho4="(A) Select area"
+cho1=" Entire screen"
+cho2=" Entire screen with delay"
+cho3=" Focused window"
+cho4=" Select area"
 chos="$cho1\n$cho2\n$cho3\n$cho4"
 
 ## DELAY OPTIONS ##
-del1="(1) 3 sec delay"
-del2="(2) 5 sec delay"
-del3="(3) 10 sec delay"
+del1=" 3 sec delay"
+del2=" 5 sec delay"
+del3=" 10 sec delay"
 dels="$del1\n$del2\n$del3"
 
 ## DELAY FUNCTION ##

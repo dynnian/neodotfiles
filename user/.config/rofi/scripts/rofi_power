@@ -5,22 +5,22 @@
 #  - Dependencies: rofi, power-profiles-daemon
 
 ## OPTIONS ##
-option1="(L) Logout"
-option2="(R) Reboot"
-option3="(P) Power off"
-option4="(S) Suspend"
-option5="(K) Lock"
-option6="(C) Change power profile"
-option7="(X) Cancel"
+option1=" Logout"
+option2=" Reboot"
+option3=" Power off"
+option4="鈴 Suspend"
+option5=" Lock"
+option6="漣 Change power profile"
+option7=" Cancel"
 
 ## OPTIONS ARRAY ##
 options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6\n$option7"
 
 ## POWER PROFILE OPTIONS ##
-pwr1="(P) Performance"
-pwr2="(B) Balanced"
-pwr3="(S) Power Saver"
-pwr4="(X) Cancel"
+pwr1=" Performance"
+pwr2=" Balanced"
+pwr3=" Power Saver"
+pwr4=" Cancel"
 
 ## POWER PROFILES ARRAY ##
 pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
@@ -40,7 +40,7 @@ case "$action" in
         betterlockscreen -l;;
     $option6*)
         currentpwr=$(powerprofilesctl get)
-        pwraction=$(echo -e "$pwrs" | rofi -dmenu -b -l 3 -i -p "Current profile is: ${currentpwr} | Select profile:")
+        pwraction=$(echo -e "$pwrs" | rofi -dmenu -b -l 4 -i -p "Current profile is: ${currentpwr} | Select profile:")
         case "$pwraction" in
             $pwr1*)
                 powerprofilesctl set performance && notify-send "Power profile switched to performance";;
