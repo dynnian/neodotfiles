@@ -72,7 +72,9 @@ s.layout = awful.widget.watch(".config/awesome/core/bar/widgets/layout", 1)
             { -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
                 s.mylayoutbox,
+                wibox.widget.textbox(" "),
                 s.mytaglist,
+                wibox.widget.textbox(" "),
             },
             nil,
             { -- Right widgets
