@@ -46,8 +46,7 @@ ruled.client.connect_signal("request::rules", function()
         properties = { floating = true }
     }
 
-    -- Set Firefox to always map on the tag named "2" on screen 1.
--- E TAG
+-- TAG 1
     ruled.client.append_rule {
     rule_any = { class = {
                "Emacs",
@@ -57,12 +56,12 @@ ruled.client.connect_signal("request::rules", function()
             },
        properties = { tag = "" },
     }
--- F TAG
+-- TAG 2
     ruled.client.append_rule {
     rule = { class = "vifm" },
        properties = { tag = "" },
     }
--- W TAG
+-- TAG 3
     ruled.client.append_rule {
       rule_any = { class = {
                      "Brave-browser",
@@ -74,12 +73,12 @@ ruled.client.connect_signal("request::rules", function()
             },
        properties = { tag = "" }
     }
--- C TAG
+-- TAG 4
     ruled.client.append_rule {
     rule = { class = "gomuks" },
        properties = { tag = "" }
     }
--- M TAG
+-- TAG 5
     ruled.client.append_rule {
     rule_any = { class = {
                "cmus",
@@ -91,7 +90,7 @@ ruled.client.connect_signal("request::rules", function()
             },
        properties = { tag = "" }
     }
--- V TAG
+-- TAG 6
     ruled.client.append_rule {
     rule_any = { class = {
                "kdenlive",
@@ -105,7 +104,7 @@ ruled.client.connect_signal("request::rules", function()
              },
        properties = { tag = "" }
     }
--- X TAG
+-- TAG 7
     ruled.client.append_rule {
     rule_any = { class = {
                "Qjackctl",
@@ -120,7 +119,7 @@ ruled.client.connect_signal("request::rules", function()
              },
        properties = { tag = "" }
     }
--- D TAG
+-- TAG 8
     ruled.client.append_rule {
     rule_any = { class = {
                "DesktopEditors",
@@ -129,7 +128,7 @@ ruled.client.connect_signal("request::rules", function()
              },
        properties = { tag = "" }
     }
--- G TAG
+-- TAG 9
     ruled.client.append_rule {
     rule = { class =  "retroarch" },
        properties = { tag = "" }

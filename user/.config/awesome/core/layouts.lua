@@ -1,4 +1,3 @@
-local gears = require("gears")
 local awful = require("awful")
 -- {{{ Tag layout
 -- Table of layouts to cover with awful.layout.inc, order matters.

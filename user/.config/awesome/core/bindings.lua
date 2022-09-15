@@ -1,6 +1,4 @@
-local gears = require("gears")
 local awful = require("awful")
-local wibox = require("wibox")
 local hotkeys_popup = require("awful.hotkeys_popup"); require("awful.hotkeys_popup.keys")
 local apps = require("core.apps")
 require("awful.autofocus")
