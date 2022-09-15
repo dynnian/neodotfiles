@@ -26,5 +26,5 @@ If you want to get the full experience you need theese things:
 * rofi
 * NetworkManager
 * betterlockscreen
+* power-profiles-daemon
 * xbacklight
-* xbindkeys
