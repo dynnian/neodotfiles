@@ -1,7 +1,7 @@
 -- Apps
 local apps = {
 terminal = "alacritty",
-editor = "alacritty -e nvim",
+editor = "emacsclient -c -a emacs",
 music = "alacritty -t cmus --class cmus,cmus -e cmus",
 chat = "alacritty -t gomuks --class gomuks,gomuks -e gomuks",
 game = "retroarch",

@@ -26,7 +26,6 @@ ruled.client.connect_signal("request::rules", function()
                 "Blueman-manager",
                 "Gpick",
                 "Kruler",
-                "Sxiv",
                 "Tor Browser",
                 "Wpa_gui",
                 "veromix",
@@ -68,6 +67,7 @@ ruled.client.connect_signal("request::rules", function()
                      "librewolf",
                      "Firefox",
                      "Chromium",
+                     "Bitwarden",
                      "qutebrowser"
                  }
             },
@@ -114,7 +114,6 @@ ruled.client.connect_signal("request::rules", function()
                "krita",
                "Inkscape",
                "Xournalpp",
-               "Bitwarden"
                }
              },
        properties = { tag = "" }
@@ -123,14 +122,25 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
     rule_any = { class = {
                "DesktopEditors",
+               "libreoffice.*",
                "Joplin"
-               }
+               },
+                 instance = {
+                   "libreoffice.*"
+                 },
+                 name = {
+                   "libreoffice.*"
+                 }
              },
        properties = { tag = "" }
     }
 -- TAG 9
     ruled.client.append_rule {
-    rule = { class =  "retroarch" },
+      rule_any = { class = {
+                     "retroarch",
+                     "steam"
+                    }
+                 },
        properties = { tag = "" }
     }
 --}}}
