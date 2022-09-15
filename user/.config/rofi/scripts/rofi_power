@@ -31,9 +31,9 @@ case "$action" in
     $option1*)
         pkill X;;
     $option2*)
-        loginctl reboot;;
+        systemctl reboot || loginctl reboot;;
     $option3*)
-        loginctl poweroff;;
+        systemctl poweroff || loginctl poweroff;;
     $option4*)
         betterlockscreen --suspend;;
     $option5*)
