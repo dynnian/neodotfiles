@@ -138,12 +138,13 @@ alias \
 
 # pacman
 alias \
-  xb-up="sudo xbps-install -Su && xcheckrestart" \
-  xb-get="sudo xbps-install -S" \
-  xb-rmv="sudo xbps-remove -R" \
-  xb-rmv-sec="sudo xbps-remove" \
-  xb-qry="sudo xbps-query -R" \
-  xb-cln="sudo xbps-remove -Oo" \
+  xb-up="sudo vpm update -Su && xcheckrestart" \
+  xb-get="sudo vpm install" \
+  xb-rmv="sudo vpm remove -R" \
+  xb-rmv-sec="sudo vpm remove" \
+  xb-qry="sudo vpm search" \
+  xb-cln="sudo vpm cleanup -o" \
+  xb-src="$HOME/.local/share/void-packages/xbps-src"
 
 # colorize grep output (good for log files)
 alias \

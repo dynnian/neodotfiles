@@ -30,10 +30,10 @@ if [ -f "$usermodmap" ]; then
 fi
 
 ### ENVIRONMENT VARIABLES
-#export GST_VAAPI_ALL_DRIVERS=1
+export GST_VAAPI_ALL_DRIVERS=1
 export MOZ_USE_XINPUT2=1
-export EDITOR="nvim"                              # $EDITOR use neovim in terminal
-export VISUAL="alacritty -e nvim"                 # $VISUAL use neovim in terminal
+export EDITOR="emacsclient -t -a ''"              # $EDITOR use Emacs in terminal
+export VISUAL="emacsclient -c -a emacs"           # $VISUAL use Emacs in GUI mode
 export READER="zathura"                           # Zathura as the pdf viewer
 export TERMINAL="alacritty"                       # Alacritty as the default terminal emulator
 export BROWSER="qutebrowser"                      # Qutebrowser as the default web browser
