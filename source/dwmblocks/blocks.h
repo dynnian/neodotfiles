@@ -7,6 +7,6 @@ static const Block blocks[] = {
 	{"", "$HOME/.config/suckless/dwmblocks/scripts/block_brightness",       0,                      10},
 	{"", "$HOME/.config/suckless/dwmblocks/scripts/block_volume",           0,                      10},
 	{"", "$HOME/.config/suckless/dwmblocks/scripts/block_clock",            60,                      1},
-	{"", "$HOME/.config/suckless/dwmblocks/scripts/block_wifi",             20,                       1},
+	{"", "$HOME/.config/suckless/dwmblocks/scripts/block_wifi",             20,                      1},
 };
 

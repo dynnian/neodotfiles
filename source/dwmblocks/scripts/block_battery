@@ -18,6 +18,7 @@ fi
 for battery in /sys/class/power_supply/BAT?*; do
 	# if non-first battery, print a space separator.
 	[ -n "${capacity+x}" ] && printf " "
+	percentage="$(cat "$battery/capacity" 2>&1)"
 
 	# sets up the status and capacity
 	case "$(cat "$battery/status" 2>&1)" in
@@ -25,8 +26,6 @@ for battery in /sys/class/power_supply/BAT?*; do
 			status=" 󰁹" 
 			;;
 		"Discharging") 
-			# this variable will store the percentage of remaining charge
-			percentage="$(cat "$battery/capacity" 2>&1)"
 			# updates the status icon based on the battery percentage
 			if [ "$percentage" -le 20 ]; then
 				status=" 󰁻"
@@ -49,8 +48,6 @@ for battery in /sys/class/power_supply/BAT?*; do
 			fi
 			;;
 		"Charging")
-			# this variable will store the percentage of remaining charge
-			percentage="$(cat "$battery/capacity" 2>&1)"
 			# updates the status icon based on the battery percentage while charging
 			if [ "$percentage" -le 10 ]; then
 				status=" 󰢜"
@@ -75,7 +72,26 @@ for battery in /sys/class/power_supply/BAT?*; do
 			fi
 			;;
 		"Not charging") 
-			echo " 󰂃 " && exit 0 # just in case
+			# updates the status icon based on the battery percentage
+			if [ "$percentage" -le 20 ]; then
+				status=" 󰁻"
+			elif [ "$percentage" -le 30 ]; then
+				status=" 󰁼"
+			elif [ "$percentage" -le 40 ]; then
+				status=" 󰁽"
+			elif [ "$percentage" -le 50 ]; then
+				status=" 󰁾"
+			elif [ "$percentage" -le 60 ]; then
+				status=" 󰁿"
+			elif [ "$percentage" -le 70 ]; then
+				status=" 󰂀"
+			elif [ "$percentage" -le 80 ]; then
+				status=" 󰂁"
+			elif [ "$percentage" -le 90 ]; then
+				status=" 󰂂"
+			else
+				status=" 󰁹"
+			fi
 			;;
 		"Unknown") 
 			echo " 󰂃 " && exit 0 # just in case
@@ -87,5 +103,5 @@ for battery in /sys/class/power_supply/BAT?*; do
 	[ "$status" = " 󰁺" ] && [ "$percentage" -le 10 ] && warn="󱈸"
 
 	# print everything
-	printf "%s%s%d%%%s" "$status" "$warn " "$percentage" "$pwr"; unset warn
-done && printf "\\n"
+	printf "%s%s%d%%" "$status" "$warn " "$percentage"; unset warn
+done && printf "$pwr\\n"

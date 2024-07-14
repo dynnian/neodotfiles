@@ -36,7 +36,6 @@ static const unsigned int alphas[][3]      = {
     [SchemeSel]  = {OPAQUE, baralpha, borderalpha},
 };
 
-
 /* Scratchpad Definitions */
 const char *spcmd1[]  = {"st", "-n", "sptrm", "-c", "sptrm", "-g", "140x35", NULL};
 const char *spcmd2[]  = {"st", "-n", "sptop", "-c", "sptop", "-g", "140x35", "-e", "btop", NULL};
@@ -45,13 +44,12 @@ const char *spcmd4[]  = {"st", "-n", "spfli", "-c", "spfli", "-g", "140x35", "-e
 const char *spcmd5[]  = {"st", "-n", "spani", "-c", "spani", "-g", "140x35", "-e", "ani-cli", NULL};
 const char *spcmd6[]  = {"st", "-n", "spytf", "-c", "spytf", "-g", "140x35", "-e", "ytfzf", "-flst", NULL};
 const char *spcmd7[]  = {"st", "-n", "spytm", "-c", "spytm", "-g", "140x35", "-e", "ytfzf", "-mlst", NULL};
-const char *spcmd8[]  = {"st", "-n", "spmsc", "-c", "spmsc", "-g", "140x35", "-e", "musikcube", NULL};
+const char *spcmd8[]  = {"st", "-n", "spmsc", "-c", "spmsc", "-g", "140x35", "-e", "cmus", NULL};
 const char *spcmd9[]  = {"st", "-n", "spflm", "-c", "spflm", "-g", "140x35", "-e", ".config/vifm/scripts/vifmrun", NULL};
 const char *spcmd10[]  = {"st", "-n", "sprss", "-c", "sprss", "-g", "140x35", "-e", "newsboat", NULL};
-const char *spcmd11[]  = {"st", "-n", "sptut", "-c", "sptut", "-g", "140x35", "-e", "tut", NULL};
-const char *spcmd12[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
-const char *spcmd13[]  = {"flatpak", "run", "io.github.Qalculate", NULL};
-const char *spcmd14[]  = {"arandr", NULL};
+const char *spcmd11[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
+const char *spcmd12[]  = {"flatpak", "run", "qalculate-gtk", NULL};
+const char *spcmd13[]  = {"lxrandr", NULL};
 
 static Sp scratchpads[] = {
     /* NAME         CMD */
@@ -65,10 +63,9 @@ static Sp scratchpads[] = {
     {"spmsc",      spcmd8},
     {"spflm",      spcmd9},
     {"sprss",      spcmd10},
-    {"sptut",      spcmd11},
-    {"spbit",      spcmd12},
-    {"spqal",      spcmd13},
-    {"spdsp",      spcmd14},
+    {"spbit",      spcmd11},
+    {"spqal",      spcmd12},
+    {"spdsp",      spcmd13},
 };
 
 /* Tag Definitions */
@@ -195,10 +192,9 @@ static const Rule rules[] = {
     {NULL,                              "spmsc",     NULL,      SPTAG(7),   1,   -1},
     {NULL,                              "spflm",     NULL,      SPTAG(8),   1,   -1},
     {NULL,                              "sprss",     NULL,      SPTAG(9),   1,   -1},
-    {NULL,                              "sptut",     NULL,      SPTAG(10),  1,   -1},
-    {"Bitwarden",                       NULL,        NULL,      SPTAG(11),  1,   -1},
-    {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(12),  1,   -1},
-    {"Arandr",                          NULL,        NULL,      SPTAG(13),  1,   -1},
+    {"Bitwarden",                       NULL,        NULL,      SPTAG(10),  1,   -1},
+    {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(11),  1,   -1},
+    {"Lxrandr",                         NULL,        NULL,      SPTAG(12),  1,   -1},
 };
 
 /* Layout(s) */
@@ -233,14 +229,14 @@ static const Layout layouts[] = {
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "st", NULL };
-static const char *editor[]        = { "st", "-n", "editor", "-c", "editor", "-e", ".local/bin/lvim", NULL};
-static const char *browser[]       = { "flatpak", "run", "org.mozilla.firefox", NULL };
+static const char *editor[]        = { "neovide", "--neovim-bin", ".local/bin/lvim", NULL};
+static const char *browser[]       = { "flatpak", "run", "com.brave.Browser", NULL };
 static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
-static const char *vm[]            = { "flatpak", "run", "org.gnome.Boxes", NULL };
+static const char *vm[]            = { "virt-manager", NULL };
 static const char *office[]        = { "flatpak", "run", "org.libreoffice.LibreOffice", NULL };
 static const char *videoeditor[]   = { "flatpak", "run", "org.kde.kdenlive", NULL };
-static const char *imgeditor[]     = { "flatpak", "run", "org.gimp.GIMP", NULL };
-static const char *handnote[]      = { "flatpak", "run", "com.github.xournalpp.xournalpp", NULL };
+static const char *imageeditor[]   = { "flatpak", "run", "org.gimp.GIMP", NULL };
+static const char *audioeditor[]   = { "flatpak", "run", "org.audacityteam.Audacity", NULL };
 
 /* Keybindings */
 static Keychord *keychords[] = {
@@ -259,14 +255,14 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_q}},            spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") }),   /* Launch power menu */
 
     /* Apps */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),      /* Launch text editor (tag 1) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vm } }),          /* Launch vm manager (tag 2) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),     /* Launch web browser (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat } }),        /* Launch chat app (tag 4) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_o}},            spawn,          {.v = office } }),      /* Launch office suite (tag 8) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_k}},            spawn,          {.v = videoeditor } }), /* Launch video editor (tag 6) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_i}},            spawn,          {.v = imgeditor } }),   /* Launch image editor (tag 7) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_x}},            spawn,          {.v = handnote } }),    /* Launch hand written notes app (tag 7) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor (tag 1) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vm } }),              /* Launch vm manager (tag 2) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),         /* Launch web browser (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat } }),            /* Launch chat app (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_a}},            spawn,          {.v = audioeditor } }),     /* Launch audio editor (tag 5) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_k}},            spawn,          {.v = videoeditor } }),     /* Launch video editor (tag 6) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_i}},            spawn,          {.v = imageeditor } }),     /* Launch image editor (tag 7) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_o}},            spawn,          {.v = office } }),          /* Launch office suite (tag 8) */
 
     /* Keyboard Layouts */
     &((Keychord){2, {{MODKEY, XK_x}, {0, XK_e}},            spawn,          SHCMD("setxkbmap -layout es && pkill -RTMIN+10 dwmblocks") }),  /* Switch to Spanish keyboard layout */
@@ -336,13 +332,12 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},  	        togglescratch,  {.ui = 4 } }),  /* Toggle ani-cli scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_y}},  	        togglescratch,  {.ui = 5 } }),  /* Toggle ytfzf scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_n}},  	        togglescratch,  {.ui = 6 } }),  /* Toggle ytfzf (music) scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},  	        togglescratch,  {.ui = 7 } }),  /* Toggle musikcube scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},  	        togglescratch,  {.ui = 7 } }),  /* Toggle cmus scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_v}},  	        togglescratch,  {.ui = 8 } }),  /* Toggle vifm scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},  	        togglescratch,  {.ui = 9 } }),  /* Toggle newsboat scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_t}},  	        togglescratch,  {.ui = 10 } }), /* Toggle tut scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},  	        togglescratch,  {.ui = 11 } }), /* Toggle Bitwarden scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},  	        togglescratch,  {.ui = 12 } }), /* Toggle Qalculate scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},  	        togglescratch,  {.ui = 13 } }), /* Toggle Arandr scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},  	        togglescratch,  {.ui = 10 } }), /* Toggle Bitwarden scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},  	        togglescratch,  {.ui = 11 } }), /* Toggle Qalculate scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},  	        togglescratch,  {.ui = 12 } }), /* Toggle lxrandr scratchpad */
 
     /* Session Management */
     &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_q}}, quit,           {0} }), 
