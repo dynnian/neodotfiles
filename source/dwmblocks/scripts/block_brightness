@@ -27,4 +27,4 @@ elif [ "${brt%.*}" -ge 20 ]; then
 else
     icon="󱩎"
 fi
-echo " $icon ${brt%.*}% " # print the icon and brightness level
+echo " $icon " # print the icon and brightness level

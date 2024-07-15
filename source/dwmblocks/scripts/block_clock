@@ -25,7 +25,5 @@ esac
 
 # this variable will store the clock in the desired format
 clock="$(date +%I:%M%p | sed 's/^0//')"
-# this variable will store the date in the desired format
-ddate="$(date +%d/%m/%y)"
 
-echo " $clock_icon $clock | 󰸗 $ddate " # print the clock icon, the current time and then date
+echo "$clock_icon $clock " # print the clock icon, the current time and then date

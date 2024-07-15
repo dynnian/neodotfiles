@@ -16,4 +16,4 @@ elif [ "$vol" -gt "0" ]; then
 else
     echo " 󰖁 " && exit # just in case if pamixer or the audio isn't available
 fi
-echo -e " $icon $vol% " # print the volume icon and level
+echo -e " $icon " # print the volume icon and level

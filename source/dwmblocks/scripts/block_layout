@@ -8,4 +8,4 @@
 layout=$(setxkbmap -query | grep -oP 'layout:\s*\K\w+');
 
 # print the current keyboard layout in all caps
-echo "󰥻 $layout " | tr '[:lower:]' '[:upper:]';
+echo " 󰥻 $layout " | tr '[:lower:]' '[:upper:]';

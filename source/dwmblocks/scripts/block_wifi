@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ***This script was made by Clay Gomera (Drake)***
-#  - Description: A dwmblocks script to print the network status
+#  - Description: A dwmblocks script to print the wifi status
 #  - Dependencies: dwm, dwmblocks, nmcli
 
 #####
@@ -23,13 +23,16 @@ get_wifi_strength() {
     fi
 }
 
+# this variable will store the current state of the connection (connected or
+# disconnected)
+constate=$(nmcli dev | grep wifi | sed 's/ \{2,\}/|/g' | cut -d '|' -f3 | head -1)
+
+# this variable will store the name of the wifi network that the computer is
+# currently connected to
+currentwfi=$(nmcli dev | grep wifi | sed 's/ \{2,\}/|/g' | cut -d '|' -f4 | head -1)
+
 # Check Ethernet connection
 ethernet_state=$(nmcli dev | grep ethernet | awk '{print $3}')
-
-# Check Wi-Fi connection
-wifi_info=$(nmcli -t -f DEVICE,TYPE,STATE,CONNECTION dev | grep wifi)
-constate=$(echo "$wifi_info" | awk -F: '{print $3}')
-currentwfi=$(echo "$wifi_info" | awk -F: '{print $4}')
 
 if [ "$ethernet_state" = "connected" ]; then
     echo " 󰈀 Ethernet "
@@ -43,7 +46,7 @@ elif [ "$constate" = "connected" ]; then # if it's connected
         "3") icon=" 󰤥 " ;;
         "4") icon=" 󰤨 " ;;
     esac
-    echo "$icon$currentwfi"
+    echo "$icon$currentwfi "
 else
     echo " 󰤮 " # just in case if nmcli isn't available or something weird is happening
 fi

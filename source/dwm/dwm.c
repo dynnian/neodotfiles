@@ -2283,7 +2283,6 @@ void togglemaster(const Arg *arg) {
 		arrange(selmon);
 }
 
-
 void togglescratch(const Arg *arg) {
 	Client *c;
 	unsigned int found = 0;

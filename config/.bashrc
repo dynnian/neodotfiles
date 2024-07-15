@@ -147,10 +147,10 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="sudo dnf update" \
-    pkg-install="sudo dnf install" \
-    pkg-remove="sudo dnf remove" \
-    pkg-search="sudo dnf search" \
+    pkg-update="sudo pacman -Syyu" \
+    pkg-install="sudo pacman -S" \
+    pkg-remove="sudo pacman -Rcns" \
+    pkg-search="sudo pacman -Ss" \
 
 # colorize grep output (good for log files)
 alias \
@@ -187,9 +187,9 @@ alias \
 # audio
 alias \
     mx="pulsemixer" \
-    mk="musikcube" \
-    ms="musikcube" \
-    music="musikcube"
+    mk="cmus" \
+    ms="cmus" \
+    music="cmus"
 
 # power management
 alias \

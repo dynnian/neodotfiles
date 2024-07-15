@@ -70,7 +70,7 @@ static Sp scratchpads[] = {
 
 /* Tag Definitions */
 static const char *tags[] = {
-  "",  /* EDITOR */
+  "",  /* nDITOR */
   "󰙨",  /* TESTING */
   "󰖟",  /* WEB */
   "󰭹",  /* CHAT */
@@ -229,7 +229,7 @@ static const Layout layouts[] = {
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "st", NULL };
-static const char *editor[]        = { "neovide", "--neovim-bin", ".local/bin/lvim", NULL};
+static const char *editor[]        = { "emacsclient", "-c", "-a", "emacs", NULL};
 static const char *browser[]       = { "flatpak", "run", "com.brave.Browser", NULL };
 static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *vm[]            = { "virt-manager", NULL };

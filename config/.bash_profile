@@ -6,9 +6,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # X11
-export X11CFGDIR="$XDG_CONFIG_HOME/X11"
-export X11LOGDIR="$XDG_CACHE_HOME/X11Logs"
-export XINITRC="$X11CFGDIR/xinitrc"
+export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
 
 # Sanely export XDG Base dir variables
 eval "$(sed 's/^[^#].*/export &/g;t;d' ~/.config/user-dirs.dirs)"
@@ -27,21 +25,24 @@ export BASHRC="$HOME/.bashrc"
 export TERMINAL="st"
 export EDITOR="$HOME/.local/bin/lvim"
 export VISUAL="st -e $EDITOR"
-export BROWSER="flatpak run org.mozilla.firefox"
+export BROWSER="flatpak run com.brave.Browser"
 export VIEWER="zathura"
 
 # Bashrc
 source "$BASHRC"
 
 # Create config directories if they don't exist
-if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ] || [ ! -d "$X11LOGDIR" ]; then
-    mkdir -p "$WGETDIR" "$GNUPGHOME" "$X11LOGDIR"
+if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
+    mkdir -p "$WGETDIR" "$GNUPGHOME"
+fi
+
+if [ ! -f "$WGETRC" ]; then
+    touch "$WGETRC"
 fi
 
 # Starting xsession
-export X11LOGFILE=$(mktemp --tmpdir="$X11LOGDIR" X11LOG.XXXXXX)
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    startx "$XINITRC" -- vt1 -keeptty &>> "$X11LOGFILE"
+    startx "$XINITRC" -- vt1 -keeptty &>> /dev/null
     logout
 fi
 

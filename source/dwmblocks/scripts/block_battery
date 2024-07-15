@@ -7,101 +7,103 @@
 # this variable will store the current power profile
 currntpwr=$(powerprofilesctl get)
 if [ "${currntpwr}" = "performance" ]; then
-	pwr=" | 󰓅 Performance "
+    pwr=" | 󰓅 "
 elif [ "${currntpwr}" = "balanced" ]; then
-	pwr=" | 󰾅 Balanced "
+    pwr=" | 󰾅 "
 elif [ "${currntpwr}" = "power-saver" ]; then
-	pwr=" | 󰾆 PowerSaver "
+    pwr=" | 󰾆 "
 fi
 
-# loop through all the available batteries and get it's current capacity
+# loop through all the available batteries and get its current capacity
 for battery in /sys/class/power_supply/BAT?*; do
-	# if non-first battery, print a space separator.
-	[ -n "${capacity+x}" ] && printf " "
-	percentage="$(cat "$battery/capacity" 2>&1)"
+    # if non-first battery, print a space separator.
+    [ -n "${capacity+x}" ] && printf " "
+    percentage="$(cat "$battery/capacity" 2>&1)"
 
-	# sets up the status and capacity
-	case "$(cat "$battery/status" 2>&1)" in
-		"Full") 
-			status=" 󰁹" 
-			;;
-		"Discharging") 
-			# updates the status icon based on the battery percentage
-			if [ "$percentage" -le 20 ]; then
-				status=" 󰁻"
-			elif [ "$percentage" -le 30 ]; then
-				status=" 󰁼"
-			elif [ "$percentage" -le 40 ]; then
-				status=" 󰁽"
-			elif [ "$percentage" -le 50 ]; then
-				status=" 󰁾"
-			elif [ "$percentage" -le 60 ]; then
-				status=" 󰁿"
-			elif [ "$percentage" -le 70 ]; then
-				status=" 󰂀"
-			elif [ "$percentage" -le 80 ]; then
-				status=" 󰂁"
-			elif [ "$percentage" -le 90 ]; then
-				status=" 󰂂"
-			else
-				status=" 󰁹"
-			fi
-			;;
-		"Charging")
-			# updates the status icon based on the battery percentage while charging
-			if [ "$percentage" -le 10 ]; then
-				status=" 󰢜"
-			elif [ "$percentage" -le 20 ]; then
-				status=" 󰂆"
-			elif [ "$percentage" -le 30 ]; then
-				status=" 󰂇"
-			elif [ "$percentage" -le 40 ]; then
-				status=" 󰂈"
-			elif [ "$percentage" -le 50 ]; then
-				status=" 󰢝"
-			elif [ "$percentage" -le 60 ]; then
-				status=" 󰂉"
-			elif [ "$percentage" -le 70 ]; then
-				status=" 󰢞"
-			elif [ "$percentage" -le 80 ]; then
-				status=" 󰂊"
-			elif [ "$percentage" -le 90 ]; then
-				status=" 󰂋"
-			else
-				status=" 󰂅"
-			fi
-			;;
-		"Not charging") 
-			# updates the status icon based on the battery percentage
-			if [ "$percentage" -le 20 ]; then
-				status=" 󰁻"
-			elif [ "$percentage" -le 30 ]; then
-				status=" 󰁼"
-			elif [ "$percentage" -le 40 ]; then
-				status=" 󰁽"
-			elif [ "$percentage" -le 50 ]; then
-				status=" 󰁾"
-			elif [ "$percentage" -le 60 ]; then
-				status=" 󰁿"
-			elif [ "$percentage" -le 70 ]; then
-				status=" 󰂀"
-			elif [ "$percentage" -le 80 ]; then
-				status=" 󰂁"
-			elif [ "$percentage" -le 90 ]; then
-				status=" 󰂂"
-			else
-				status=" 󰁹"
-			fi
-			;;
-		"Unknown") 
-			echo " 󰂃 " && exit 0 # just in case
-			;;
-		*) exit 1 ;; # just exit if there isn't a battery on the system
-	esac
+    # sets up the status and capacity
+    case "$(cat "$battery/status" 2>&1)" in
+        "Full") 
+            status=" 󰁹" 
+            ;;
+        "Discharging") 
+            # updates the status icon based on the battery percentage
+            if [ "$percentage" -le 20 ]; then
+                status=" 󰁻"
+            elif [ "$percentage" -le 30 ]; then
+                status=" 󰁼"
+            elif [ "$percentage" -le 40 ]; then
+                status=" 󰁽"
+            elif [ "$percentage" -le 50 ]; then
+                status=" 󰁾"
+            elif [ "$percentage" -le 60 ]; then
+                status=" 󰁿"
+            elif [ "$percentage" -le 70 ]; then
+                status=" 󰂀"
+            elif [ "$percentage" -le 80 ]; then
+                status=" 󰂁"
+            elif [ "$percentage" -le 90 ]; then
+                status=" 󰂂"
+            else
+                status=" 󰁹"
+            fi
+            ;;
+        "Charging")
+            # updates the status icon based on the battery percentage while charging
+            if [ "$percentage" -le 10 ]; then
+                status=" 󰢜"
+            elif [ "$percentage" -le 20 ]; then
+                status=" 󰂆"
+            elif [ "$percentage" -le 30 ]; then
+                status=" 󰂇"
+            elif [ "$percentage" -le 40 ]; then
+                status=" 󰂈"
+            elif [ "$percentage" -le 50 ]; then
+                status=" 󰢝"
+            elif [ "$percentage" -le 60 ]; then
+                status=" 󰂉"
+            elif [ "$percentage" -le 70 ]; then
+                status=" 󰢞"
+            elif [ "$percentage" -le 80 ]; then
+                status=" 󰂊"
+            elif [ "$percentage" -le 90 ]; then
+                status=" 󰂋"
+            else
+                status=" 󰂅"
+            fi
+            ;;
+        "Not charging") 
+            # updates the status icon based on the battery percentage
+            if [ "$percentage" -le 20 ]; then
+                status=" 󰁻"
+            elif [ "$percentage" -le 30 ]; then
+                status=" 󰁼"
+            elif [ "$percentage" -le 40 ]; then
+                status=" 󰁽"
+            elif [ "$percentage" -le 50 ]; then
+                status=" 󰁾"
+            elif [ "$percentage" -le 60 ]; then
+                status=" 󰁿"
+            elif [ "$percentage" -le 70 ]; then
+                status=" 󰂀"
+            elif [ "$percentage" -le 80 ]; then
+                status=" 󰂁"
+            elif [ "$percentage" -le 90 ]; then
+                status=" 󰂂"
+            else
+                status=" 󰁹"
+            fi
+            ;;
+        "Unknown") 
+            echo " 󰂃" && exit 0 # just in case
+            ;;
+        *) exit 1 ;; # just exit if there isn't a battery on the system
+    esac
 
-	# will make a warning variable if discharging and low
-	[ "$status" = " 󰁺" ] && [ "$percentage" -le 10 ] && warn="󱈸"
+    # will make a warning variable if percentage is low
+    if [ "$status" = " 󰁻" ] && [ "$percentage" -le 10 ]; then
+        warn="󱈸"
+    fi
 
-	# print everything
-	printf "%s%s%d%%" "$status" "$warn " "$percentage"; unset warn
+    # print everything
+    printf "%s%s%d%%" "$status" "${warn:- }" "$percentage"; unset warn
 done && printf "$pwr\\n"

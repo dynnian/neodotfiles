@@ -5,10 +5,11 @@
 ##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
 ##   /_____/_/   \__,_/_/|_|\___/   My custom dwm build    ##
 
-/usr/libexec/polkit-gnome-authentication-agent-1 &
+lxpolkit &
 dwmblocks &
 sh "$HOME"/.fehbg &
 unclutter --hide-on-touch &
 herbed &
 picom &
 dbus-update-activation-environment DISPLAY XAUTHORITY &
+/usr/bin/emacs --daemon &

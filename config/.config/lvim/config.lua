@@ -1,5 +1,5 @@
 -- neovide options
-vim.o.guifont = "mononoki Nerd Font:h14"
+vim.o.guifont = "mononoki Nerd Font:h12"
 vim.g.neovide_hide_mouse_when_typing = true
 vim.g.neovide_no_idle = true
 vim.g.neovide_confirm_quit = true
