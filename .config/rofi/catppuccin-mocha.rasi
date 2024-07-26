@@ -10,7 +10,7 @@
     fg-col2: @blue;
 
     width: 800px;
-    font: "Mononoki Nerd Font 12";
+    font: "Mononoki Nerd Font 10";
 }
 
 element-text, element-icon , mode-switcher {

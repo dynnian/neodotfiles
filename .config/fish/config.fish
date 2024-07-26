@@ -9,7 +9,7 @@
 # First line removes the path; second line sets it.  Without the first line,
 # your path gets massive and fish becomes very slow.
 set -e fish_user_paths
-set -U fish_user_paths $HOME/.bin  $HOME/.local/bin $HOME/.go/bin $HOME/Applications /var/lib/flatpak/exports/bin/ $fish_user_paths
+set -U fish_user_paths $HOME/.bin  $HOME/.local/bin $HOME/.go/bin $HOME/Applications $HOME/.local/share/JetBrains/Toolbox/scripts /var/lib/flatpak/exports/bin/ $fish_user_paths
 
 ### EXPORT ###
 set fish_greeting                                 # Supresses fish's intro message
@@ -34,7 +34,6 @@ set fish_color_autosuggestion '#504945'
 set fish_color_command brcyan
 set fish_color_error '#fb4934'
 set fish_color_param brcyan
-
 
 ### FUNCTIONS ###
 # Functions needed for !! and !$
@@ -238,3 +237,4 @@ alias blt='bluetoothctl'
 
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source
+zoxide init fish | source

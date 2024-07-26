@@ -29,7 +29,7 @@ CheckDependencies() {
     fi
 
     local missing_deps=()
-    for dep in swww; do
+    for dep in hyprpaper; do
         if ! command -v "$dep" &> /dev/null; then
             missing_deps+=("$dep")
         fi
@@ -49,9 +49,14 @@ CheckDependencies() {
 CheckDependencies
 
 cd "$walldir" || exit 1
-wallpaper=$(fd -p "$walldir" | $RUNNER -i -p "󰋩 Wallpaper Selector")
+wallpaper=$(fd -p "$walldir" | $RUNNER -only-match -i -p "󰋩 Wallpaper Selector")
 if [ -n "$wallpaper" ]; then
-    swww img "$wallpaper"
+    cp "$wallpaper" "$HOME/.config/hypr/wall/wall.png"
+    cp "$wallpaper" "$HOME/.config/hypr/wall/lock.png"
+    pidof hyprpaper && pkill hyprpaper
+    sleep 0.5
+    hyprpaper &
+    disown
 else
     exit 0
 fi

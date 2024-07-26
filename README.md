@@ -5,15 +5,16 @@ clone them and edit them as you wish. Part of this work was based on other
 people's dotfiles (Distrotube for example), and it may contain scripts or
 binaries that they made or modify.
 
-![screenshot](./screenshot.jpg)
+![screenshot](./screenshot.png)
 
 
-# Dependencies
+# Dependencies (some of them)
 - hyprland
 - hyprpaper
+- hyprpicker
 - hypridle
 - hyprlock
 - waybar
-- fuzzel
+- rofi
 - dunst
 - vimiv

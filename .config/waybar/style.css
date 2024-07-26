@@ -68,7 +68,7 @@ button:hover {
 window#waybar {
     background-color: @wbackground;
     font-family: Symbols Nerd Font Mono, Mononoki Nerd Font;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* Workspaces */
@@ -185,7 +185,7 @@ label:focus {
 #custom-arrow4,
 #custom-arrow5,
 #custom-arrow6 {
-	font-size: 26pt;
+	font-size: 25pt;
 }
 
 /* Individual Modeline arrows */
