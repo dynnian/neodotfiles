@@ -132,6 +132,17 @@ ueberzug
 * **System dependencies** (stuff required for the main installation)
 
 ```
+NetworkManager
+dhcpcd
+wpa_supplicant
+grub-x86_64-efi
+efibootmgr
+lvm2
+cryptsetup
+vim
+elogind
+polkit
+dbus
 xorg-server
 xf86-input-libinput
 pipewire
