@@ -121,6 +121,7 @@ ueberzug
 - `arandr`
 - `mpv`
 - `zathura`
+- `nsxiv`
 - `qalculate-gtk`: launched with flatpak by default
 - `ytfzf`: [download here](https://github.com/pystardust/ytfzf)
 - `ani-cli`: [download here](https://github.com/pystardust/ani-cli)
