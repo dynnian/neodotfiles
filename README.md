@@ -1,8 +1,11 @@
-<h1 align="center">
-  <img src="assets/logo.png" alt="neodotfiles" width="415">
-</h1>
-
-<h4 align="center">My custom suckless based desktop focused on absolute productivity and workflow control.</h4>
+<div align="center">
+    <picture>
+        <source srcset="./assets/logo-dark.png" media="(prefers-color-scheme: dark)">
+        <source srcset="./assets/logo-light.png" media="(prefers-color-scheme: light)">
+        <img src="assets/logo-dark.png" alt="neodotfiles" width="415">
+    </picture>
+    <h4>My custom suckless based desktop focused on absolute productivity and workflow control.</h4>
+</div>
 
 ![screenshot](./assets/screenshot.png)
 
@@ -35,8 +38,9 @@
         - *Tag 9:* Gaming
 
 ### Other suckless utilities included
+
  * *dmenu:* the best run launcher. This build includes some very useful scripts for things like wifi, bluetooth and wallpaper configuration, drive mounting, etc.
- * *herbe & tiramisu:* a minimal and fast notification daemon (tiramisu is the daemon, herbe is the notification window).
+ * *herbe & tiramisu:* a minimal and fast notification daemon (tiramisu is the daemon, herbe is the notification window, I bundled them together).
  * *st:* the fastest terminal emulator ever, [siduck's build](https://github.com/siduck/st).
  * *slock:* simple and efficient lock screen with fingerprint reader support.
  * *dwbmlocks:* what enables you to customize dwm's status area in the bar. This build includes some cool & customizable status scripts.
@@ -47,23 +51,20 @@ Other configuration files included in this project are available at the config f
 
 * `.bash_profile & .bashrc`: Bash configuration files, the profile is neccesary to start up dwm on tty login.
 * `.config/btop`: [btop](https://github.com/aristocratos/btop) is a system monitoring utility, cooler than htop. Accesible from dwm via a scratchpad.
-* `.config/gtk-2.0 & .config/gtk-3.0`: GTK theeming files, I use the Cantarell font, the [Gruvbox-Dark-BL](https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme) theme and the [Simp1e-Gruvbox-Dark](https://gitlab.com/cursors/simp1e) cursor theme.
+* `.config/gtk-2.0` & `.config/gtk-3.0`: GTK theeming files, I use the Cantarell font, the [Gruvbox-Dark-BL](https://github.com/Fausto-Korpsvart/Gruvbox-GTK-Theme) theme and the [Simp1e-Gruvbox-Dark](https://gitlab.com/cursors/simp1e) cursor theme.
 * `.config/Kvantum`: Qt theeming via Kvantum, Gruvbox theme is included here too.
 * `.config/lvim`: [Lunarvim](https://www.lunarvim.org/) configuration files, this is a neovim distribution and my text editor of choice.
 * `.config/mpv`: Mpv config files, mainly just for vim-like keybindings.
-* `.config/musikcube`: [musikcube](https://github.com/clangen/musikcube) is basically the best terminal music player. Also accesible from dwm via a scratchpad. Just like mpv, this is only for vim-like keybindings.
-* `.config/neofetch`: Make neofetch look cooler.
 * `.config/newsboat`: [Newsboat](https://github.com/newsboat/newsboat) is an awesome RSS/Atom feeds reader for the terminal. Also accesible from dwm via a scratchpad. The config file is for vim-like keybindings and also my collection of RSS & YouTube subscriptions feeds (you can open any video in mpv hitting first comma and then v).
 * `.config/picom`: The only X compositor that actually works, responsible of transparency and some animations.
-* `.config/pipewire`: Just to make pipewire behave a little better with Pro audio equipment (support for multiple sample rates).
-* `.config/tut`: [tut](https://github.com/RasmusLindroth/tut) is an amazing Mastodon client for the terminal. Also accesible from dwm via a scratchpad.
+* `.config/qutebrowser`: Sometimes I like using a minimal browser, and qutebrowser is the best one.
 * `.config/X11`: This is where I put the xinitrc file, responsible of starting up dwm properly.
-* `.config/yazi`: [yazi](https://github.com/sxyazi/yazi) is the best terminal file manager with everything you will and may need, with vim-like keybindings and image previews.
+* `.config/vifm`: [vifm](https://vifm.info/) is the best terminal file manager with everything you will and may need, with vim-like keybindings and image previews (with ueberzug).
 * `.config/zathura`: [zathura](https://git.pwmt.org/pwmt/zathura) is my document viewer of choice, also with vim-like keybindings.
 
 ## Installation & How To Modify
 
-Make sure to have these dependencies installed in your system:
+Make sure to have these dependencies installed in your system, in this case package names are from Void Linux, you'll have to look for the package names in your distribution:
 
 * **Build dependencies**
 
@@ -81,6 +82,8 @@ gd-devel
 pam-devel
 libnotify
 xinit
+setxkbmap
+brightnessctl
 make
 gcc
 vala
@@ -89,7 +92,7 @@ vala
 * **Runtime dependencies** (required for dmenu scripts & dwm)
 
 ```
-fd
+fd-find
 feh
 xdpyinfo
 xdotool
@@ -97,15 +100,28 @@ ffmpeg
 maim
 slop
 udisks2
-bluez-utils
+bluez
 j4-dmenu-desktop
 NetworkManager
 power-profiles-daemon
-polkit-kde
+polkit-gnome
 unclutter-xfixes
 gnome-keyring
 picom
+ueberzug
 ```
+
+* **Other dependencies** (scratchpads)
+
+- `bitwarden`: launched with flatpak by default
+- `btop`
+- `pulsemixer`
+- `newsboat`
+- `arandr`
+- `qalculate-gtk`: launched with flatpak by default
+- `ytfzf`: [download here](https://github.com/pystardust/ytfzf)
+- `ani-cli`: [download here](https://github.com/pystardust/ani-cli)
+- `flix-cli`: [download here](https://github.com/d4r1us-drk/flix-cli)
 
 After installing them with your package manager of choice, you can do the following to get the source code and start to modify it to your liking.
 
