@@ -10,7 +10,7 @@ pidof pipewire || pipewire &
 pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
 pidof dwmblocks || dwmblocks &
 pidof unclutter || unclutter --hide-on-touch &
-pidof tiramisu || herbed &
+pidof dunst || dunst --config $HOME/.config/dunst/dunstrc &
 pidof picom || picom &
 
 gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark'

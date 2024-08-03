@@ -40,7 +40,6 @@
 ### Other suckless utilities included
 
  * *dmenu:* the best run launcher. This build includes some very useful scripts for things like wifi, bluetooth and wallpaper configuration, drive mounting, etc.
- * *herbe & tiramisu:* a minimal and fast notification daemon (tiramisu is the daemon, herbe is the notification window, I bundled them together).
  * *st:* the fastest terminal emulator ever, [siduck's build](https://github.com/siduck/st).
  * *slock:* simple and efficient lock screen with fingerprint reader support.
  * *dwbmlocks:* what enables you to customize dwm's status area in the bar. This build includes some cool & customizable status scripts.
@@ -57,6 +56,7 @@ Other configuration files included in this project are available at the config f
 * `.config/mpv`: Mpv config files, mainly just for vim-like keybindings.
 * `.config/newsboat`: [Newsboat](https://github.com/newsboat/newsboat) is an awesome RSS/Atom feeds reader for the terminal. Also accesible from dwm via a scratchpad. The config file is for vim-like keybindings and also my collection of RSS & YouTube subscriptions feeds (you can open any video in mpv hitting first comma and then v).
 * `.config/picom`: The only X compositor that actually works, responsible of transparency and some animations.
+* `.config/dunst`: A cool, minimal and fast notification daemon. Best one out there.
 * `.config/qutebrowser`: Sometimes I like using a minimal browser, and qutebrowser is the best one.
 * `.config/X11`: This is where I put the xinitrc file, responsible of starting up dwm properly.
 * `.config/vifm`: [vifm](https://vifm.info/) is the best terminal file manager with everything you will and may need, with vim-like keybindings and image previews (with ueberzug).
@@ -234,8 +234,6 @@ These are the patches I applied to this dwm build (some of them I modified):
 ## Credits
 
 - dwm and the suckless tools available here are made by the suckless guys at [https://suckless.org](https://suckless.org).
-- herbe is made by dudik and available [here](https://github.com/dudik/herbe).
-- tiramisu is made by Sweets and available [here](https://github.com/Sweets/tiramisu).
 - dwmblocks is made by torrinfail and available [here](https://github.com/torrinfail/dwmblocks)
 
 ## License
