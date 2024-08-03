@@ -1890,7 +1890,7 @@ void run(void) {
 }
 
 void runAutostart(void) {
-	system("$HOME/.config/suckless/dwm/autostart");
+	system(start_script);
 }
 
 void scan(void) {

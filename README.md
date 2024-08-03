@@ -148,6 +148,7 @@ polkit
 dbus
 xorg-server
 xf86-input-libinput
+xss-lock
 pipewire
 wireplumber
 alsa-pipewire

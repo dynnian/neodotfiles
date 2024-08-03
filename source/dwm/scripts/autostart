@@ -12,6 +12,7 @@ pidof dwmblocks || dwmblocks &
 pidof unclutter || unclutter --hide-on-touch &
 pidof dunst || dunst --config $HOME/.config/dunst/dunstrc &
 pidof picom || picom &
+pidof xss-lock || xss-lock $HOME/.config/suckless/dwm/scripts/lock &
 
 gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark'
 gsettings set org.gnome.desktop.interface cursor-size 16
