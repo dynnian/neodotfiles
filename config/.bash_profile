@@ -24,7 +24,7 @@ export BASHRC="$HOME/.bashrc"
 # Default apps
 export TERMINAL="st"
 export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="st -e $EDITOR"
+export VISUAL="st -n editor -c editor -e $EDITOR"
 export BROWSER="flatpak run com.brave.Browser"
 export VIEWER="zathura"
 

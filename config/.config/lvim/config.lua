@@ -1,28 +1,3 @@
--- neovide options
-vim.o.guifont = "mononoki Nerd Font:h12"
-vim.g.neovide_hide_mouse_when_typing = true
-vim.g.neovide_no_idle = true
-vim.g.neovide_confirm_quit = true
-vim.g.neovide_input_use_logo = true
-
-vim.g.neovide_cursor_antialiasing = true
-vim.g.neovide_cursor_animate_in_insert_mode = true
-vim.g.neovide_cursor_vfx_mode = "pixiedust"
-vim.g.neovide_cursor_vfx_particle_speed = 20.0
-
-vim.g.neovide_padding_top = 0
-vim.g.neovide_padding_bottom = 0
-vim.g.neovide_padding_right = 0
-vim.g.neovide_padding_left = 0
-
--- Helper function for transparency formatting
-local alpha = function()
-  return string.format("%x", math.floor(255 * (vim.g.transparency or 0.98)))
-end
-vim.g.neovide_transparency = 0.95
-vim.g.transparency = 0.95
-vim.g.neovide_background_color = "#1d2021" .. alpha()
-
 -- nvim options
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
@@ -40,7 +15,7 @@ lvim.log.level = "info"
 
 -- change theme settings
 lvim.colorscheme = "gruvbox"
-lvim.transparent_window = false
+lvim.transparent_window = true
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
@@ -52,7 +27,6 @@ lvim.builtin.treesitter.ensure_installed = {
     "c",
     "javascript",
     "json",
-    "lua",
     "python",
     "typescript",
     "tsx",

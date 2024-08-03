@@ -46,7 +46,7 @@ elif [ "$constate" = "connected" ]; then # if it's connected
         "3") icon=" 󰤥 " ;;
         "4") icon=" 󰤨 " ;;
     esac
-    echo "$icon$currentwfi "
+    echo "$icon$currentwfi"
 else
     echo " 󰤮 " # just in case if nmcli isn't available or something weird is happening
 fi

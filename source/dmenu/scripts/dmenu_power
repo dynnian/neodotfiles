@@ -25,30 +25,66 @@ pwr3="󰾆 Power Saver"
 pwr4=" Cancel"
 pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
 
-##### 
 ## This variable will store the current power profile
-#####
 currentpwr=$(powerprofilesctl get)
 
-##### 
 ## This variable will store the current wallpaper set by feh
-#####
 currentwall=$(tail --lines=1 "$HOME/.fehbg" | awk '{print $4}' | sed "s/'//g")
 
-##########
-## main ##
-##########
+# Check for missing dependencies
+check_dependencies() {
+    if ! [ -x "$(command -v dmenu)" ]; then
+        echo "Missing dependency: dmenu is required."
+        exit 1
+    fi
+
+    local missing_deps=()
+    for dep in loginctl powerprofilesctl notify-send; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing_deps+=("$dep")
+        fi
+    done
+
+    if [ ${#missing_deps[@]} -ne 0 ]; then
+        echo "Missing dependencies: ${missing_deps[*]}"
+        exit 1
+    fi
+}
+
+## Ask yes/no for action confirmation
+confirm_action() {
+    local prompt="$1"
+    echo -e "  Yes\n  No" | dmenu -l 2 -i -p "$prompt" | grep -q "  Yes"
+}
+
+####################
+# Main Script Flow #
+####################
+
+# Check for dependencies
+check_dependencies
+
 action=$(echo -e "$options" | dmenu -i -p "  Power Options"); # main menu prompt
+if [ -z "$action" ]; then
+    exit 0
+fi
+
 case "$action" in
-    "$option1")
-        killall -u "$(whoami)"
+        "$option1")
+        if confirm_action "  Are you sure you want to logout?"; then
+            pkill X
+        fi
         ;;
     "$option2")
-        systemctl reboot
+        if confirm_action "  Are you sure you want to reboot?"; then
+            loginctl reboot
+        fi
         ;;
     "$option3")
-        systemctl poweroff
-        ;;
+        if confirm_action "  Are you sure you want to power off?"; then
+            loginctl poweroff
+        fi
+	;;
     "$option4")
         slock -b "$currentwall" systemctl suspend
         ;;

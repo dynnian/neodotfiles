@@ -147,10 +147,11 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="sudo pacman -Syyu" \
-    pkg-install="sudo pacman -S" \
-    pkg-remove="sudo pacman -Rcns" \
-    pkg-search="sudo pacman -Ss" \
+    pkg-update="sudo xbps-install -Su" \
+    pkg-install="sudo xbps-install -S" \
+    pkg-remove="sudo xbps-remove -R" \
+    pkg-autoremove="sudo xbps-remove -Oo" \
+    pkg-search="sudo xbps-query -s" \
 
 # colorize grep output (good for log files)
 alias \
@@ -298,11 +299,10 @@ function parse_git_dirty {
 
 export PS1="[\[\e[31m\]\u\[\e[m\]\[\e[35m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]] [\[\e[33m\]\W\[\e[m\]\[\e[34m\]\`parse_git_branch\`\[\e[m\]] 󱞪 "
 
-# initialize ssh-agent
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+export SSH_AUTH_SOCK=${HOME}/.ssh/agent
+if ! pgrep -u ${USER} ssh-agent > /dev/null; then
+    rm -f ${SSH_AUTH_SOCK}
 fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+if [ ! -S ${SSH_AUTH_SOCK} ]; then
+    eval $(ssh-agent -a ${SSH_AUTH_SOCK} 2> /dev/null)
 fi
-

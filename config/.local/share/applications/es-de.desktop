@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Icon=org.gnome.Game
+Name=Emulation Station
+Name[en]=Emulation Station
+Name[en_US]=Emulation Station
+Name[en_US.UTF-8]=Emulation Station
+Comment=Emulator frontend
+Comment[en]=Emulator frontend
+Comment[en_US]=Emulator frontend
+Comment[en_US.UTF-8]=Emulator frontend
+Exec=/home/drk/.local/bin/ES-DE_x64.AppImage
+Hidden=false
+NoDisplay=false
+StartupNotify=false
+Terminal=false
+

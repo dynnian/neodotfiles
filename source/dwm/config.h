@@ -49,7 +49,7 @@ const char *spcmd9[]  = {"st", "-n", "spflm", "-c", "spflm", "-g", "140x35", "-e
 const char *spcmd10[]  = {"st", "-n", "sprss", "-c", "sprss", "-g", "140x35", "-e", "newsboat", NULL};
 const char *spcmd11[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
 const char *spcmd12[]  = {"flatpak", "run", "qalculate-gtk", NULL};
-const char *spcmd13[]  = {"lxrandr", NULL};
+const char *spcmd13[]  = {"arandr", NULL};
 
 static Sp scratchpads[] = {
     /* NAME         CMD */
@@ -70,7 +70,7 @@ static Sp scratchpads[] = {
 
 /* Tag Definitions */
 static const char *tags[] = {
-  "",  /* nDITOR */
+  "",  /* EDITOR */
   "󰙨",  /* TESTING */
   "󰖟",  /* WEB */
   "󰭹",  /* CHAT */
@@ -134,6 +134,8 @@ static const Rule rules[] = {
     {"Cadence",                         NULL,        NULL,      1 << 4,     0,   -1},
     {"easyeffects",                     NULL,        NULL,      1 << 4,     0,   -1},
     {"kid3",                            NULL,        NULL,      1 << 4,     0,   -1},
+    {"flacon",                          NULL,        NULL,      1 << 4,     0,   -1},
+    {"FFaudioConverter",                NULL,        NULL,      1 << 4,     0,   -1},
     /* 6 - Video Tag */
     {"kdenlive",                        NULL,        NULL,      1 << 5,     0,   -1},
     {"Pitivi",                          NULL,        NULL,      1 << 5,     0,   -1},
@@ -181,6 +183,7 @@ static const Rule rules[] = {
     {"xemu",                            NULL,        NULL,      1 << 8,     0,   -1},
     {"org.ppsspp.PPSSPP",               NULL,        NULL,      1 << 8,     0,   -1},
     {"dolphin-emu",                     NULL,        NULL,      1 << 8,     0,   -1},
+    {"es-de",                           NULL,        NULL,      1 << 8,     0,   -1},
     /* Scratchpads */
     {NULL,                              "sptrm",     NULL,      SPTAG(0),   1,   -1},
     {NULL,                              "sptop",     NULL,      SPTAG(1),   1,   -1},
@@ -195,6 +198,7 @@ static const Rule rules[] = {
     {"Bitwarden",                       NULL,        NULL,      SPTAG(10),  1,   -1},
     {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(11),  1,   -1},
     {"Lxrandr",                         NULL,        NULL,      SPTAG(12),  1,   -1},
+    {"Arandr",                          NULL,        NULL,      SPTAG(12),  1,   -1},
 };
 
 /* Layout(s) */
@@ -209,10 +213,10 @@ static const Layout layouts[] = {
     { "[M]",    monocle },
     { "|||",    centeredmaster },
     { ">|>",    centeredfloatingmaster },
- 	{ "[@]",    spiral },
- 	{ "[\\]",   dwindle },
+    { "[@]",    spiral },
+    { "[\\]",   dwindle },
     { "HHH",    grid },
-	{ NULL,     NULL },
+    { NULL,     NULL },
 };
 
 /* Tag control keybindings */
@@ -229,7 +233,7 @@ static const Layout layouts[] = {
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "st", NULL };
-static const char *editor[]        = { "emacsclient", "-c", "-a", "emacs", NULL};
+static const char *editor[]        = { "st", "-n", "editor", "-c", "editor", "-e", ".local/bin/lvim", NULL };
 static const char *browser[]       = { "flatpak", "run", "com.brave.Browser", NULL };
 static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *vm[]            = { "virt-manager", NULL };
@@ -318,10 +322,10 @@ static Keychord *keychords[] = {
     &((Keychord){1, {{MODKEY|Mod1Mask, XK_space}},          togglefloating, {0} }),                 /* Toggle floating mode on active window */
     &((Keychord){1, {{MODKEY, XK_0}},                       view,           {.ui = ~0 } }),         /* View all windows from all tags */
     &((Keychord){1, {{MODKEY|ShiftMask, XK_0}},             tag,            {.ui = ~0 } }),         /* View active window on all tags (similar to sticky, more nuclear) */
-    &((Keychord){1, {{MODKEY, XK_comma}},                   focusmon,       {.i = -1 } }),          /* Focus next screen */
-    &((Keychord){1, {{MODKEY, XK_period}},                  focusmon,       {.i = +1 } }),          /* Focus previous screen */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}},         tagmon,         {.i = -1 } }),          /* Move active window to next screen */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}},        tagmon,         {.i = +1 } }),          /* Move active window to previous screen */
+    &((Keychord){1, {{MODKEY, XK_comma}},                   focusmon,       {.i = +1 } }),          /* Focus next screen */
+    &((Keychord){1, {{MODKEY, XK_period}},                  focusmon,       {.i = -1 } }),          /* Focus previous screen */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}},         tagmon,         {.i = +1 } }),          /* Move active window to next screen */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}},        tagmon,         {.i = -1 } }),          /* Move active window to previous screen */
     &((Keychord){1, {{MODKEY, XK_b}},                       togglebar,      {0} }),                 /* Toggle bar */
 
     /* Scratchpads */

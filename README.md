@@ -62,7 +62,7 @@ Other configuration files included in this project are available at the config f
 * `.config/vifm`: [vifm](https://vifm.info/) is the best terminal file manager with everything you will and may need, with vim-like keybindings and image previews (with ueberzug).
 * `.config/zathura`: [zathura](https://git.pwmt.org/pwmt/zathura) is my document viewer of choice, also with vim-like keybindings.
 
-## Installation & How To Modify
+## Dependencies
 
 Make sure to have these dependencies installed in your system, in this case package names are from Void Linux, you'll have to look for the package names in your distribution:
 
@@ -116,12 +116,52 @@ ueberzug
 - `bitwarden`: launched with flatpak by default
 - `btop`
 - `pulsemixer`
+- `alsa-utils`
 - `newsboat`
 - `arandr`
+- `mpv`
+- `zathura`
 - `qalculate-gtk`: launched with flatpak by default
 - `ytfzf`: [download here](https://github.com/pystardust/ytfzf)
 - `ani-cli`: [download here](https://github.com/pystardust/ani-cli)
 - `flix-cli`: [download here](https://github.com/d4r1us-drk/flix-cli)
+
+### System stuff (just here to keep track on stuff I need to rebuild the system)
+
+* **System dependencies** (stuff required for the main installation)
+
+```
+xorg-server
+xf86-input-libinput
+pipewire
+wireplumber
+alsa-pipewire
+gstreamer1
+gstreamermm
+gstreamer-vaapi
+gst-plugins-bad1
+gst-plugins-good1
+gst-plugins-base1
+gst-plugins-ugly1
+bluez
+bluez-alsa
+libspa-alsa
+libspa-bluetooth
+mesa
+mesa-vaapi
+```
+
+* **Intel stuff** (I mainly use intel devices)
+
+```
+xf86-video-intel
+mesa-intel-dri
+mesa-vulkan-intel
+intel-media-driver
+libva-intel-driver
+```
+
+## Installation & How To Modify
 
 After installing them with your package manager of choice, you can do the following to get the source code and start to modify it to your liking.
 

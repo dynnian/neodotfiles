@@ -5,11 +5,35 @@
 ##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
 ##   /_____/_/   \__,_/_/|_|\___/   My custom dwm build    ##
 
-lxpolkit &
-dwmblocks &
-sh "$HOME"/.fehbg &
-unclutter --hide-on-touch &
-herbed &
-picom &
 dbus-update-activation-environment DISPLAY XAUTHORITY &
-/usr/bin/emacs --daemon &
+pidof pipewire || pipewire &
+pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
+pidof dwmblocks || dwmblocks &
+pidof unclutter || unclutter --hide-on-touch &
+pidof tiramisu || herbed &
+pidof picom || picom &
+
+gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark'
+gsettings set org.gnome.desktop.interface cursor-size 16
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface font-name 'Inter 10'
+gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10'
+gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10'
+gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
+gsettings set org.gnome.desktop.interface font-hinting 'full'
+
+sleep 3
+
+monitor1=$(cat /sys/class/drm/card0-DP-1/status)
+monitor2=$(cat /sys/class/drm/card0-HDMI-A-2/status)
+
+if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
+    xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal \
+           --output DP1 --primary --mode 1920x1080 --rate 100.00 --pos 1924x0 --rotate normal \
+           --output HDMI2 --mode 1280x1024 --rate 75.00 --pos 3844x0 --rotate normal
+fi
+sh "$HOME"/.fehbg &
+gnome-keyring-daemon --start --components=secrets &
+
