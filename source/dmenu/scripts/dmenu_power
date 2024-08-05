@@ -86,7 +86,7 @@ case "$action" in
         fi
 	;;
     "$option4")
-        slock -b "$currentwall" systemctl suspend
+        slock -b "$currentwall" loginctl suspend
         ;;
     "$option5")
         slock -b "$currentwall"

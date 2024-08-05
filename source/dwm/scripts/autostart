@@ -5,7 +5,10 @@
 ##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
 ##   /_____/_/   \__,_/_/|_|\___/   My custom dwm build    ##
 
+# activate neccesary env variables for ssh-agent and other stuff
 dbus-update-activation-environment DISPLAY XAUTHORITY &
+
+# autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
 pidof pipewire || pipewire &
 pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
 pidof dwmblocks || dwmblocks &
@@ -13,28 +16,45 @@ pidof unclutter || unclutter --hide-on-touch &
 pidof dunst || dunst --config $HOME/.config/dunst/dunstrc &
 pidof picom || picom &
 pidof xss-lock || xss-lock $HOME/.config/suckless/dwm/scripts/lock &
+pidof emacs || /usr/bin/emacs --daemon &
 
-gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark'
-gsettings set org.gnome.desktop.interface cursor-size 16
-gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark'
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-gsettings set org.gnome.desktop.interface font-name 'Inter 10'
-gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10'
-gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10'
-gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
-gsettings set org.gnome.desktop.interface font-hinting 'full'
+# set theming and font thingy
+gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface cursor-size 16 &
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
+gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
+gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
+gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10' &
+gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10' &
+gsettings set org.gnome.desktop.interface font-antialiasing 'rgba' &
+gsettings set org.gnome.desktop.interface font-hinting 'full' &
 
-sleep 3
-
+# grab monitor status (varies with the machine)
+### T480 monitors
 monitor1=$(cat /sys/class/drm/card0-DP-1/status)
 monitor2=$(cat /sys/class/drm/card0-HDMI-A-2/status)
 
+# if monitors are connected, then use xrandr to set desired settings
 if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
     xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal \
            --output DP1 --primary --mode 1920x1080 --rate 100.00 --pos 1924x0 --rotate normal \
-           --output HDMI2 --mode 1280x1024 --rate 75.00 --pos 3844x0 --rotate normal
+           --output HDMI2 --mode 1280x1024 --rate 75.00 --pos 3844x0 --rotate normal &
+elif [ "$monitor1" = "connected" ]; then
+    xrandr --output eDP1 --primary --auto \
+           --output DP1 --auto --scale-from 1920x1080 --same-as eDP1 &
+elif [ "$monitor2" = "connected" ]; then
+    xrandr --output eDP1 --primary --auto \
+           --output HDMI2 --auto --scale-from 1920x1080 --same-as eDP1 &
+else
+    xrandr --output eDP1 --primary --auto \
+           --output DP1 --off \
+           --output HDMI2 --off &
 fi
+
+# set wallpaper
 sh "$HOME"/.fehbg &
+
+# bind gnome secrets component to currently running gnome-keyring instance launched with PAM on login (this unlocks the keyring)
 gnome-keyring-daemon --start --components=secrets &
 

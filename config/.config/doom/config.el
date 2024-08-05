@@ -82,6 +82,28 @@
        :desc "Clippy describes function under point" "f" #'clippy-describe-function
        :desc "Clippy describes variable under point" "v" #'clippy-describe-variable))
 
+(require 'dap-netcore)
+(require 'dap-dlv-go)
+(map! :leader
+      (:prefix ("d" . "dap-mode")
+       :desc "Toggle breakpoint" "t" #'dap-breakpoint-toggle
+       :desc "Continue execution" "c" #'dap-continue
+       :desc "Step in" "n" #'dap-step-in
+       :desc "Step out" "N" #'dap-step-out
+       :desc "See all breakpoints" "b" #'dap-ui-breakpoints-toggle
+       :desc "Change variable value" "s" #'dap-ui-set-variable-value
+       :desc "Evaluate expression at point" "e" #'dap-eval-thing-at-point
+       :desc "Evaluate expression" "E" #'dap-eval
+       :desc "Run debugger" "r" #'dap-debug
+       :desc "Restart debugger" "R" #'dap-debug-restart
+       :desc "Stop debugger" "d" #'dap-disconnect))
+(use-package dap-mode
+    :init
+    (dap-auto-configure-mode)
+
+    :custom
+    (dap-netcore-download-url "https://github.com/Samsung/netcoredbg/releases/download/3.1.0-1031/netcoredbg-linux-amd64.tar.gz"))
+
 ;; With dired-open plugin, you can launch external programs for certain
 ;; extensions For example, I set all .png files to open in 'vimiv' and all .mp4
 ;; files to open in 'mpv'
@@ -89,6 +111,7 @@
                               ("jpg" . "vimiv")
                               ("png" . "vimiv")
                               ("mkv" . "mpv")
+                              ("mp3" . "mpv")
                               ("mp4" . "mpv")))
 
 (evil-define-key 'normal peep-dired-mode-map
@@ -166,6 +189,12 @@
        :desc "Toggle line highlight in frame" "h" #'hl-line-mode
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle truncate lines" "t" #'toggle-truncate-lines))
+
+(add-hook 'csharp-mode-hook #'lsp-deferred)
+
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+(add-hook 'rust-mode-hook #'lsp-deferred)
 
 (custom-set-faces
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "Mononoki Nerd Font"))))
@@ -308,3 +337,5 @@
 
 (set-frame-parameter nil 'alpha-background 98) ; For current frame
 (add-to-list 'default-frame-alist '(alpha-background . 98)) ; For all new frames henceforth
+(when (daemonp)
+  (exec-path-from-shell-initialize))

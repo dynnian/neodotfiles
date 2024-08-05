@@ -14,6 +14,7 @@
   - [[#keybindings-within-ibuffer-mode][Keybindings within ibuffer mode]]
 - [[#calendar][CALENDAR]]
 - [[#clippy][CLIPPY]]
+- [[#dap-mode][DAP MODE]]
 - [[#dired][DIRED]]
   - [[#keybindings-within-dired-with-peep-dired-mode-enabled][Keybindings Within Dired With Peep-Dired-Mode Enabled]]
   - [[#making-deleted-files-go-to-trash-can][Making deleted files go to trash can]]
@@ -25,6 +26,7 @@
   - [[#ivy-posframe][IVY-POSFRAME]]
   - [[#ivy-keybindings][IVY KEYBINDINGS]]
 - [[#line-settings][LINE SETTINGS]]
+- [[#lsp][LSP]]
 - [[#markdown][MARKDOWN]]
 - [[#modeline][MODELINE]]
 - [[#mouse-support][MOUSE SUPPORT]]
@@ -216,6 +218,33 @@ describe-variable respectively).
        :desc "Clippy describes variable under point" "v" #'clippy-describe-variable))
 #+end_src
 
+* DAP MODE
+dap-mode is a debugger manager for emacs that supports multiple languages.
+
+#+begin_src emacs-lisp
+(require 'dap-netcore)
+(require 'dap-dlv-go)
+(map! :leader
+      (:prefix ("d" . "dap-mode")
+       :desc "Toggle breakpoint" "t" #'dap-breakpoint-toggle
+       :desc "Continue execution" "c" #'dap-continue
+       :desc "Step in" "n" #'dap-step-in
+       :desc "Step out" "N" #'dap-step-out
+       :desc "See all breakpoints" "b" #'dap-ui-breakpoints-toggle
+       :desc "Change variable value" "s" #'dap-ui-set-variable-value
+       :desc "Evaluate expression at point" "e" #'dap-eval-thing-at-point
+       :desc "Evaluate expression" "E" #'dap-eval
+       :desc "Run debugger" "r" #'dap-debug
+       :desc "Restart debugger" "R" #'dap-debug-restart
+       :desc "Stop debugger" "d" #'dap-disconnect))
+(use-package dap-mode
+    :init
+    (dap-auto-configure-mode)
+
+    :custom
+    (dap-netcore-download-url "https://github.com/Samsung/netcoredbg/releases/download/3.1.0-1031/netcoredbg-linux-amd64.tar.gz"))
+#+end_src
+
 * DIRED
 Dired is the file manager within Emacs.
 
@@ -227,6 +256,7 @@ Dired is the file manager within Emacs.
                               ("jpg" . "vimiv")
                               ("png" . "vimiv")
                               ("mkv" . "mpv")
+                              ("mp3" . "mpv")
                               ("mp4" . "mpv")))
 #+end_src
 
@@ -410,6 +440,24 @@ commands, so I choose 'SPC t' plus 'key' for those bindings.
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle truncate lines" "t" #'toggle-truncate-lines))
 #+END_SRC
+
+* LSP
+Autostart lsp for programming languages
+
+- C#:
+#+begin_src emacs-lisp
+(add-hook 'csharp-mode-hook #'lsp-deferred)
+#+end_src
+
+- Go:
+#+begin_src emacs-lisp
+(add-hook 'go-mode-hook #'lsp-deferred)
+#+end_src
+
+- Rust:
+#+begin_src emacs-lisp
+(add-hook 'rust-mode-hook #'lsp-deferred)
+#+end_src
 
 * MARKDOWN
 
@@ -700,11 +748,12 @@ the second occurrence of 'e'.
       :desc "Zap up to char" "Z" #'zap-up-to-char)
 #+END_SRC
 
-
 * TRANSPARENT
 Transparent window
 
 #+BEGIN_SRC emacs-lisp
 (set-frame-parameter nil 'alpha-background 98) ; For current frame
 (add-to-list 'default-frame-alist '(alpha-background . 98)) ; For all new frames henceforth
+(when (daemonp)
+  (exec-path-from-shell-initialize))
 #+END_SRC

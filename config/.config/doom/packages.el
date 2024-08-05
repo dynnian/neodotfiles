@@ -80,3 +80,4 @@
 (package! csproj-mode)
 (package! dap-mode)
 (package! vimrc-mode)
+(package! exec-path-from-shell)

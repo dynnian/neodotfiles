@@ -28,6 +28,36 @@ export VISUAL="st -n editor -c editor -e $EDITOR"
 export BROWSER="flatpak run com.brave.Browser"
 export VIEWER="zathura"
 
+# Dev Tools Envs
+export GOPATH="$HOME/.go"
+export DOTNET_ROOT="$HOME/.dotnet"
+
+# Set path
+if [ -d "$HOME/.bin" ] ;
+    then PATH="$HOME/.bin:$PATH"
+fi
+if [ -d "$HOME/.local/bin" ] ;
+    then PATH="$HOME/.local/bin:$PATH"
+fi
+if [ -d "$HOME/.cargo/bin" ] ;
+    then PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [ -d "$HOME/Applications" ] ;
+    then PATH="$HOME/Applications:$PATH"
+fi
+if [ -d "$HOME/.go/bin" ] ;
+    then PATH="$HOME/.go/bin:$PATH"
+fi
+if [ -d $XDG_DATA_HOME/JetBrains/Toolbox/scripts ];
+    then PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
+fi
+if [ -d $HOME/.dotnet/ ];
+    then PATH="$HOME/.dotnet/:$PATH"
+fi
+if [ -d $HOME/.dotnet/tools/ ];
+    then PATH="$HOME/.dotnet/tools/:$PATH"
+fi
+
 # Bashrc
 source "$BASHRC"
 
@@ -35,7 +65,6 @@ source "$BASHRC"
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
 fi
-
 if [ ! -f "$WGETRC" ]; then
     touch "$WGETRC"
 fi
@@ -45,4 +74,3 @@ if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     startx "$XINITRC" -- vt1 -keeptty &>> /dev/null
     logout
 fi
-

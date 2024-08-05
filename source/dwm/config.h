@@ -19,7 +19,7 @@ static const unsigned int baralpha    = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const XPoint stickyicon[]      = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
 static const XPoint stickyiconbb      = {4,8};  /* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
-static const char start_script[] = "$HOME/.config/suckless/dwm/scripts/autostart";
+static const char start_script[]      = "$HOME/.config/suckless/dwm/scripts/autostart";
 
 #define ICONSIZE 16   /* window icon size */
 #define ICONSPACING 5 /* space between window icon and title (only when text is truncated) */
@@ -85,8 +85,8 @@ static const char *tags[] = {
 /* Window Rules */
 static const Rule rules[] = {
     /* xprop(1):
-     *	WM_CLASS(STRING) = instance, class
-     *	WM_NAME(STRING) = title
+     * WM_CLASS(STRING) = instance, class
+     * WM_NAME(STRING) = title
      */
     /* CLASS - INSTANCE - TITLE - TAGS MASK - ISFLOATING - MONITOR */
     /* 0 - No Tag */
@@ -225,16 +225,16 @@ static const Layout layouts[] = {
 #define TAGKEYS(KEY,TAG) \
         &((Keychord){1, {{MODKEY, KEY}},                                comboview,      {.ui = 1 << TAG} }), \
         &((Keychord){1, {{MODKEY|ControlMask, KEY}},                    toggleview,     {.ui = 1 << TAG} }), \
-        &((Keychord){1, {{MODKEY|ShiftMask, KEY}},						combotag,       {.ui = 1 << TAG} }), \
-        &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, KEY}},			toggletag,      {.ui = 1 << TAG} }),
+        &((Keychord){1, {{MODKEY|ShiftMask, KEY}},                      combotag,       {.ui = 1 << TAG} }), \
+        &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, KEY}},          toggletag,      {.ui = 1 << TAG} }),
 
 /* Helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/bash", "-c", cmd, NULL } }
 
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "st", NULL };
-static const char *editor[]        = { "st", "-n", "editor", "-c", "editor", "-e", ".local/bin/lvim", NULL };
+static const char *editor[]        = { "emacsclient", "-c", "-a", "'emacs'", NULL };
 static const char *browser[]       = { "flatpak", "run", "com.brave.Browser", NULL };
 static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *vm[]            = { "virt-manager", NULL };
@@ -332,17 +332,17 @@ static Keychord *keychords[] = {
     /* Scratchpads */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_Return}},       togglescratch,  {.ui = 0 } }),  /* Toggle scratch terminal */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_b}},            togglescratch,  {.ui = 1 } }),  /* Toggle system monitor scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_p}},  	        togglescratch,  {.ui = 2 } }),  /* Toggle audio mixer scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_f}},  	        togglescratch,  {.ui = 3 } }),  /* Toggle flix-cli scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},  	        togglescratch,  {.ui = 4 } }),  /* Toggle ani-cli scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_y}},  	        togglescratch,  {.ui = 5 } }),  /* Toggle ytfzf scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_n}},  	        togglescratch,  {.ui = 6 } }),  /* Toggle ytfzf (music) scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},  	        togglescratch,  {.ui = 7 } }),  /* Toggle cmus scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_v}},  	        togglescratch,  {.ui = 8 } }),  /* Toggle vifm scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},  	        togglescratch,  {.ui = 9 } }),  /* Toggle newsboat scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},  	        togglescratch,  {.ui = 10 } }), /* Toggle Bitwarden scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},  	        togglescratch,  {.ui = 11 } }), /* Toggle Qalculate scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},  	        togglescratch,  {.ui = 12 } }), /* Toggle lxrandr scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_p}},            togglescratch,  {.ui = 2 } }),  /* Toggle audio mixer scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_f}},            togglescratch,  {.ui = 3 } }),  /* Toggle flix-cli scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},            togglescratch,  {.ui = 4 } }),  /* Toggle ani-cli scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_y}},            togglescratch,  {.ui = 5 } }),  /* Toggle ytfzf scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_n}},            togglescratch,  {.ui = 6 } }),  /* Toggle ytfzf (music) scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},            togglescratch,  {.ui = 7 } }),  /* Toggle cmus scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_v}},            togglescratch,  {.ui = 8 } }),  /* Toggle vifm scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},            togglescratch,  {.ui = 9 } }),  /* Toggle newsboat scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 10 } }), /* Toggle Bitwarden scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 11 } }), /* Toggle Qalculate scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 12 } }), /* Toggle lxrandr scratchpad */
 
     /* Session Management */
     &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_q}}, quit,           {0} }), 
@@ -370,21 +370,31 @@ static const int scrollsensetivity = 30; /* 1 means resize window by 1 pixel for
 /* Resizemousescroll direction argument list */
 static const int scrollargs[][2] = {
     /* width change         height change */
-    { +scrollsensetivity,	0 },
-    { -scrollsensetivity,	0 },
-    { 0, 				  	+scrollsensetivity },
-    { 0, 					-scrollsensetivity },
+    { +scrollsensetivity,   0 },
+    { -scrollsensetivity,   0 },
+    { 0,   +scrollsensetivity },
+    { 0,   -scrollsensetivity },
 };
 
 /* Mouse Bindings */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static const Button buttons[] = {
-	/* click                event mask      button          function        argument */
+    /* click                event mask      button          function        argument */
     { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
     { ClkWinTitle,          0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-    { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+    /* placemouse options, choose which feels more natural:
+    *    0 - tiled position is relative to mouse cursor
+    *    1 - tiled postiion is relative to window center
+    *    2 - mouse pointer warps to window center
+    *
+    * The moveorplace uses movemouse or placemouse depending on the floating state
+    * of the selected client. Set up individual keybindings for the two if you want
+    * to control these separately (i.e. to retain the feature to move a tiled window
+    * into a floating position).
+    */
+    { ClkClientWin,         MODKEY,         Button1,        moveorplace,    {.i = 1} },
     { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
     { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
     { ClkClientWin,         MODKEY,         Button4,        resizemousescroll, {.v = &scrollargs[0]} },
@@ -396,5 +406,3 @@ static const Button buttons[] = {
     { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
     { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
-

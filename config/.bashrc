@@ -1,7 +1,6 @@
 ### EXPORT ###
 export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
-export GOPATH="$HOME/.go"
 
 ### "bat" as manpager
 export MANPAGER="bat -p"
@@ -18,27 +17,6 @@ export MANPAGER="bat -p"
 set -o vi
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
-
-### PATH ###
-if [ -d "$HOME/.bin" ] ;
-    then PATH="$HOME/.bin:$PATH"
-fi
-if [ -d "$HOME/.local/bin" ] ;
-    then PATH="$HOME/.local/bin:$PATH"
-fi
-if [ -d "$HOME/.cargo/bin" ] ;
-    then PATH="$HOME/.cargo/bin:$PATH"
-fi
-if [ -d "$HOME/Applications" ] ;
-    then PATH="$HOME/Applications:$PATH"
-fi
-if [ -d "$HOME/.go/bin" ] ;
-    then PATH="$HOME/.go/bin:$PATH"
-fi
-if [ -d $XDG_DATA_HOME/JetBrains/Toolbox/scripts ];
-    then PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
-fi
-
 
 ### CHANGE TITLE OF TERMINALS ###
 case ${TERM} in
@@ -129,6 +107,9 @@ alias \
 
 # bat as cat
 [ -x "$(command -v bat)" ] && alias cat="bat"
+
+# fastfetch as neofetch
+[ -x "$(command -v fastfetch)" ] && alias neofetch="fastfetch"
 
 # use lunarvim or neovim for vim if present.
 if [ -x "$(command -v $HOME/.local/bin/lvim)" ]; then
@@ -228,6 +209,10 @@ alias \
     ytv-best="yt-dlp -f bestvideo+bestaudio" \
     yt="ytfzf -ftsl" \
     ytm="ytfzf -mtsl"
+
+# distrobox
+alias \
+    dv="distrobox enter devbox"
 
 # network and bluetooth
 alias \
