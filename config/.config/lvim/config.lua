@@ -46,6 +46,7 @@ lvim.plugins = {
     { "kristijanhusak/vim-dadbod-ui" },
     { "kristijanhusak/vim-dadbod-completion", after = "nvim-cmp" },
     { "SirVer/ultisnips" },
+    { "mfussenegger/nvim-dap" }
 }
 
 -- configuring colorscheme
