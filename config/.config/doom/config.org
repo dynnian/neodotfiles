@@ -752,8 +752,8 @@ the second occurrence of 'e'.
 Transparent window
 
 #+BEGIN_SRC emacs-lisp
-(set-frame-parameter nil 'alpha-background 98) ; For current frame
-(add-to-list 'default-frame-alist '(alpha-background . 98)) ; For all new frames henceforth
+(set-frame-parameter nil 'alpha-background 95) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 95)) ; For all new frames henceforth
 (when (daemonp)
   (exec-path-from-shell-initialize))
 #+END_SRC

@@ -1,6 +1,7 @@
 /* Appearance */
 static const unsigned int borderpx    = 1;        /* border pixel of windows */
 static const unsigned int snap        = 32;       /* snap pixel */
+static const unsigned int gappx       = 6;        /* gaps between windows */
 static const int showbar              = 1;        /* 0 means no bar */
 static const int topbar               = 1;        /* 0 means bottom bar */
 static const int vertpad              = 0;        /* vertical padding of bar */
@@ -153,7 +154,7 @@ static const Rule rules[] = {
     {"Xournalpp",                       NULL,        NULL,      1 << 6,     0,   -1},
     {"Com.github.xournalpp.xournalpp",  NULL,        NULL,      1 << 6,     0,   -1},
     /* 8 - Office Tag */
-    {"DesktopEditors",                  NULL,        NULL,      1 << 7,     0,   -1},
+    {"ONLYOFFICE Desktop Editors",      NULL,        NULL,      1 << 7,     0,   -1},
     {"Soffice",                         "soffice",   NULL,      1 << 7,     0,   -1},
     {"libreoffice-startcenter",         NULL,        NULL,      1 << 7,     0,   -1},
     {"libreoffice-calc",                NULL,        NULL,      1 << 7,     0,   -1},
@@ -205,7 +206,7 @@ static const Rule rules[] = {
 /* Layout(s) */
 static const float mfact          = 0.5;  /* factor of master area size [0.05..0.95] */
 static const int   nmaster        = 1;    /* number of clients in master area */
-static const int   resizehints    = 0;    /* 1 means respect size hints in tiled resizals */
+static const int   resizehints    = 1;    /* 1 means respect size hints in tiled resizals */
 static const int   lockfullscreen = 1;    /* 1 will force focus on the fullscreen window */
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -235,13 +236,14 @@ static const Layout layouts[] = {
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "st", NULL };
 static const char *editor[]        = { "emacsclient", "-c", "-a", "'emacs'", NULL };
-static const char *browser[]       = { "flatpak", "run", "com.brave.Browser", NULL };
+static const char *browser[]       = { "brave", NULL };
 static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *vm[]            = { "virt-manager", NULL };
-static const char *office[]        = { "flatpak", "run", "org.libreoffice.LibreOffice", NULL };
+static const char *office[]        = { "flatpak", "run", "org.onlyoffice.desktopeditors", NULL };
 static const char *videoeditor[]   = { "flatpak", "run", "org.kde.kdenlive", NULL };
 static const char *imageeditor[]   = { "flatpak", "run", "org.gimp.GIMP", NULL };
 static const char *audioeditor[]   = { "flatpak", "run", "org.audacityteam.Audacity", NULL };
+static const char *game[]          = { "flatpak", "run", "com.valvesoftware.Steam", NULL };
 
 /* Keybindings */
 static Keychord *keychords[] = {
@@ -260,14 +262,15 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_q}},            spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") }),   /* Launch power menu */
 
     /* Apps */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor (tag 1) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vm } }),              /* Launch vm manager (tag 2) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),         /* Launch web browser (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat } }),            /* Launch chat app (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor  (tag 1) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vm } }),              /* Launch vm manager   (tag 2) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),         /* Launch web browser  (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat } }),            /* Launch chat app     (tag 4) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_a}},            spawn,          {.v = audioeditor } }),     /* Launch audio editor (tag 5) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_k}},            spawn,          {.v = videoeditor } }),     /* Launch video editor (tag 6) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_i}},            spawn,          {.v = imageeditor } }),     /* Launch image editor (tag 7) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_o}},            spawn,          {.v = office } }),          /* Launch office suite (tag 8) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_g}},            spawn,          {.v = game } }),            /* Launch office suite (tag 9) */
 
     /* Keyboard Layouts */
     &((Keychord){2, {{MODKEY, XK_x}, {0, XK_e}},            spawn,          SHCMD("setxkbmap -layout es && pkill -RTMIN+10 dwmblocks") }),  /* Switch to Spanish keyboard layout */
@@ -323,10 +326,10 @@ static Keychord *keychords[] = {
     &((Keychord){1, {{MODKEY|Mod1Mask, XK_space}},          togglefloating, {0} }),                 /* Toggle floating mode on active window */
     &((Keychord){1, {{MODKEY, XK_0}},                       view,           {.ui = ~0 } }),         /* View all windows from all tags */
     &((Keychord){1, {{MODKEY|ShiftMask, XK_0}},             tag,            {.ui = ~0 } }),         /* View active window on all tags (similar to sticky, more nuclear) */
-    &((Keychord){1, {{MODKEY, XK_comma}},                   focusmon,       {.i = +1 } }),          /* Focus next screen */
-    &((Keychord){1, {{MODKEY, XK_period}},                  focusmon,       {.i = -1 } }),          /* Focus previous screen */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}},         tagmon,         {.i = +1 } }),          /* Move active window to next screen */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}},        tagmon,         {.i = -1 } }),          /* Move active window to previous screen */
+    &((Keychord){1, {{MODKEY, XK_comma}},                   focusmon,       {.i = -1 } }),          /* Focus next screen */
+    &((Keychord){1, {{MODKEY, XK_period}},                  focusmon,       {.i = +1 } }),          /* Focus previous screen */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}},         tagmon,         {.i = -1 } }),          /* Move active window to next screen */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}},        tagmon,         {.i = +1 } }),          /* Move active window to previous screen */
     &((Keychord){1, {{MODKEY, XK_b}},                       togglebar,      {0} }),                 /* Toggle bar */
 
     /* Scratchpads */

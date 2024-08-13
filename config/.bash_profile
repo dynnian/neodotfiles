@@ -20,17 +20,14 @@ export INPUTRC="$HOME/.config/X11/inputrc"
 export GNUPGHOME="$HOME/.local/share/gnupg"
 export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
+export GOPATH="$HOME/.go"
 
 # Default apps
 export TERMINAL="st"
 export EDITOR="$HOME/.local/bin/lvim"
 export VISUAL="st -n editor -c editor -e $EDITOR"
-export BROWSER="flatpak run com.brave.Browser"
+export BROWSER="brave"
 export VIEWER="zathura"
-
-# Dev Tools Envs
-export GOPATH="$HOME/.go"
-export DOTNET_ROOT="$HOME/.dotnet"
 
 # Set path
 if [ -d "$HOME/.bin" ]; then
@@ -42,35 +39,37 @@ fi
 if [ -d "$HOME/.cargo/bin" ]; then
     PATH="$HOME/.cargo/bin:$PATH"
 fi
+if [ -d "$GOPATH/bin" ]; then
+    PATH="$GOPATH/bin:$PATH"
+fi
+if [ -d "$HOME/.local/lib/flutter/bin" ]; then
+    PATH="$HOME/.local/lib/flutter/bin:$PATH"
+fi
+if [ -d $HOME/.dotnet/tools ]; then
+    PATH="$HOME/.dotnet/tools:$PATH"
+fi
 if [ -d "$HOME/Applications" ]; then
     PATH="$HOME/Applications:$PATH"
 fi
-if [ -d "$HOME/.go/bin" ]; then
-    PATH="$HOME/.go/bin:$PATH"
-fi
-if [ -d $XDG_DATA_HOME/JetBrains/Toolbox/scripts ]; then
+if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
     PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
 fi
-if [ -d $HOME/.dotnet/ ]; then
-    PATH="$HOME/.dotnet/:$PATH"
-fi
-if [ -d $HOME/.dotnet/tools/ ]; then
-    PATH="$HOME/.dotnet/tools/:$PATH"
-fi
-if [ -d "$HOME/.flutter/bin" ]; then
-    PATH="$HOME/.flutter/bin/:$PATH"
+if [ -d "$HOME/.config/vifm/scripts" ]; then
+    PATH="$HOME/.config/vifm/scripts:$PATH"
 fi
 
-# Bashrc
-source "$BASHRC"
+# export SSH_AUTH_SOCK
+if [[ -z "${SSH_CONNECTION}" ]]; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+fi
 
 # Create config directories if they don't exist
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
 fi
-if [ ! -f "$WGETRC" ]; then
-    touch "$WGETRC"
-fi
+
+# Bashrc
+source "$BASHRC"
 
 # Starting xsession
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then

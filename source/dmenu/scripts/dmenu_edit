@@ -4,10 +4,9 @@
 #  - Description: A simple script for file editing in dmenu
 #  - Dependencies: dmenu, fd
 
-##########
-## main ##
-##########
+# start from home directory
 cd "$HOME" || exit 0
+
 file=1
 while [ "$file" ]; do
     file=$(fd -LHpd 1 | dmenu -i -l 10 -p "󰈙 Open file in text editor $(basename "$(pwd)")")

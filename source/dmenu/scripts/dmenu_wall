@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 
-# ***This script was made by Clay Gomera (Drake)***
-#  - Description: A simple dmenu script to set the wallpaper on X
-#  - Dependencies: dmenu, fd, feh
+# *** Script by Clay Gomera (Drake) ***
+# Description: A dmenu script to set the wallpaper on X using feh
+# Dependencies: dmenu, fd, feh
 
-##########################
-## Wallpapers Directory ##
-##########################
+# Directory containing wallpapers
 walldir="$XDG_PICTURES_DIR/Wallpapers"
-cd "$walldir" || exit # we cd into $walldir in order to get only the file name on the main prompt
 
-#######################
-## Wallpaper options ##
-#######################
+# Change to wallpaper directory or exit if it fails
+cd "$walldir" || exit
+
+# Define wallpaper options for feh
 option1="Fill"
 option2="Center"
 option3="Tile"
@@ -20,30 +18,31 @@ option4="Max"
 option5="Scale"
 options="$option1\n$option2\n$option3\n$option4\n$option5"
 
-##########
-## main ##
-##########
-wallpaper=$(fd -p ./ | dmenu -i -p " 󰋩 Select a wallpaper ") # main prompt
-if [ "$wallpaper" ]; then # if the user made a choice
-  chosenwall=$wallpaper # reassign $wallpaper to $chosenwall
-else
-  exit 0
+# Prompt user to select a wallpaper
+wallpaper=$(fd -p ./ | dmenu -i -p "󰋩 Select a wallpaper")
+if [ -z "$wallpaper" ]; then
+    exit 0
 fi
-action=$(echo -e "$options" | dmenu -i -p "  Chose the format ") # options prompt
+
+# Store the selected wallpaper
+chosenwall="$wallpaper"
+
+# Prompt user to select a wallpaper format
+action=$(echo -e "$options" | dmenu -i -p " Choose the format")
 case "$action" in
-  $option1*)
-    feh --bg-fill "$chosenwall";
-    ;;
-  $option2*)
-    feh --bg-center "$chosenwall";
-    ;;
-  $option3*)
-    feh --bg-tile "$chosenwall";
-    ;;
-  $option4*)
-    feh --bg-max "$chosenwall";
-    ;;
-  $option5*)
-    feh --bg-scale "$chosenwall";
-    ;;
+    "$option1")
+        feh --bg-fill "$chosenwall"
+        ;;
+    "$option2")
+        feh --bg-center "$chosenwall"
+        ;;
+    "$option3")
+        feh --bg-tile "$chosenwall"
+        ;;
+    "$option4")
+        feh --bg-max "$chosenwall"
+        ;;
+    "$option5")
+        feh --bg-scale "$chosenwall"
+        ;;
 esac

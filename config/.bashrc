@@ -3,7 +3,7 @@ export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 
 ### "bat" as manpager
-export MANPAGER="bat -p"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
@@ -128,11 +128,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="sudo xbps-install -Su" \
-    pkg-install="sudo xbps-install -S" \
-    pkg-remove="sudo xbps-remove -R" \
-    pkg-autoremove="sudo xbps-remove -Oo" \
-    pkg-search="sudo xbps-query -s" \
+    pkg-update="paru -Syyu" \
+    pkg-install="paru -S" \
+    pkg-remove="paru -Rcns" \
+    pkg-remove-sec="paru -R" \
+    pkg-autoremove="paru -Scc && paru -Rns (pacman -Qtdq)" \
+    pkg-search="paru -Ss"
 
 # colorize grep output (good for log files)
 alias \
@@ -210,10 +211,6 @@ alias \
     yt="ytfzf -ftsl" \
     ytm="ytfzf -mtsl"
 
-# distrobox
-alias \
-    dv="distrobox enter devbox"
-
 # network and bluetooth
 alias \
     netstats="nmcli dev" \
@@ -224,6 +221,76 @@ alias \
     wfi-off="nmcli radio wifi off" \
     blt="bluetoothctl"
 
+# Automatically add completion for all aliases to commands having completion functions
+# this currently slows startup a bit, but it isn't terrible
+function alias_completion {
+    local namespace="alias_completion"
+
+    # parse function based completion definitions, where capture group 2 => function and 3 => trigger
+    local compl_regex='complete( +[^ ]+)* -F ([^ ]+) ("[^"]+"|[^ ]+)'
+    # parse alias definitions, where capture group 1 => trigger, 2 => command, 3 => command arguments
+    local alias_regex="alias ([^=]+)='(\"[^\"]+\"|[^ ]+)(( +[^ ]+)*)'"
+
+    # create array of function completion triggers, keeping multi-word triggers together
+    eval "local completions=($(complete -p | sed -Ene "/$compl_regex/s//'\3'/p"))"
+    (( ${#completions[@]} == 0 )) && return 0
+
+    # create temporary file for wrapper functions and completions
+    command rm -f "/tmp/${namespace}-*.tmp" &> /dev/null # preliminary cleanup
+    local tmp_file; tmp_file="$(mktemp "/tmp/${namespace}-${RANDOM}XXX.tmp")" || return 1
+
+    local completion_loader; completion_loader="$(complete -p -D 2>/dev/null | sed -Ene 's/.* -F ([^ ]*).*/\1/p')"
+
+    # read in "<alias> '<aliased command>' '<command args>'" lines from defined aliases
+    local line; while read line; do
+        eval "local alias_tokens; alias_tokens=($line)" 2>/dev/null || continue # some alias arg patterns cause an eval parse error
+        local alias_name="${alias_tokens[0]}" alias_cmd="${alias_tokens[1]}" alias_args="${alias_tokens[2]# }"
+
+        # skip aliases to pipes, boolean control structures and other command lists
+        # (leveraging that eval errs out if $alias_args contains unquoted shell metacharacters)
+        eval "local alias_arg_words; alias_arg_words=($alias_args)" 2>/dev/null || continue
+        # avoid expanding wildcards
+        read -a alias_arg_words <<< "$alias_args"
+
+        # skip alias if there is no completion function triggered by the aliased command
+        if [[ ! " ${completions[*]} " =~ " $alias_cmd " ]]; then
+            if [[ -n "$completion_loader" ]]; then
+                # force loading of completions for the aliased command
+                eval "$completion_loader $alias_cmd"
+                # 124 means completion loader was successful
+                [[ $? -eq 124 ]] || continue
+                completions+=($alias_cmd)
+            else
+                continue
+            fi
+        fi
+        local new_completion="$(complete -p "$alias_cmd")"
+
+        # create a wrapper inserting the alias arguments if any
+        if [[ -n $alias_args ]]; then
+            local compl_func="${new_completion/#* -F /}"; compl_func="${compl_func%% *}"
+            # avoid recursive call loops by ignoring our own functions
+            if [[ "${compl_func#_$namespace::}" == $compl_func ]]; then
+                local compl_wrapper="_${namespace}::${alias_name}"
+                    echo "function $compl_wrapper {
+                        (( COMP_CWORD += ${#alias_arg_words[@]} ))
+                        COMP_WORDS=($alias_cmd $alias_args \${COMP_WORDS[@]:1})
+                        (( COMP_POINT -= \${#COMP_LINE} ))
+                        COMP_LINE=\${COMP_LINE/$alias_name/$alias_cmd $alias_args}
+                        (( COMP_POINT += \${#COMP_LINE} ))
+                        $compl_func
+                    }" >> "$tmp_file"
+                    new_completion="${new_completion/ -F $compl_func / -F $compl_wrapper }"
+            fi
+        fi
+
+        # replace completion trigger by alias
+        new_completion="${new_completion% *} $alias_name"
+        echo "$new_completion" >> "$tmp_file"
+    done < <(alias -p | sed -Ene "s/$alias_regex/\1 '\2' '\3'/p")
+    source "$tmp_file" && command rm -f "$tmp_file" &> /dev/null
+}; alias_completion
+
 ### PROMPT
 # get current branch in git repo
 function parse_git_branch() {
@@ -231,7 +298,7 @@ function parse_git_branch() {
         if [ ! "${BRANCH}" == "" ]; then
             STAT=$(parse_git_dirty)
             echo "[${BRANCH}${STAT}]"
-	    else
+        else
             echo ""
         fi
 }
@@ -257,37 +324,29 @@ function parse_git_dirty {
     renamed=$(echo -n "${status}" 2> /dev/null | grep "renamed:" &> /dev/null; echo "$?")
     deleted=$(echo -n "${status}" 2> /dev/null | grep "deleted:" &> /dev/null; echo "$?")
     bits=''
-	if [ "${renamed}" == "0" ]; then
-	    bits=">${bits}"
-	fi
-	if [ "${ahead}" == "0" ]; then
-	    bits="*${bits}"
-	fi
-	if [ "${newfile}" == "0" ]; then
-	    bits="+${bits}"
-	fi
-	if [ "${untracked}" == "0" ]; then
-	    bits="?${bits}"
-	fi
-	if [ "${deleted}" == "0" ]; then
-	    bits="x${bits}"
-	fi
-	if [ "${dirty}" == "0" ]; then
-	    bits="!${bits}"
-	fi
-	if [ ! "${bits}" == "" ]; then
-	    echo " ${bits}"
-	else
-	    echo ""
-	fi
+    if [ "${renamed}" == "0" ]; then
+        bits=">${bits}"
+    fi
+    if [ "${ahead}" == "0" ]; then
+        bits="*${bits}"
+    fi
+    if [ "${newfile}" == "0" ]; then
+        bits="+${bits}"
+    fi
+    if [ "${untracked}" == "0" ]; then
+        bits="?${bits}"
+    fi
+    if [ "${deleted}" == "0" ]; then
+        bits="x${bits}"
+    fi
+    if [ "${dirty}" == "0" ]; then
+        bits="!${bits}"
+    fi
+    if [ ! "${bits}" == "" ]; then
+        echo " ${bits}"
+    else
+        echo ""
+    fi
 }
 
 export PS1="[\[\e[31m\]\u\[\e[m\]\[\e[35m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]] [\[\e[33m\]\W\[\e[m\]\[\e[34m\]\`parse_git_branch\`\[\e[m\]] 󱞪 "
-
-export SSH_AUTH_SOCK=${HOME}/.ssh/agent
-if ! pgrep -u ${USER} ssh-agent > /dev/null; then
-    rm -f ${SSH_AUTH_SOCK}
-fi
-if [ ! -S ${SSH_AUTH_SOCK} ]; then
-    eval $(ssh-agent -a ${SSH_AUTH_SOCK} 2> /dev/null)
-fi

@@ -8,9 +8,11 @@
 # activate neccesary env variables for ssh-agent and other stuff
 dbus-update-activation-environment DISPLAY XAUTHORITY &
 
+# bind gnome secrets component to currently running gnome-keyring instance launched with PAM on login (this unlocks the keyring)
+gnome-keyring-daemon --start --components=secrets &
+
 # autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
-pidof pipewire || pipewire &
-pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
+pidof polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome-authentication-agent-1 &
 pidof dwmblocks || dwmblocks &
 pidof unclutter || unclutter --hide-on-touch &
 pidof dunst || dunst --config $HOME/.config/dunst/dunstrc &
@@ -21,7 +23,7 @@ pidof emacs || /usr/bin/emacs --daemon &
 # set theming and font thingy
 gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
 gsettings set org.gnome.desktop.interface cursor-size 16 &
-gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
+gsettings set org.gnome.desktop.interface icon-theme 'Gruvbox-Plus-Dark' &
 gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark' &
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
 gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
@@ -32,29 +34,25 @@ gsettings set org.gnome.desktop.interface font-hinting 'full' &
 
 # grab monitor status (varies with the machine)
 ### T480 monitors
-monitor1=$(cat /sys/class/drm/card0-DP-1/status)
-monitor2=$(cat /sys/class/drm/card0-HDMI-A-2/status)
+monitor1=$(cat /sys/class/drm/card1-HDMI-A-2/status)
+monitor2=$(cat /sys/class/drm/card1-DP-1/status)
 
 # if monitors are connected, then use xrandr to set desired settings
 if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
-    xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal \
-           --output DP1 --primary --mode 1920x1080 --rate 100.00 --pos 1924x0 --rotate normal \
-           --output HDMI2 --mode 1280x1024 --rate 75.00 --pos 3844x0 --rotate normal &
+    xrandr --output eDP1 --mode 1920x1080 --pos 3200x0 --rotate normal \
+           --output HDMI2 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal \
+           --output DP1 --mode 1280x1024 --rate 75.00 --pos 0x0 --rotate normal &
 elif [ "$monitor1" = "connected" ]; then
     xrandr --output eDP1 --primary --auto \
-           --output DP1 --auto --scale-from 1920x1080 --same-as eDP1 &
+           --output HDMI2 --auto --scale-from 1920x1080 --same-as eDP1 &
 elif [ "$monitor2" = "connected" ]; then
     xrandr --output eDP1 --primary --auto \
-           --output HDMI2 --auto --scale-from 1920x1080 --same-as eDP1 &
+           --output DP1 --auto --scale-from 1920x1080 --same-as eDP1 &
 else
     xrandr --output eDP1 --primary --auto \
-           --output DP1 --off \
-           --output HDMI2 --off &
+           --output HDMI2 --off \
+           --output DP1 --off &
 fi
 
 # set wallpaper
 sh "$HOME"/.fehbg &
-
-# bind gnome secrets component to currently running gnome-keyring instance launched with PAM on login (this unlocks the keyring)
-gnome-keyring-daemon --start --components=secrets &
-

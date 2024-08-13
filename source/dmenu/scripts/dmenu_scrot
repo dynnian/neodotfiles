@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 
-# ***This script was made by Clay Gomera (Drake)***
-#  - Description: A simple screenshot/screencast dmenu script
-#  - Dependencies: maim, slop, ffmpeg, dmenu, libnotify
+# *** Script by Clay Gomera (Drake) ***
+# Description: A simple screenshot/screencast dmenu script
+# Dependencies: maim, slop, ffmpeg, dmenu, libnotify
 
-## Screenshot & Screencast Directory
+## Define directories for saving screenshots and screencasts
 SHOTDIR="$XDG_PICTURES_DIR/Screenshots"
 CASTDIR="$XDG_VIDEOS_DIR/Screencasts"
 mkdir -p "$SHOTDIR" "$CASTDIR"
 
-## Format Variables
+## Define available formats for images and videos
 image_formats="jpg\npng"
 video_formats="mp4\nmkv"
 
-## Main menu choices
+## Define choices for the main menu
 mcho1="󰹑 Take a screenshot"
 mcho2="󰐍 Record the screen"
 mcho3="󰙧 Stop recording"
 mcho4="󱎘 Exit"
 mchos="$mcho1\n$mcho2\n$mcho3\n$mcho4"
 
-## Main submenu choices
+## Define choices for the screenshot submenu
 mscho1="󱣴 Capture the entire screen"
 mscho2="󱎫 Capture the entire screen (With delay)"
 mscho3="󱕻 Capture area"
@@ -28,20 +28,18 @@ mscho4="󰖯 Capture active window"
 mscho5="󱎘 Exit"
 mschos="$mscho1\n$mscho2\n$mscho3\n$mscho4\n$mscho5"
 
-## Save/clip submenu choices
+## Define choices for saving screenshots
 svcho1="󰆏 Copy to clipboard"
 svcho2="󰠘 Save to $SHOTDIR"
 svchos="$svcho1\n$svcho2"
 
-## Delay subsubmenu
+## Define delay options for screenshots
 del1="󱑀 3 sec delay"
 del2="󱑂 5 sec delay"
 del3="󱑇 10 sec delay"
 dels="$del1\n$del2\n$del3"
 
-#####
-## This function will check for dependencies
-#####
+# Check if required dependencies are installed
 check_dependencies() {
     local dependencies=("maim" "ffmpeg" "dmenu" "notify-send" "xclip" "xdotool" "xdpyinfo")
     for dep in "${dependencies[@]}"; do
@@ -52,46 +50,32 @@ check_dependencies() {
     done
 }
 
-#####
-## This function uses the svchos variable to ask the user what to do with the
-## screenshot
-#####
+# Prompt the user to choose an action for saving the screenshot
 fsvchos() {
     svchoice=$(echo -e "$svchos" | dmenu -i -l 2 -p "  What do you want to do with this screenshot?")
 }
 
-#####
-## This function uses the dels variable to ask the user which delay option to
-## choose
-#####
+# Prompt the user to choose a delay option for screenshots
 fdel() {
     del=$(echo -e "$dels" | dmenu -i -p " Select Delay")
 }
 
-#####
-## This function allows the user to choose the screenshot format
-#####
+# Prompt the user to choose the image format for screenshots
 fimage_format() {
     image_format=$(echo -e "$image_formats" | dmenu -i -p " Choose screenshot format")
 }
 
-#####
-## This function allows the user to choose the recording format
-#####
+# Prompt the user to choose the video format for recordings
 fvideo_format() {
     video_format=$(echo -e "$video_formats" | dmenu -i -p " Choose video format")
 }
 
-#####
-## This function does a full screen screenshot without delay, depending on what
-## the user chooses on the fsvchos function, the screenshot will be saved to the
-## clipboard or to $SHOTDIR
-#####
+# Capture a full-screen screenshot without delay
 shot_screen() {
     fimage_format
     fsvchos
     if [ "$svchoice" = "$svcho1" ]; then
-        maim | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
+        maim -f "$image_format" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
     elif [ "$svchoice" = "$svcho2" ]; then
         maim -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved"
     else
@@ -99,12 +83,7 @@ shot_screen() {
     fi
 }
 
-#####
-## This function does a full screen screenshot with delay, depending on what the
-## user chooses on the fsvchos function, the screenshot will be saved to the
-## clipboard or to $SHOTDIR. And depending on what the user chooses on the fdel
-## function, the delay will be between 3 and 10 seconds
-#####
+# Capture a full-screen screenshot with a user-defined delay
 shot_screen_delay() {
     fimage_format
     fsvchos
@@ -132,54 +111,41 @@ shot_screen_delay() {
 
     sleep 1
     if [ "$svchoice" = "$svcho1" ]; then
-        maim | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard";
+        maim -f "$image_format" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
     elif [ "$svchoice" = "$svcho2" ]; then
-        maim -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR";
+        maim -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR"
     else
         exit 0
     fi
 }
 
-#####
-## This function allows the user to select the area on the screen to screenshot
-## depending on what the user chooses on the fsvchos function, the screenshot will
-## be saved to the clipboard or to $SHOTDIR
-#####
+# Capture a user-defined area of the screen
 shot_area() {
     fimage_format
     fsvchos
     if [ "$svchoice" = "$svcho1" ]; then
-        maim -s | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard";
+        maim -f "$image_format" -s | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
     elif [ "$svchoice" = "$svcho2" ]; then
-        maim -s -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR";
+        maim -s -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR"
     else
         exit 0
     fi
 }
 
-#####
-## This function does a screenshot of the currently active window, depending
-## on what the user chooses on the fsvchos function, the screenshot will be
-## saved to the clipboard or to $SHOTDIR
-#####
+# Capture a screenshot of the currently active window
 shot_window() {
     fimage_format
     fsvchos
     if [ "$svchoice" = "$svcho1" ]; then
-        maim -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard";
+        maim -f "$image_format" -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
     elif [ "$svchoice" = "$svcho2" ]; then
-        maim -i "$(xdotool getactivewindow)" -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR";
+        maim -i "$(xdotool getactivewindow)" -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR"
     else
         exit 0
     fi
 }
 
-#####
-## This function uses ffmpeg to record the screen, It will check if ffmpeg is
-## already running (already recording), to prevent the user from executing
-## another ffmpeg instance, if it's not running, it will grab the screen
-## resolution with xdpyinfo and use it to record the screen with ffmpeg.
-#####
+# Start recording the entire screen using ffmpeg
 rec_screen() {
     fvideo_format
     if pgrep -x "ffmpeg" > /dev/null; then
@@ -192,9 +158,7 @@ rec_screen() {
     fi
 }
 
-#####
-## This function will record the screen with a given delay
-#####
+# Start recording the entire screen with a user-defined delay
 rec_screen_delay() {
     fvideo_format
     fdel
@@ -230,7 +194,7 @@ rec_screen_delay() {
     fi
 }
 
-## This function allows the user to record a selected area of the screen
+# Start recording a user-defined area of the screen
 rec_area() {
     fvideo_format
     if pgrep -x "ffmpeg" > /dev/null; then
@@ -248,7 +212,7 @@ rec_area() {
     fi
 }
 
-## This function allows the user to record the currently active window
+# Start recording the currently active window
 rec_window() {
     fvideo_format
     if pgrep -x "ffmpeg" > /dev/null; then
@@ -266,66 +230,44 @@ rec_window() {
     fi
 }
 
-#####
-## This function stops screen recording, it first checks if ffmpeg is already
-## running (already recording), to only stop a recording if there's an ffmpeg
-## instance running
-#####
+# Stop the ongoing screen recording
 stop_recording() {
     if pgrep -x "ffmpeg" > /dev/null; then
         pkill -f "ffmpeg -f x11grab"
         notify-send "Screen recording stopped. Video saved to $CASTDIR"
     else
-        notify-send "You aren't recording anything at the moment"
+        notify-send "No recording in progress."
     fi
 }
 
-## main
-check_dependencies;
-mchoice=$(echo -e "$mchos" | dmenu -i -l 4 -p "  Screen Capture Menu") # main menu prompt
+# Main script execution
+check_dependencies
+
+# Display the main menu and handle user choice
+mchoice=$(echo -e "$mchos" | dmenu -i -l 4 -p "  Screen Capture Menu")
 case $mchoice in
     "$mcho1")
-        mschoice=$(echo -e "$mschos" | dmenu -i -l 9 -p "  Screenshot Menu") # screenshot menu prompt
+        # Display the screenshot submenu and handle user choice
+        mschoice=$(echo -e "$mschos" | dmenu -i -l 9 -p "  Screenshot Menu")
         case $mschoice in
-            "$mscho1")
-                shot_screen;
-                ;;
-            "$mscho2")
-                shot_screen_delay;
-                ;;
-            "$mscho3")
-                shot_area;
-                ;;
-            "$mscho4")
-                shot_window;
-                ;;
-            "$mscho5")
-                exit 0
+            "$mscho1") shot_screen ;;
+            "$mscho2") shot_screen_delay ;;
+            "$mscho3") shot_area ;;
+            "$mscho4") shot_window ;;
+            "$mscho5") exit 0 ;;
         esac
         ;;
     "$mcho2")
-        mschoice=$(echo -e "$mschos" | dmenu -i -l 9 -p "  Screencast Menu") # screenshot menu prompt
+        # Display the screencast submenu and handle user choice
+        mschoice=$(echo -e "$mschos" | dmenu -i -l 9 -p "  Screencast Menu")
         case $mschoice in
-            "$mscho1")
-                rec_screen;
-                ;;
-            "$mscho2")
-                rec_screen_delay;
-                ;;
-            "$mscho3")
-                rec_area;
-                ;;
-            "$mscho4")
-                rec_window;
-                ;;
-            "$mscho5")
-                exit 0
+            "$mscho1") rec_screen ;;
+            "$mscho2") rec_screen_delay ;;
+            "$mscho3") rec_area ;;
+            "$mscho4") rec_window ;;
+            "$mscho5") exit 0 ;;
         esac
         ;;
-    "$mcho3")
-        stop_recording;
-        ;;
-    "$mcho4")
-        exit 0;
-        ;;
+    "$mcho3") stop_recording ;;
+    "$mcho4") exit 0 ;;
 esac

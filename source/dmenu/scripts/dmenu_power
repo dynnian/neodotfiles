@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-# ***This script was made by Clay Gomera (Drake)***
-#  - Description: A simple power menu dmenu script
-#  - Dependencies: dmenu, power-profiles-daemon, slock
+# *** Script by Clay Gomera (Drake) ***
+# Description: A dmenu script for managing power options
+# Dependencies: dmenu, powerprofilesctl, slock, systemctl, notify-send
 
-#######################
-## Main manu options ##
-#######################
+# Main menu options
 option1="  Logout"
 option2="  Reboot"
 option3="  Power off"
@@ -16,121 +14,99 @@ option6="  Change power profile"
 option7="󱎘  Exit"
 options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6\n$option7"
 
-####################################
-## Power profiles submenu options ##
-####################################
+# Power profiles submenu options
 pwr1="󰓅 Performance"
 pwr2="󰾅 Balanced"
 pwr3="󰾆 Power Saver"
 pwr4=" Cancel"
 pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
 
-## This variable will store the current power profile
+# Store the current power profile
 currentpwr=$(powerprofilesctl get)
 
-## This variable will store the current wallpaper set by feh
+# Store the current wallpaper set by feh
 currentwall=$(tail --lines=1 "$HOME/.fehbg" | awk '{print $4}' | sed "s/'//g")
 
-# Check for missing dependencies
-check_dependencies() {
-    if ! [ -x "$(command -v dmenu)" ]; then
-        echo "Missing dependency: dmenu is required."
-        exit 1
-    fi
-
-    local missing_deps=()
-    for dep in loginctl powerprofilesctl notify-send; do
-        if ! command -v "$dep" &> /dev/null; then
-            missing_deps+=("$dep")
-        fi
-    done
-
-    if [ ${#missing_deps[@]} -ne 0 ]; then
-        echo "Missing dependencies: ${missing_deps[*]}"
-        exit 1
-    fi
-}
-
-## Ask yes/no for action confirmation
+# Ask user for confirmation with yes/no options
 confirm_action() {
     local prompt="$1"
     echo -e "  Yes\n  No" | dmenu -l 2 -i -p "$prompt" | grep -q "  Yes"
 }
 
-####################
-# Main Script Flow #
-####################
-
-# Check for dependencies
-check_dependencies
-
-action=$(echo -e "$options" | dmenu -i -p "  Power Options"); # main menu prompt
+# Show main menu and get user action
+action=$(echo -e "$options" | dmenu -i -p "  Power Options")
 if [ -z "$action" ]; then
     exit 0
 fi
 
 case "$action" in
-        "$option1")
+    "$option1")
         if confirm_action "  Are you sure you want to logout?"; then
             pkill X
         fi
         ;;
     "$option2")
         if confirm_action "  Are you sure you want to reboot?"; then
-            loginctl reboot
+            systemctl reboot
         fi
         ;;
     "$option3")
         if confirm_action "  Are you sure you want to power off?"; then
-            loginctl poweroff
+            systemctl poweroff
         fi
-	;;
+        ;;
     "$option4")
-        slock -b "$currentwall" loginctl suspend
+        systemctl suspend
         ;;
     "$option5")
         slock -b "$currentwall"
         ;;
     "$option6")
-        #####
-        ## These conditions will be used for the prompt
-        #####
-        if [ "$currentpwr" = "performance" ]; then
-            currentpwr="$pwr1"
-        elif [ "$currentpwr" = "balanced" ]; then
-            currentpwr="$pwr2"
-        elif [ "$currentpwr" = "power-saver" ]; then
-            currentpwr="$pwr3"
-        fi
-        pwraction=$(echo -e "$pwrs" | dmenu -i -p "  Power Profile Menu - Currently set to: $currentpwr") # power profiles submenu prompt
+        # Determine current power profile for submenu
+        case "$currentpwr" in
+            "performance")
+                currentpwr="$pwr1"
+                ;;
+            "balanced")
+                currentpwr="$pwr2"
+                ;;
+            "power-saver")
+                currentpwr="$pwr3"
+                ;;
+            *)
+                currentpwr="Unknown"
+                ;;
+        esac
+
+        # Show power profile submenu and get user action
+        pwraction=$(echo -e "$pwrs" | dmenu -i -p "  Power Profile Menu - Currently set to: $currentpwr")
         case "$pwraction" in
             "$pwr1")
-                if [ "$currentpwr" = "$pwr1" ]; then # if the power profile is already set to performance
+                if [ "$currentpwr" = "$pwr1" ]; then
                     notify-send "The power profile is already set to performance"
-                    exit 1
                 else
-                    powerprofilesctl set performance && notify-send "Power profile switched to performance" # if not, set the powerprofile to performance
+                    powerprofilesctl set performance && notify-send "Power profile switched to performance"
                 fi
                 ;;
             "$pwr2")
-                if [ "$currentpwr" = "$pwr2" ]; then # if the power profile is already set to balanced
+                if [ "$currentpwr" = "$pwr2" ]; then
                     notify-send "The power profile is already set to balanced"
-                    exit 1
                 else
-                    powerprofilesctl set balanced && notify-send "Power profile switched to balanced" # if not, set the powerprofile to balanced
+                    powerprofilesctl set balanced && notify-send "Power profile switched to balanced"
                 fi
                 ;;
             "$pwr3")
-                if [ "$currentpwr" = "$pwr3" ]; then # if the power profile is already set to power saver
+                if [ "$currentpwr" = "$pwr3" ]; then
                     notify-send "The power profile is already set to power saver"
-                    exit 1
                 else
-                    powerprofilesctl set power-saver && notify-send "Power profile switched to power saver" # if not, set the powerprofile to power saver
+                    powerprofilesctl set power-saver && notify-send "Power profile switched to power saver"
                 fi
                 ;;
             "$pwr4")
                 exit 0
-        esac;;
+                ;;
+        esac
+        ;;
     "$option7")
         exit 0
         ;;

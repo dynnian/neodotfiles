@@ -335,7 +335,7 @@
       :desc "Zap to char" "z" #'zap-to-char
       :desc "Zap up to char" "Z" #'zap-up-to-char)
 
-(set-frame-parameter nil 'alpha-background 98) ; For current frame
-(add-to-list 'default-frame-alist '(alpha-background . 98)) ; For all new frames henceforth
+(set-frame-parameter nil 'alpha-background 95) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 95)) ; For all new frames henceforth
 (when (daemonp)
   (exec-path-from-shell-initialize))
