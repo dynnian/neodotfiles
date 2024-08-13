@@ -1,5 +1,5 @@
 /* Appearance */
-static const unsigned int borderpx    = 1;        /* border pixel of windows */
+static const unsigned int borderpx    = 3;        /* border pixel of windows */
 static const unsigned int snap        = 32;       /* snap pixel */
 static const unsigned int gappx       = 6;        /* gaps between windows */
 static const int showbar              = 1;        /* 0 means no bar */
@@ -52,6 +52,7 @@ const char *spcmd10[]  = {"st", "-n", "sprss", "-c", "sprss", "-g", "140x35", "-
 const char *spcmd11[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
 const char *spcmd12[]  = {"flatpak", "run", "qalculate-gtk", NULL};
 const char *spcmd13[]  = {"arandr", NULL};
+const char *spcmd14[]  = {"st", "-n", "spcht", "-c", "spcht", "-g", "140x35", "-e", "gomuks", NULL};
 
 static Sp scratchpads[] = {
     /* NAME         CMD */
@@ -68,6 +69,7 @@ static Sp scratchpads[] = {
     {"spbit",      spcmd11},
     {"spqal",      spcmd12},
     {"spdsp",      spcmd13},
+    {"spcht",      spcmd14},
 };
 
 /* Tag Definitions */
@@ -201,6 +203,7 @@ static const Rule rules[] = {
     {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(11),  1,   -1},
     {"Lxrandr",                         NULL,        NULL,      SPTAG(12),  1,   -1},
     {"Arandr",                          NULL,        NULL,      SPTAG(12),  1,   -1},
+    {NULL,                              "spcht",     NULL,      SPTAG(13),  1,   -1},
 };
 
 /* Layout(s) */
@@ -239,7 +242,7 @@ static const char *editor[]        = { "emacsclient", "-c", "-a", "'emacs'", NUL
 static const char *browser[]       = { "brave", NULL };
 static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *vm[]            = { "virt-manager", NULL };
-static const char *office[]        = { "flatpak", "run", "org.onlyoffice.desktopeditors", NULL };
+static const char *office[]        = { "flatpak", "run", "org.libreoffice.LibreOffice", NULL };
 static const char *videoeditor[]   = { "flatpak", "run", "org.kde.kdenlive", NULL };
 static const char *imageeditor[]   = { "flatpak", "run", "org.gimp.GIMP", NULL };
 static const char *audioeditor[]   = { "flatpak", "run", "org.audacityteam.Audacity", NULL };
@@ -300,7 +303,7 @@ static Keychord *keychords[] = {
     &((Keychord){1, {{MODKEY, XK_j}},                       focusstack,     {.i = +1 } }),          /* Focus next window in the stack */
     &((Keychord){1, {{MODKEY, XK_k}},                       focusstack,     {.i = -1 } }),          /* Focus previous window in the stack */
     &((Keychord){1, {{MODKEY|ShiftMask, XK_j}},             movestack,      {.i = -1 } }),          /* Move window to next position in the stack */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_k}},	            movestack,      {.i = +1 } }),          /* Move window to previous position in the stack */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_k}},             movestack,      {.i = +1 } }),          /* Move window to previous position in the stack */
     &((Keychord){1, {{MODKEY, XK_i}},                       incnmaster,     {.i = +1 } }),          /* Increase master area window count */
     &((Keychord){1, {{MODKEY, XK_d}},                       incnmaster,     {.i = -1 } }),          /* Decrease master area window count */
     &((Keychord){1, {{MODKEY, XK_h}},                       setmfact,       {.f = -0.05} }),        /* Decrease master area size */
@@ -345,7 +348,8 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},            togglescratch,  {.ui = 9 } }),  /* Toggle newsboat scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 10 } }), /* Toggle Bitwarden scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 11 } }), /* Toggle Qalculate scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 12 } }), /* Toggle lxrandr scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 12 } }), /* Toggle arandr scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_g}},            togglescratch,  {.ui = 13 } }), /* Toggle gomuks scratchpad */
 
     /* Session Management */
     &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_q}}, quit,           {0} }), 
