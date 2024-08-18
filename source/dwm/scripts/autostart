@@ -19,6 +19,7 @@ pidof dunst || dunst --config $HOME/.config/dunst/dunstrc &
 pidof picom || picom &
 pidof xss-lock || xss-lock $HOME/.config/suckless/dwm/scripts/lock &
 pidof emacs || /usr/bin/emacs --daemon &
+pidof clipmenud || clipmenud &
 
 # set theming and font thingy
 gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
@@ -39,6 +40,7 @@ monitor2=$(cat /sys/class/drm/card1-DP-1/status)
 
 # if monitors are connected, then use xrandr to set desired settings
 if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
+    sleep 2
     xrandr --output eDP1 --mode 1920x1080 --pos 3200x0 --rotate normal \
            --output HDMI2 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal \
            --output DP1 --mode 1280x1024 --rate 75.00 --pos 0x0 --rotate normal &
@@ -49,9 +51,9 @@ elif [ "$monitor2" = "connected" ]; then
     xrandr --output eDP1 --primary --auto \
            --output DP1 --auto --scale-from 1920x1080 --same-as eDP1 &
 else
-    xrandr --output eDP1 --primary --auto \
-           --output HDMI2 --off \
-           --output DP1 --off &
+    xrandr --output eDP1 --primary --auto &
+    sleep 1
+    xrandr --output HDMI2 --off --output DP1 --off &
 fi
 
 # set wallpaper

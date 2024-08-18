@@ -50,7 +50,7 @@ const char *spcmd8[]  = {"st", "-n", "spmsc", "-c", "spmsc", "-g", "140x35", "-e
 const char *spcmd9[]  = {"st", "-n", "spflm", "-c", "spflm", "-g", "140x35", "-e", ".config/vifm/scripts/vifmrun", NULL};
 const char *spcmd10[]  = {"st", "-n", "sprss", "-c", "sprss", "-g", "140x35", "-e", "newsboat", NULL};
 const char *spcmd11[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
-const char *spcmd12[]  = {"flatpak", "run", "qalculate-gtk", NULL};
+const char *spcmd12[]  = {"qalculate-gtk", NULL};
 const char *spcmd13[]  = {"arandr", NULL};
 const char *spcmd14[]  = {"st", "-n", "spcht", "-c", "spcht", "-g", "140x35", "-e", "gomuks", NULL};
 
@@ -213,16 +213,20 @@ static const int   resizehints    = 1;    /* 1 means respect size hints in tiled
 static const int   lockfullscreen = 1;    /* 1 will force focus on the fullscreen window */
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    { "[]=",    tile },    /* first entry is default */
-    { "><>",    NULL },
-    { "[M]",    monocle },
-    { "|||",    centeredmaster },
-    { ">|>",    centeredfloatingmaster },
-    { "[@]",    spiral },
-    { "[\\]",   dwindle },
-    { "HHH",    grid },
-    { NULL,     NULL },
+    { "",    tile },    /* first entry is default */
+    { "",    NULL },
+    { "",    monocle },
+    { "",    centeredmaster },
+    { "",    centeredfloatingmaster },
+    { "",    spiral },
+    { "",    dwindle },
+    { "󰝘",    grid },
+    { NULL,   NULL },
 };
+
+/* custom symbols for nr. of clients in monocle layout */
+/* when clients >= LENGTH(monocles), uses the last element */
+static const char *monocles[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳", "󰎶", "󰎹", "󰎼", "󰎿" };
 
 /* Tag control keybindings */
 #define MODKEY Mod4Mask
@@ -263,6 +267,7 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_e}},            spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_edit") }),    /* Launch open-in-editor menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_b}},            spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_blue") }),    /* Launch bluetooth configuration menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_q}},            spawn,          SHCMD("$HOME/.config/suckless/dmenu/scripts/dmenu_power") }),   /* Launch power menu */
+    &((Keychord){2, {{MODKEY, XK_p}, {0, XK_c}},            spawn,          SHCMD("clipmenu") }),                                           /* Launch clipboard menu */
 
     /* Apps */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor  (tag 1) */
@@ -319,8 +324,8 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_c}, {0, XK_m}},            setlayout,      {.v = &layouts[2]} }),  /* Switch to monocle layout */
     &((Keychord){2, {{MODKEY, XK_c}, {0, XK_c}},            setlayout,      {.v = &layouts[3]} }),  /* Switch to centerd master layout */
     &((Keychord){2, {{MODKEY, XK_c}, {0, XK_v}},            setlayout,      {.v = &layouts[4]} }),  /* Switch to floating centered master layout */
-    &((Keychord){2, {{MODKEY, XK_c}, {0, XK_d}},            setlayout,      {.v = &layouts[5]} }),  /* Switch to dwindle layout */
-    &((Keychord){2, {{MODKEY, XK_c}, {0, XK_s}},            setlayout,      {.v = &layouts[6]} }),  /* Switch to spiral layout */
+    &((Keychord){2, {{MODKEY, XK_c}, {0, XK_s}},            setlayout,      {.v = &layouts[5]} }),  /* Switch to spiral layout */
+    &((Keychord){2, {{MODKEY, XK_c}, {0, XK_d}},            setlayout,      {.v = &layouts[6]} }),  /* Switch to dwindle layout */
     &((Keychord){2, {{MODKEY, XK_c}, {0, XK_g}},            setlayout,      {.v = &layouts[7]} }),  /* Switch to grid layout */
     &((Keychord){1, {{MODKEY|ShiftMask, XK_space}},         setlayout,      {0} }),                 /* Switch to last used layout */
     &((Keychord){1, {{MODKEY, XK_space}},                   cyclelayout,    {.i = -1 } }),          /* Switch to next layout */

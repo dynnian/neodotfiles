@@ -153,7 +153,7 @@ rec_screen() {
     else
         filename="$CASTDIR/$(date +%s).$video_format"
         resolution="$(xdpyinfo | grep dimensions | awk '{print $2}')"
-        ffmpeg -f x11grab -s "$resolution" -i :0.0 -c:v libx264 -preset ultrafast -qp 0 "$filename" &
+        ffmpeg -f x11grab -s "$resolution" -i :0.0 -c:v libx264 -preset fast -qp 0 "$filename" &
         notify-send "Screen recording started."
     fi
 }
@@ -189,7 +189,7 @@ rec_screen_delay() {
     else 
         filename="$CASTDIR/$(date +%s).$video_format"
         resolution="$(xdpyinfo | grep dimensions | awk '{print $2}')"
-        ffmpeg -f x11grab -s "$resolution" -i :0.0 -c:v libx264 -preset ultrafast -qp 0 "$filename" &
+        ffmpeg -f x11grab -s "$resolution" -i :0.0 -c:v libx264 -preset fast -qp 0 "$filename" &
         notify-send "Screen recording started"
     fi
 }
@@ -204,7 +204,7 @@ rec_area() {
         slop_result=$(slop -f "%x %y %w %h")
         if [ -n "$slop_result" ]; then
             IFS=' ' read -r x y w h <<< "$slop_result"
-            ffmpeg -f x11grab -s "${w}x${h}" -i :0.0+"$x","$y" -c:v libx264 -preset ultrafast -qp 0 "$filename" &
+            ffmpeg -f x11grab -s "${w}x${h}" -i :0.0+"$x","$y" -c:v libx264 -preset fast -qp 0 "$filename" &
             notify-send "Screen recording started"
         else
             notify-send "No area selected. Aborting recording."
@@ -222,7 +222,7 @@ rec_window() {
         active_window_id=$(xdotool getactivewindow)
         
         if [ -n "$active_window_id" ]; then
-            ffmpeg -f x11grab -s "$(xdotool getwindowgeometry --shell $active_window_id | grep WIDTH | cut -d'=' -f2)x$(xdotool getwindowgeometry --shell $active_window_id | grep HEIGHT | cut -d'=' -f2)" -i :0.0+"$(xdotool getwindowgeometry --shell $active_window_id | grep X | cut -d'=' -f2)","$(xdotool getwindowgeometry --shell $active_window_id | grep Y | cut -d'=' -f2)" -c:v libx264 -preset ultrafast -qp 0 "$filename" &
+            ffmpeg -f x11grab -s "$(xdotool getwindowgeometry --shell $active_window_id | grep WIDTH | cut -d'=' -f2)x$(xdotool getwindowgeometry --shell $active_window_id | grep HEIGHT | cut -d'=' -f2)" -i :0.0+"$(xdotool getwindowgeometry --shell $active_window_id | grep X | cut -d'=' -f2)","$(xdotool getwindowgeometry --shell $active_window_id | grep Y | cut -d'=' -f2)" -c:v libx264 -preset fast -qp 0 "$filename" &
             notify-send "Recording active window started"
         else
             notify-send "No active window found. Aborting recording."
