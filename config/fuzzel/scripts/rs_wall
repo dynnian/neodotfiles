@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# rs_wall - A simple screenshot menu script for rofi/dmenu/wofi/fuzzel
+# Author: Clay Gomera (Drake)
+# Dependencies: {rofi || dmenu || wofi || fuzzel}, swaybg
+
+############################
+# Configuration Parameters #
+############################
+walldir="$XDG_PICTURES_DIR/Wallpapers" # wallpapers folder, change it to yours
+
+########################
+# Function Definitions #
+########################
+
+# Check for missing dependencies
+CheckDependencies() {
+    local run_launcher_found=false
+    for launcher in rofi dmenu wofi fuzzel; do
+        if command -v "$launcher" &> /dev/null; then
+            run_launcher_found=true
+            break
+        fi
+    done
+
+    if [ "$run_launcher_found" = false ]; then
+        echo "Missing dependency: one of rofi, dmenu, wofi or fuzzel is required."
+        exit 1
+    fi
+
+    local missing_deps=()
+    for dep in swaybg; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing_deps+=("$dep")
+        fi
+    done
+
+    if [ ${#missing_deps[@]} -ne 0 ]; then
+        echo "Missing dependencies: ${missing_deps[*]}"
+        exit 1
+    fi
+}
+
+####################
+# Main Script Flow #
+####################
+
+# Check for dependencies
+CheckDependencies
+
+cd "$walldir" || exit 1
+wallpaper=$(fd -p "$walldir" | $RUNNER -l 5 -i -p "[󰋩 Wallpaper Selector]  ")
+if [ -n "$wallpaper" ]; then
+    if [[ "$wallpaper" == *.jpg ]]; then
+        rm -f "$HOME/.config/sway/wallpaper/"*
+        cp "$wallpaper" "$HOME/.config/sway/wallpaper/background.jpg"
+        cp "$wallpaper" "$HOME/.config/sway/wallpaper/locked.jpg"
+        swaymsg output \* bg "$HOME/.config/sway/wallpaper/background.jpg" fill
+    elif [[ "$wallpaper" == *.png ]]; then
+        rm -f "$HOME/.config/sway/wallpaper/"*
+        cp "$wallpaper" "$HOME/.config/sway/wallpaper/background.png"
+        cp "$wallpaper" "$HOME/.config/sway/wallpaper/locked.png"
+        swaymsg output \* bg "$HOME/.config/sway/wallpaper/background.png" fill
+    fi
+else
+    exit 1
+fi
+exit 0

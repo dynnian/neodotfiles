@@ -1,0 +1,213 @@
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
+# Apps
+set $term foot
+set $chat flatpak run org.signal.Signal
+set $office flatpak run org.libreoffice.LibreOffice
+set $browser flatpak run com.brave.Browser
+set $file foot -T yazi -a yazi yazi
+set $editor neovide --neovim-bin $HOME/.local/bin/lvim
+set $music foot -T musikcube -a musikcube musikcube
+set $ani-cli foot -T ani-cli -a ani-cli ani-cli
+set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flst
+set $ytfzf-music foot -T ytfzf-music -a ytfzf-music ytfzf -mlst
+set $flix-cli foot -T flix-cli -a flix-cli flix-cli
+set $audiomixer foot -T audiomixer -a audiomixer pulsemixer
+set $monitor foot -T monitor -a monitor btop
+set $newsboat foot -T newsboat -a newsboat newsboat
+
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu fuzzel | xargs swaymsg exec --
+set $menu-wifi ~/.config/fuzzel/scripts/rs_wifi | xargs swaymsg exec --
+set $menu-power ~/.config/fuzzel/scripts/rs_power | xargs swaymsg exec --
+set $menu-emoji ~/.config/fuzzel/scripts/rs_emoji | xargs swaymsg exec --
+set $menu-wall ~/.config/fuzzel/scripts/rs_wall | xargs swaymsg exec --
+set $menu-scrot ~/.config/fuzzel/scripts/rs_scrot | xargs swaymsg exec --
+set $menu-blue ~/.config/fuzzel/scripts/rs_blue | xargs swaymsg exec --
+set $menu-clip ~/.config/fuzzel/scripts/rs_clip | xargs swaymsg exec --
+
+# Start a terminal
+bindsym $mod+Return exec $term
+
+# Kill focused window
+bindsym $mod+q kill
+
+# XF86 Keys
+bindsym XF86AudioRaiseVolume        exec pamixer -i 5
+bindsym XF86AudioLowerVolume        exec pamixer -d 5
+bindsym XF86AudioMute               exec pamixer -t
+bindsym XF86AudioMicMute            exec pamixer --default-source -t
+bindsym XF86AudioPause              exec playerctl play-pause
+bindsym XF86AudioPlay               exec playerctl play-pause
+bindsym XF86AudioNext               exec playerctl next
+bindsym XF86AudioPrev               exec playerctl previous
+bindsym XF86AudioStop               exec playerctl stop
+bindsym XF86News                    exec $newsboat
+bindsym XF86MonBrightnessUp         exec brightnessctl s 5%+
+bindsym XF86MonBrightnessDown       exec brightnessctl s 5%-
+bindsym XF86Display                 exec wdisplays
+
+# Drag floating windows by holding down $mod and left mouse button.
+# Resize them with right mouse button + $mod.
+# Despite the name, also works for non-floating windows.
+# Change normal to inverse to use left mouse button for resizing and right
+# mouse button for dragging.
+floating_modifier $mod normal
+
+# Reload the configuration file
+bindsym $mod+Shift+Ctrl+r reload
+
+# Exit sway (logs you out of your Wayland session)
+bindsym $mod+Shift+Ctrl+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+### Moving around:
+# Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+# Or use $mod+[up|down|left|right]
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+# Ditto, with arrow keys
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+### Workspaces:
+# Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+# Move focused container to workspace
+bindsym $mod+Shift+1 [con_id=__focused__] move container to workspace number 1, focus
+bindsym $mod+Shift+2 [con_id=__focused__] move container to workspace number 2, focus
+bindsym $mod+Shift+3 [con_id=__focused__] move container to workspace number 3, focus
+bindsym $mod+Shift+4 [con_id=__focused__] move container to workspace number 4, focus
+bindsym $mod+Shift+5 [con_id=__focused__] move container to workspace number 5, focus
+bindsym $mod+Shift+6 [con_id=__focused__] move container to workspace number 6, focus
+bindsym $mod+Shift+7 [con_id=__focused__] move container to workspace number 7, focus
+bindsym $mod+Shift+8 [con_id=__focused__] move container to workspace number 8, focus
+bindsym $mod+Shift+9 [con_id=__focused__] move container to workspace number 9, focus
+bindsym $mod+Shift+0 [con_id=__focused__] move container to workspace number 10, focus
+# Note: workspaces can have any name you want, not just numbers.
+# We just use 1-10 as the default.
+
+### Layout stuff:
+# You can "split" the current object of your focus with
+# $mod+b or $mod+v, for horizontal and vertical splits
+# respectively.
+bindsym $mod+b splith
+bindsym $mod+v splitv
+
+# Switch the current container between different layout styles
+bindsym $mod+e layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+d layout toggle split
+
+# Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Alt+space floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
+
+# Move focus to the parent container
+bindsym $mod+Shift+Return focus parent
+
+### Scratchpad:
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+### Resizing containers:
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+### Mode for launching apps
+mode "apps" {
+    # Start apps
+    bindsym v exec $file; mode "default"
+    bindsym e exec $editor; mode "default"
+    bindsym w exec $browser; mode "default"
+    bindsym c exec $chat; mode "default"
+    bindsym o exec $office; mode "default"
+    bindsym m exec $music; mode "default"
+    bindsym b exec $monitor; mode "default"
+    bindsym p exec $audiomixer; mode "default"
+    bindsym n exec $ytfzf-music; mode "default"
+    bindsym a exec $ani-cli; mode "default"
+    bindsym y exec $ytfzf; mode "default"
+    bindsym f exec $flix-cli; mode "default"
+    bindsym r exec $newsboat; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+a mode "apps"
+
+# Run launcher scripts
+mode "launchers" {
+    bindsym d exec $menu; mode "default"
+    bindsym q exec $menu-power; mode "default"
+    bindsym e exec $menu-emoji; mode "default"
+    bindsym w exec $menu-wall; mode "default"
+    bindsym s exec $menu-scrot; mode "default"
+    bindsym b exec $menu-blue; mode "default"
+    bindsym c exec $menu-clip; mode "default"
+    bindsym i exec $menu-wifi; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+s mode "launchers"

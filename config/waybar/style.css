@@ -1,0 +1,259 @@
+/* =====================================
+   Colors (Gruvbox theme)
+   ===================================== */
+@define-color black     #1d2021;
+@define-color red       #cc241d;
+@define-color green     #98971a;
+@define-color yellow    #d79921;
+@define-color orange    #fe8019;
+@define-color blue      #458588;
+@define-color purple    #b16286;
+@define-color aqua      #689d6a;
+@define-color gray      #a89984;
+/* Brighter variants */
+@define-color brgray    #928374;
+@define-color brred     #fb4934;
+@define-color brgreen   #b8bb26;
+@define-color bryellow  #fabd2f;
+@define-color brblue    #83a598;
+@define-color brpurple  #d3869b;
+@define-color braqua    #8ec07c;
+@define-color white     #ebdbb2;
+@define-color bg2       #504945;
+/* Darker variants */
+@define-color drred     #9d0006;
+@define-color drgreen   #79740e;
+@define-color drpurple  #8f3f71;
+@define-color drorange  #af3a03;
+@define-color drgray    #3c3836;
+@define-color drblue    #076678;
+@define-color draqua    #427b58;
+@define-color dryellow  #b57614;
+
+/* =====================================
+   Color Definitions for Modules
+   ===================================== */
+@define-color critical              @brred;
+@define-color unfocused             @braqua;
+@define-color focused               @red;
+@define-color inactive              @drgray;
+@define-color idle                  @drgreen;
+@define-color backlight             @dryellow;
+@define-color pulseaudio            @drblue;
+@define-color powerprofile          @drgreen;
+@define-color network               @drred;
+@define-color language              @drpurple;
+@define-color battery               @drgreen;
+@define-color clock                 @draqua;
+@define-color wbackground           rgba(29, 32, 33, 0.95);
+
+/* =====================================
+   Keyframes
+   ===================================== */
+@keyframes blink {
+    to {
+        color: @critical;
+    }
+}
+
+/* =====================================
+   Reset Styles
+   ===================================== */
+* {
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* =====================================
+   Button Styles
+   ===================================== */
+button {
+    box-shadow: inset 0 -3px transparent;
+    border: none;
+    border-radius: 0;
+}
+
+/* Prevent strange hover effect on workspace buttons */
+button:hover {
+    background: inherit;
+}
+
+/* =====================================
+   General Bar Styles
+   ===================================== */
+window#waybar {
+    background-color: @wbackground;
+    font-family: Symbols Nerd Font Mono, Mononoki Nerd Font;
+    font-size: 14px;
+}
+
+/* =====================================
+   Workspaces Module
+   ===================================== */
+#workspaces button {
+    font-family: Symbols Nerd Font Mono;
+    font-size: 18px;
+    padding: 0 2pt;
+    color: @white;
+}
+
+#workspaces button.visible {
+    color: @white;
+}
+
+#workspaces button.focused {
+    color: @white;
+    background: @focused;
+}
+
+#workspaces button.unfocused {
+    color: @white;
+}
+
+#workspaces button.urgent {
+    color: @wbackground;
+    background: @critical;
+}
+
+#workspaces button:hover {
+    background: @yellow;
+    color: @white;
+}
+
+/* =====================================
+   Mode Module
+   ===================================== */
+#mode {
+    background-color: @red;
+    border-bottom: 3px solid @white;
+    padding: 3px;
+}
+
+/* =====================================
+   Window Module
+   ===================================== */
+#window {
+    color: @white;
+    padding: 0 10px;
+    margin: 5px 0;
+}
+
+/* =====================================
+   Margins and Layout Adjustments
+   ===================================== */
+#window, #workspaces {
+    margin: 0 4px;
+}
+
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+/* =====================================
+   Individual Module Styles
+   ===================================== */
+#clock,
+#power-profiles-daemon,
+#battery,
+#backlight,
+#network,
+#pulseaudio,
+#idle_inhibitor,
+#language {
+    color: @white;
+    padding: 0 1px;
+    padding-left: 4px;
+}
+
+#battery,
+#battery.charging,
+#battery.plugged {
+    background-color: @battery;
+}
+
+#battery.critical:not(.charging) {
+    color: @white;
+    animation: blink 0.5s linear infinite alternate;
+}
+
+#backlight {
+    background-color: @backlight;
+}
+
+#network,
+#network.disconnected {
+    background-color: @network;
+}
+
+#pulseaudio,
+#pulseaudio.muted {
+    background-color: @pulseaudio;
+}
+
+#language {
+    background-color: @language;
+}
+
+#power-profiles-daemon {
+    background-color: @powerprofile;
+}
+
+#clock {
+    background-color: @clock;
+    padding-right: 10px;
+}
+
+#idle_inhibitor {
+    background-color: @battery;
+}
+
+/* =====================================
+   Modeline Arrows
+   ===================================== */
+#custom-arrow1,
+#custom-arrow2,
+#custom-arrow3,
+#custom-arrow4,
+#custom-arrow5,
+#custom-arrow6 {
+    font-size: 25pt;
+}
+
+/* Individual Modeline Arrow Styles */
+#custom-arrow1 {
+    background: transparent;
+    color: @language;
+}
+
+#custom-arrow2 {
+    background: @language;
+    color: @pulseaudio;
+}
+
+#custom-arrow3 {
+    background: @pulseaudio;
+    color: @backlight;
+}
+
+#custom-arrow4 {
+    background: @backlight;
+    color: @battery;
+}
+
+#custom-arrow5 {
+    background: @battery;
+    color: @network;
+}
+
+#custom-arrow6 {
+    background: @network;
+    color: @clock;
+}

@@ -1,0 +1,39 @@
+# Font
+font pango: Mononoki Nerd Font 14
+
+# Color scheme (Gruvbox dark)
+set $color_normal_white  #a89984
+set $color_bright_white  #ebdbb2
+set $color_normal_gray   #282828
+set $color_bright_gray   #665c54
+set $color_bright_yellow #d79921
+set $color_normal_black  #1d2021
+set $color_unused        #ff0000
+set $color_normal_red    #cc241d
+set $color_normal_teal   #689d6a
+set $color_normal_green  #98971a
+
+# Title bar colors
+# Colors                  border                 background             text                   indicator            child_border
+client.focused            $color_normal_red      $color_bright_gray     $color_bright_white    $color_normal_teal   $color_normal_red
+client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_normal_green  $color_bright_gray
+client.unfocused          $color_bright_gray     $color_normal_gray     $color_normal_white    $color_normal_green  $color_bright_gray
+client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
+client.placeholder        $color_unused          $color_unused          $color_unused          $color_unused        $color_unused
+
+# Window borders
+default_border pixel 3
+default_floating_border pixel 3
+smart_borders off
+gaps inner 5
+
+# gsettings
+exec gsettings set org.gnome.desktop.interface {
+    gtk-theme 'Gruvbox-Dark'
+    icon-theme 'Papirus-Dark'
+    cursor-theme 'Simp1e-Gruvbox-Dark'
+    font-name 'Inter 10'
+    document-font-name 'Liberation Serif 12'
+    monospace-font-name 'Mononoki Nerd Font 12'
+    enable-animations true
+}
