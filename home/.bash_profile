@@ -23,7 +23,7 @@ export GOPATH="$HOME/.go"
 export TERMINAL="foot"
 export EDITOR="$HOME/.local/bin/lvim"
 export VISUAL="neovide --neovim-bin $EDITOR"
-export BROWSER="brave"
+export BROWSER="flatpak run com.brave.Browser"
 export VIEWER="zathura"
 
 # Set path
@@ -70,6 +70,6 @@ source "$BASHRC"
 
 # Starting wayland session
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    sh "$HOME/.config/sway/winitrc" &>/dev/null
+    sh "$HOME/.config/sway/scripts/init" &>/dev/null
     logout
 fi

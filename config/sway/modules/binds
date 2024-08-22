@@ -9,19 +9,19 @@ set $right l
 
 # Apps
 set $term foot
-set $chat flatpak run org.signal.Signal
+set $chat signal-desktop
 set $office flatpak run org.libreoffice.LibreOffice
 set $browser flatpak run com.brave.Browser
 set $file foot -T yazi -a yazi yazi
 set $editor neovide --neovim-bin $HOME/.local/bin/lvim
 set $music foot -T musikcube -a musikcube musikcube
+set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
 set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flst
 set $ytfzf-music foot -T ytfzf-music -a ytfzf-music ytfzf -mlst
 set $flix-cli foot -T flix-cli -a flix-cli flix-cli
 set $audiomixer foot -T audiomixer -a audiomixer pulsemixer
 set $monitor foot -T monitor -a monitor btop
-set $newsboat foot -T newsboat -a newsboat newsboat
 
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
@@ -42,18 +42,18 @@ bindsym $mod+Return exec $term
 bindsym $mod+q kill
 
 # XF86 Keys
-bindsym XF86AudioRaiseVolume        exec pamixer -i 5
-bindsym XF86AudioLowerVolume        exec pamixer -d 5
-bindsym XF86AudioMute               exec pamixer -t
-bindsym XF86AudioMicMute            exec pamixer --default-source -t
+bindsym XF86AudioRaiseVolume        exec swayosd-client --output-volume +5
+bindsym XF86AudioLowerVolume        exec swayosd-client --output-volume -5
+bindsym XF86AudioMute               exec swayosd-client --output-volume mute-toggle
+bindsym XF86AudioMicMute            exec swayosd-client --input-volume mute-toggle
 bindsym XF86AudioPause              exec playerctl play-pause
 bindsym XF86AudioPlay               exec playerctl play-pause
 bindsym XF86AudioNext               exec playerctl next
 bindsym XF86AudioPrev               exec playerctl previous
 bindsym XF86AudioStop               exec playerctl stop
-bindsym XF86News                    exec $newsboat
-bindsym XF86MonBrightnessUp         exec brightnessctl s 5%+
-bindsym XF86MonBrightnessDown       exec brightnessctl s 5%-
+bindsym XF86MonBrightnessUp         exec swayosd-client --brightness +5
+bindsym XF86MonBrightnessDown       exec swayosd-client --brightness -5
+bindsym XF86News                    exec $rss
 bindsym XF86Display                 exec wdisplays
 
 # Drag floating windows by holding down $mod and left mouse button.
@@ -120,18 +120,26 @@ bindsym $mod+Shift+0 [con_id=__focused__] move container to workspace number 10,
 
 ### Layout stuff:
 # You can "split" the current object of your focus with
-# $mod+b or $mod+v, for horizontal and vertical splits
+# $mod+s or $mod+v, for horizontal and vertical splits
 # respectively.
-bindsym $mod+b splith
-bindsym $mod+v splitv
+mode "split" {
+    bindsym v splith; mode "default"
+    bindsym s splitv; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+w mode "split"
 
 # Switch the current container between different layout styles
-bindsym $mod+e layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+d layout toggle split
-
-# Make the current focus fullscreen
-bindsym $mod+f fullscreen
+mode "layout" {
+    bindsym s layout stacking; mode "default"
+    bindsym w layout tabbed; mode "default"
+    bindsym t layout toggle split; mode "default"
+    bindsym f fullscreen; mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+e mode "layout"
 
 # Toggle the current focus between tiling and floating mode
 bindsym $mod+Alt+space floating toggle
@@ -147,11 +155,11 @@ bindsym $mod+Shift+Return focus parent
 # You can send windows there and get them back later.
 
 # Move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Shift+s move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+minus scratchpad show
+bindsym $mod+s scratchpad show
 
 ### Resizing containers:
 mode "resize" {
@@ -179,26 +187,26 @@ bindsym $mod+r mode "resize"
 ### Mode for launching apps
 mode "apps" {
     # Start apps
-    bindsym v exec $file; mode "default"
+    bindsym f exec $file; mode "default"
     bindsym e exec $editor; mode "default"
     bindsym w exec $browser; mode "default"
     bindsym c exec $chat; mode "default"
     bindsym o exec $office; mode "default"
     bindsym m exec $music; mode "default"
-    bindsym b exec $monitor; mode "default"
-    bindsym p exec $audiomixer; mode "default"
-    bindsym n exec $ytfzf-music; mode "default"
-    bindsym a exec $ani-cli; mode "default"
-    bindsym y exec $ytfzf; mode "default"
-    bindsym f exec $flix-cli; mode "default"
-    bindsym r exec $newsboat; mode "default"
+    bindsym r exec $rss; mode "default"
+    bindsym Shift+b exec $monitor; mode "default"
+    bindsym Shift+p exec $audiomixer; mode "default"
+    bindsym Shift+y exec $ytfzf; mode "default"
+    bindsym Shift+m exec $ytfzf-music; mode "default"
+    bindsym Shift+a exec $ani-cli; mode "default"
+    bindsym Shift+f exec $flix-cli; mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+a mode "apps"
 
 # Run launcher scripts
-mode "launchers" {
+mode "launcher" {
     bindsym d exec $menu; mode "default"
     bindsym q exec $menu-power; mode "default"
     bindsym e exec $menu-emoji; mode "default"
@@ -210,4 +218,4 @@ mode "launchers" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+s mode "launchers"
+bindsym $mod+p mode "launcher"

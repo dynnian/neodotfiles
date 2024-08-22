@@ -1,14 +1,9 @@
-# Drake's Dotfiles (Void Linux - Sway Compositor)
+# neodotfiles - sway
 
-This is just a personal repository where i store all my dotfiles, you're free
-clone them and edit them as you wish. Part of this work was based on other
-people's dotfiles (Distrotube for example), and it may contain scripts or
-binaries that they made or modify.
-
-This is a rice made specifically for Void Linux and it uses the sway wayland
+This is a rice made specifically for Arch Linux and it uses the sway wayland
 compositor.
 
 ### Dependencies
 ``` sh
-sudo xbps-install sway swaybg swayidle swaylock wezterm mako fuzzel Waybar wl-clipboard cliphist pamixer light playerctl xdg-desktop-portal-wlr xdg-desktop-portal-gtk wdisplays grim slurp gsettings-desktop-schemas
+paru -S sway swaybg swayidle swaylock foot mako fuzzel waybar wl-clipboard cliphist swayosd-git playerctl xdg-desktop-portal-wlr xdg-desktop-portal-gtk wdisplays grim slurp gsettings-desktop-schemas chayang kanshi starship bat eza fish fd ripgrep yazi mpv zathura zathura-pdf-poppler zathura-cb ueberzugpp gnome-keyring polkit-gnome wf-recorder pulsemixer ani-cli-git ytfzf-git musikcube newsboat btop wdisplays
 ```

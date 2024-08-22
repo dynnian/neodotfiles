@@ -102,12 +102,12 @@ CheckDependencies() {
 
 # Prompt user for screenshot action
 ShotActionPrompt() {
-    shotActionCases=$(echo -e "$subShotChoices" | $RUNNER -l 3 -i -p "[  What do you want to do with this screenshot?] ")
+    shotActionCases=$(echo -e "$subShotChoices" | $RUNNER -l 3 -i -p "[  What do you want to do with this screenshot?]  ")
 }
 
 # Prompt user for screenshot delay
 DelayPrompt() {
-    delayActionsCases=$(echo -e "$delayChoices" | $RUNNER -l 4 -i -p "[ Select Delay] ")
+    delayActionsCases=$(echo -e "$delayChoices" | $RUNNER -l 4 -i -p "[ Select Delay]  ")
 }
 
 # Take a full screen screenshot without delay
@@ -218,7 +218,7 @@ VidArea() {
 
 # Record the entire screen with audio
 VidScreenAudio() {
-    local chosenPrettyDevice=$(echo -e "$audioDescriptions" | $RUNNER -i -p "󰕾 Select audio input")
+    local chosenPrettyDevice=$(echo -e "$audioDescriptions" | $RUNNER -i -p "[󰕾 Select audio input]  ")
     local chosenDevice="${audioMap["$chosenPrettyDevice"]}"
     if [ -n "$chosenDevice" ]; then
         for ((i = 3; i >= 1; i--)); do
@@ -270,14 +270,14 @@ fi
 CheckDependencies
 
 # Display main menu and execute selected option
-mainCase=$(echo -e "$mainChoices" | $RUNNER -l 3 -i -p "[ Screenshot/Screencast Utility] ")
+mainCase=$(echo -e "$mainChoices" | $RUNNER -l 3 -i -p "[ Screenshot/Screencast Utility]  ")
 if [ -z "$mainCase" ]; then
     exit 0
 fi
 
 case $mainCase in
     "$mainChoice1")
-        shotCases=$(echo -e "$shotChoices" | $RUNNER -l 5 -i -p "[ Screenshot Menu] ") # screenshot menu prompt
+        shotCases=$(echo -e "$shotChoices" | $RUNNER -l 5 -i -p "[ Screenshot Menu]  ") # screenshot menu prompt
         case $shotCases in
             "$shotChoice1")
                 ShotScreen
@@ -297,7 +297,7 @@ case $mainCase in
         esac
         ;;
     "$mainChoice2")
-        vidCases=$(echo -e "$vidChoices" | $RUNNER -l 5 -i -p "[󰕧 Screencast Menu] ")
+        vidCases=$(echo -e "$vidChoices" | $RUNNER -l 5 -i -p "[󰕧 Screencast Menu]  ")
         case $vidCases in
             "$vidChoice1")
                 VidScreen

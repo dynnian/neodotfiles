@@ -1,6 +1,7 @@
 {
+    "reload-style-on-change": true,
     "position": "top",
-    "height": 26,
+    "height": 25,
     "spacing": 0,
     "layer": "top",
 
@@ -16,11 +17,12 @@
 
     "modules-right": [
         "custom/arrow1",
-        "sway/language",
+        "clock",
         "custom/arrow2",
-        "pulseaudio",
+        "cpu",
+        "memory",
         "custom/arrow3",
-        "backlight",
+        "sway/language",
         "custom/arrow4",
         "idle_inhibitor",
         "power-profiles-daemon",
@@ -29,7 +31,7 @@
         "custom/arrow5",
         "network",
         "custom/arrow6",
-        "clock"
+        "bluetooth"
     ],
     
     // Modules
@@ -53,14 +55,28 @@
     },
 
     "sway/window": {
+        "tooltip": false,
         "format": "{title}",
         "icon": true,
-        "icon-size": 24,
-        "separate-outputs": true
+        "icon-size": 16,
+        "separate-outputs": true,
+        "max-length": 80
+    },
+
+    "cpu": {
+        "interval": 1,
+        "format": "\uf4bc {usage}%",
+        "on-click": "foot -T btop -a btop btop"
+    },
+
+    "memory": {
+        "interval": 1,
+        "format": "\uefc5 {percentage}%",
+        "on-click": "foot -T btop -a btop btop"
     },
 
     "sway/language": {
-        "format": "{} \udb80\udf0c",
+        "format": "\udb80\udf0c {}",
         "on-click": "swaymsg input type:keyboard xkb_switch_layout next",
         "tooltip": false,
     },
@@ -75,43 +91,6 @@
         "format-icons": ["", "\uf2d2"],
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
-    },
-
-    "pulseaudio": {
-        "scroll-step": 1, // %, can be a float
-        "tooltip-format": "{volume}% - {desc}",
-        "format": "{icon} {format_source}",
-        "format-bluetooth": "{icon}\udb80\udcaf {format_source}",
-        "format-bluetooth-muted": "\udb81\udd81 {icon}\udb80\udcaf {format_source}",
-        "format-muted": "\udb81\udd81 {format_source}",
-        "format-source": "\udb80\udf6c",
-        "format-source-muted": "\udb80\udf6d",
-        "format-icons": {
-            "headphone": "\udb80\udecb",
-            "hands-free": "\udb86\udc4f",
-            "headset": "\udb80\udece",
-            "phone": "\udb80\udff2",
-            "portable": "\udb80\udff2",
-            "car": "\udb80\udd0b",
-            "default": ["\udb81\udd7f", "\udb81\udd80", "\udb81\udd7e"]
-        },
-        "on-click": "foot -T audiomixer -a audiomixer pulsemixer"
-    },
-
-    "backlight": {
-        "format": "{icon}",
-        "format-icons": [
-            "\udb86\ude4e",
-            "\udb86\ude4f",
-            "\udb86\ude50",
-            "\udb86\ude51",
-            "\udb86\ude52",
-            "\udb86\ude53",
-            "\udb86\ude54",
-            "\udb86\ude55",
-            "\udb81\udee8"
-        ],
-        "tooltip-format": "{percent}%"
     },
 
     "idle_inhibitor": {
@@ -152,7 +131,7 @@
             "\udb80\udc80",
             "\udb80\udc79"
         ],
-        "tooltip-format": "{capacity}% - {timeTo}",
+        "tooltip-format": "{timeTo}",
         "on-click": "$HOME/.config/rofi/scripts/rs_power"
     },
 
@@ -174,7 +153,7 @@
             "\udb80\udc80",
             "\udb80\udc79"
         ],
-        "tooltip-format": "{capacity}% - {timeTo}",
+        "tooltip-format": "{timeTo}",
         "on-click": "$HOME/.config/fuzzel/scripts/rs_power"
     },
 
@@ -182,8 +161,26 @@
         "format-wifi": "\udb81\udda9",
         "format-ethernet": "\udb80\ude00",
         "format-disconnected": "\udb80\udd5b",
-        "tooltip-format": "{essid} ({signalStrength}%) - {ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "({essid} - {signalStrength}%) - {ifname}: {ipaddr}/{cidr}",
         "on-click": "$HOME/.config/fuzzel/scripts/rs_wifi"
+    },
+    
+    "bluetooth": {
+        "format": "\udb80\udcb2",
+        "format-on": "\udb80\udcaf",
+        "fotmat-off": "\udb80\udcb2",
+        "fotmat-disabled": "\udb80\udcb2",
+    	"format-connected": "\udb80\udcb1",
+    	"tooltip-format": "{controller_alias}\t{controller_address} ON",
+    	"tooltip-format-on": "{controller_alias}\t{controller_address} ON",
+    	"tooltip-format-off": "{controller_alias}\t{controller_address} OFF",
+    	"tooltip-format-disabled": "{controller_alias}\t{controller_address} OFF",
+    	"tooltip-format-connected": "{controller_alias}\t{controller_address} ON\n\n{num_connections} connected\n\n{device_enumerate}",
+    	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    	"tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click": "$HOME/.config/fuzzel/scripts/rs_blue",
+        "on-click-right": "bluetoothctl disconnect",
+        "on-click-middle": "bluetoothctl power off"
     },
 
     "clock": {

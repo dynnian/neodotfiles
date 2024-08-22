@@ -11,12 +11,14 @@ export SDL_VIDEODRIVER=wayland
 export CLUTTER_PLATFORM=wayland
 export QT_QPA_PLATFORM=wayland
 export QT_STYLE_OVERRIDE=kvantum
+export GDK_BACKEND=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export XKB_DEFAULT_LAYOUT=us
 export MOZ_ENABLE_WAYLAND=1
 export MOZ_WAYLAND_USE_VAAPI=1
 export MOZ_DISABLE_RDD_SANDBOX=1 
 export ELECTRON_OZONE_PLATFORM_HINT=auto
+#export GTK_CSD=0
 
 # GTK & cursor stuff
 export XCURSOR_PATH="$XDG_DATA_HOME/icons/"

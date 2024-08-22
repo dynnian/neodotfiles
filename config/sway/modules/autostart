@@ -4,14 +4,11 @@ exec {
     systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     /usr/lib/xdg-desktop-portal-wlr
     kanshi
-    swayidle -w \
-        lock 'swaylock -f -i "$HOME/.config/sway/wallpaper/locked.*"' \
-        timeout 300 'swaylock -f -i "$HOME/.config/sway/wallpaper/locked.*"' \
-        timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-        before-sleep 'swaylock -f -i "$HOME/.config/sway/wallpaper/locked.*"'
+    $HOME/.config/sway/scripts/idle
     wl-paste --type text --watch cliphist store
     wl-paste --type image --watch cliphist store
     mako -c ~/.config/mako/config
+    swayosd-server
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     gnome-keyring-daemon --start --components=secrets
 }

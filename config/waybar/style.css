@@ -36,15 +36,15 @@
 @define-color critical              @brred;
 @define-color unfocused             @braqua;
 @define-color focused               @red;
-@define-color inactive              @drgray;
+@define-color inactive              @brgray;
+@define-color clock                 @drpurple;
+@define-color monitor               @drblue;
+@define-color language              @draqua;
 @define-color idle                  @drgreen;
-@define-color backlight             @dryellow;
-@define-color pulseaudio            @drblue;
 @define-color powerprofile          @drgreen;
-@define-color network               @drred;
-@define-color language              @drpurple;
 @define-color battery               @drgreen;
-@define-color clock                 @draqua;
+@define-color network               @dryellow;
+@define-color bluetooth             @drorange;
 @define-color wbackground           rgba(29, 32, 33, 0.95);
 
 /* =====================================
@@ -96,8 +96,8 @@ window#waybar {
    ===================================== */
 #workspaces button {
     font-family: Symbols Nerd Font Mono;
-    font-size: 18px;
-    padding: 0 2pt;
+    font-size: 16px;
+    padding: 4px 0px;
     color: @white;
 }
 
@@ -160,16 +160,16 @@ window#waybar {
 /* =====================================
    Individual Module Styles
    ===================================== */
-#clock,
+#cpu,
+#memory,
+#language,
+#idle_inhibitor,
 #power-profiles-daemon,
 #battery,
-#backlight,
 #network,
-#pulseaudio,
-#idle_inhibitor,
-#language {
+#bluetooth,
+#clock {
     color: @white;
-    padding: 0 1px;
     padding-left: 4px;
 }
 
@@ -184,13 +184,23 @@ window#waybar {
     animation: blink 0.5s linear infinite alternate;
 }
 
-#backlight {
-    background-color: @backlight;
+#cpu {
+    background-color: @monitor;
+}
+
+#memory {
+    background-color: @monitor;
 }
 
 #network,
 #network.disconnected {
     background-color: @network;
+}
+
+#bluetooth,
+#bluetooth.disconnected {
+    background-color: @bluetooth;
+    padding-right: 10px;
 }
 
 #pulseaudio,
@@ -208,7 +218,6 @@ window#waybar {
 
 #clock {
     background-color: @clock;
-    padding-right: 10px;
 }
 
 #idle_inhibitor {
@@ -224,27 +233,27 @@ window#waybar {
 #custom-arrow4,
 #custom-arrow5,
 #custom-arrow6 {
-    font-size: 25pt;
+    font-size: 18pt;
 }
 
 /* Individual Modeline Arrow Styles */
 #custom-arrow1 {
     background: transparent;
-    color: @language;
+    color: @clock;
 }
 
 #custom-arrow2 {
-    background: @language;
-    color: @pulseaudio;
+    background: @clock;
+    color: @monitor;
 }
 
 #custom-arrow3 {
-    background: @pulseaudio;
-    color: @backlight;
+    background: @monitor;
+    color: @language;
 }
 
 #custom-arrow4 {
-    background: @backlight;
+    background: @language;
     color: @battery;
 }
 
@@ -255,5 +264,5 @@ window#waybar {
 
 #custom-arrow6 {
     background: @network;
-    color: @clock;
+    color: @bluetooth;
 }

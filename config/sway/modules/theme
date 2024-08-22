@@ -1,5 +1,5 @@
 # Font
-font pango: Mononoki Nerd Font 14
+font pango: Mononoki Nerd Font 12
 
 # Color scheme (Gruvbox dark)
 set $color_normal_white  #a89984
@@ -36,4 +36,5 @@ exec gsettings set org.gnome.desktop.interface {
     document-font-name 'Liberation Serif 12'
     monospace-font-name 'Mononoki Nerd Font 12'
     enable-animations true
+    color-scheme 'prefer-dark'
 }
