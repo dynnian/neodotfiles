@@ -1,25 +1,25 @@
 profile triple {
     exec pgrep wl-mirror && pkill -n wl-mirror
-    output eDP-1 mode 1920x1080 position 3200,0
-    output HDMI-A-2 primary mode 1920x1080@100Hz position 1280,0
+    output eDP-1 position 3200,0
+    output HDMI-A-2 mode 1920x1080@100Hz position 1280,0
     output DP-1 mode 1280x1024@75Hz position 0,0
 }
 
 profile hdmi {
     exec pgrep wl-mirror && pkill -n wl-mirror
-    output eDP-1 primary mode 1920x1080 position 0,0
-    output HDMI-A-2 auto position 1920,0
+    output eDP-1 position 0,0
+    output HDMI-A-2 position 1920,0
     exec wl-present mirror eDP-1 --fullscreen-output HDMI-A-2 --fullscreen
 }
 
 profile hdmi-c {
     exec pgrep wl-mirror && pkill -n wl-mirror
-    output eDP-1 primary mode 1920x1080 position 0,0
-    output DP-1 auto position 1920,0
+    output eDP-1 position 0,0
+    output DP-1 position 1920,0
     exec wl-present mirror eDP-1 --fullscreen-output DP-1 --fullscreen
 }
 
 profile laptop {
     exec pgrep wl-mirror && pkill -n wl-mirror
-    output eDP-1 primary mode 1920x1080
+    output eDP-1 position 0,0
 }

@@ -14,7 +14,8 @@ exec {
 }
 
 exec_always {
-    pidof kanshi || kill -1 $(pidof kanshi)
+    pidof kanshi && kill -1 $(pidof kanshi)
+    kanshi
 }
 
 bar swaybar_command waybar
