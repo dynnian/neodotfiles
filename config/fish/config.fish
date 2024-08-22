@@ -14,12 +14,12 @@ set -U fish_user_paths $HOME/.bin  $HOME/.local/bin $HOME/.go/bin $HOME/.cargo/b
 ### EXPORT ###
 set fish_greeting                                 # Supresses fish's intro message
 set TERM "xterm-256color"                         # Sets the terminal type
-set EDITOR "$HOME/.local/bin/lvim"
-set VISUAL "wezterm start --class neovim $HOME/.local/bin/lvim"
+set EDITOR "emacsclient -t -a ''"                 # $EDITOR use Emacs in terminal
+set VISUAL "emacsclient -c -a emacs"              # $VISUAL use Emacs in GUI mode
 set GOPATH "$HOME/.go"
 
 ### SET BAT AS MANPAGER
-#set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -x MANPAGER "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 ### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
 function fish_user_key_bindings

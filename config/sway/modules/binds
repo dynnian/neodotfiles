@@ -13,7 +13,7 @@ set $chat signal-desktop
 set $office flatpak run org.libreoffice.LibreOffice
 set $browser flatpak run com.brave.Browser
 set $file foot -T yazi -a yazi yazi
-set $editor neovide --neovim-bin $HOME/.local/bin/lvim
+set $editor emacsclient -c -a 'emacs'
 set $music foot -T musikcube -a musikcube musikcube
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli

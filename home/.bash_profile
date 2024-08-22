@@ -21,8 +21,8 @@ export GOPATH="$HOME/.go"
 
 # Default apps
 export TERMINAL="foot"
-export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="neovide --neovim-bin $EDITOR"
+export EDITOR="emacsclient -t -a ''"
+export VISUAL="emacsclient -c -a 'emacs'"
 export BROWSER="flatpak run com.brave.Browser"
 export VIEWER="zathura"
 
