@@ -43,8 +43,9 @@
 @define-color idle                  @drgreen;
 @define-color powerprofile          @drgreen;
 @define-color battery               @drgreen;
-@define-color network               @dryellow;
-@define-color bluetooth             @drorange;
+@define-color volume                @dryellow;
+@define-color backlight             @drorange;
+@define-color network               @drred;
 @define-color wbackground           rgba(29, 32, 33, 0.95);
 
 /* =====================================
@@ -166,11 +167,37 @@ window#waybar {
 #idle_inhibitor,
 #power-profiles-daemon,
 #battery,
+#pulseaudio,
+#backlight,
 #network,
 #bluetooth,
 #clock {
     color: @white;
     padding-left: 4px;
+}
+
+#clock {
+    background-color: @clock;
+}
+
+#cpu {
+    background-color: @monitor;
+}
+
+#memory {
+    background-color: @monitor;
+}
+
+#language {
+    background-color: @language;
+}
+
+#idle_inhibitor {
+    background-color: @battery;
+}
+
+#power-profiles-daemon {
+    background-color: @powerprofile;
 }
 
 #battery,
@@ -184,14 +211,6 @@ window#waybar {
     animation: blink 0.5s linear infinite alternate;
 }
 
-#cpu {
-    background-color: @monitor;
-}
-
-#memory {
-    background-color: @monitor;
-}
-
 #network,
 #network.disconnected {
     background-color: @network;
@@ -199,29 +218,17 @@ window#waybar {
 
 #bluetooth,
 #bluetooth.disconnected {
-    background-color: @bluetooth;
+    background-color: @network;
     padding-right: 10px;
 }
 
 #pulseaudio,
 #pulseaudio.muted {
-    background-color: @pulseaudio;
+    background-color: @volume;
 }
 
-#language {
-    background-color: @language;
-}
-
-#power-profiles-daemon {
-    background-color: @powerprofile;
-}
-
-#clock {
-    background-color: @clock;
-}
-
-#idle_inhibitor {
-    background-color: @battery;
+#backlight {
+    background-color: @backlight;
 }
 
 /* =====================================
@@ -232,7 +239,8 @@ window#waybar {
 #custom-arrow3,
 #custom-arrow4,
 #custom-arrow5,
-#custom-arrow6 {
+#custom-arrow6,
+#custom-arrow7 {
     font-size: 18pt;
 }
 
@@ -259,10 +267,15 @@ window#waybar {
 
 #custom-arrow5 {
     background: @battery;
-    color: @network;
+    color: @volume;
 }
 
 #custom-arrow6 {
-    background: @network;
-    color: @bluetooth;
+    background: @volume;
+    color: @backlight;
+}
+
+#custom-arrow7 {
+    background: @backlight;
+    color: @network;
 }

@@ -1,7 +1,7 @@
 {
     "reload-style-on-change": true,
     "position": "top",
-    "height": 25,
+    "height": 26,
     "spacing": 0,
     "layer": "top",
 
@@ -29,8 +29,11 @@
         "battery",
         "battery#bat2",
         "custom/arrow5",
-        "network",
+        "pulseaudio",
         "custom/arrow6",
+        "backlight",
+        "custom/arrow7",
+        "network",
         "bluetooth"
     ],
     
@@ -54,13 +57,25 @@
         }
     },
 
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", "\uf2d2"],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+
     "sway/window": {
         "tooltip": false,
         "format": "{title}",
         "icon": true,
         "icon-size": 16,
         "separate-outputs": true,
-        "max-length": 80
+        "max-length": 70
     },
 
     "cpu": {
@@ -81,16 +96,41 @@
         "tooltip": false,
     },
 
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
+    "pulseaudio": {
+        "scroll-step": 1, // %, can be a float
+        "tooltip-format": "{volume}% - {desc}",
+        "format": "{icon} {format_source}",
+        "format-bluetooth": "{icon}\udb80\udcaf {format_source}",
+        "format-bluetooth-muted": "\udb81\udd81 {icon}\udb80\udcaf {format_source}",
+        "format-muted": "\udb81\udd81 {format_source}",
+        "format-source": "\udb80\udf6c",
+        "format-source-muted": "\udb80\udf6d",
+        "format-icons": {
+            "headphone": "\udb80\udecb",
+            "hands-free": "\udb86\udc4f",
+            "headset": "\udb80\udece",
+            "phone": "\udb80\udff2",
+            "portable": "\udb80\udff2",
+            "car": "\udb80\udd0b",
+            "default": ["\udb81\udd7f", "\udb81\udd80", "\udb81\udd7e"]
+        },
+        "on-click": "foot -T audiomixer -a audiomixer pulsemixer"
     },
 
-    "sway/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", "\uf2d2"],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}"
+    "backlight": {
+        "format": "{icon}",
+        "format-icons": [
+            "\udb86\ude4e",
+            "\udb86\ude4f",
+            "\udb86\ude50",
+            "\udb86\ude51",
+            "\udb86\ude52",
+            "\udb86\ude53",
+            "\udb86\ude54",
+            "\udb86\ude55",
+            "\udb81\udee8"
+        ],
+        "tooltip-format": "{percent}%"
     },
 
     "idle_inhibitor": {
@@ -131,7 +171,7 @@
             "\udb80\udc80",
             "\udb80\udc79"
         ],
-        "tooltip-format": "{timeTo}",
+        "tooltip-format": "{capacity}% - {timeTo}",
         "on-click": "$HOME/.config/rofi/scripts/rs_power"
     },
 
@@ -153,7 +193,7 @@
             "\udb80\udc80",
             "\udb80\udc79"
         ],
-        "tooltip-format": "{timeTo}",
+        "tooltip-format": "{capacity}% - {timeTo}",
         "on-click": "$HOME/.config/fuzzel/scripts/rs_power"
     },
 
@@ -222,5 +262,5 @@
 	"custom/arrow7": {
 		"format": "",
 		"tooltip": false
-	},
+	}
 }

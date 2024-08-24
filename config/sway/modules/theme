@@ -26,6 +26,7 @@ default_border pixel 3
 default_floating_border pixel 3
 smart_borders off
 gaps inner 5
+#mouse_warping on
 
 # gsettings
 exec gsettings set org.gnome.desktop.interface {

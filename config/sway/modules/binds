@@ -13,12 +13,12 @@ set $chat signal-desktop
 set $office flatpak run org.libreoffice.LibreOffice
 set $browser flatpak run com.brave.Browser
 set $file foot -T yazi -a yazi yazi
-set $editor emacsclient -c -a 'emacs'
+set $editor neovide --neovim-bin $HOME/.local/bin/lvim
 set $music foot -T musikcube -a musikcube musikcube
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
-set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flst
-set $ytfzf-music foot -T ytfzf-music -a ytfzf-music ytfzf -mlst
+set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flstT chafa
+set $ytfzf-music foot -T ytfzf-music -a ytfzf-music ytfzf -mlstT chafa
 set $flix-cli foot -T flix-cli -a flix-cli flix-cli
 set $audiomixer foot -T audiomixer -a audiomixer pulsemixer
 set $monitor foot -T monitor -a monitor btop
@@ -42,17 +42,17 @@ bindsym $mod+Return exec $term
 bindsym $mod+q kill
 
 # XF86 Keys
-bindsym XF86AudioRaiseVolume        exec swayosd-client --output-volume +5
-bindsym XF86AudioLowerVolume        exec swayosd-client --output-volume -5
-bindsym XF86AudioMute               exec swayosd-client --output-volume mute-toggle
-bindsym XF86AudioMicMute            exec swayosd-client --input-volume mute-toggle
+bindsym XF86AudioRaiseVolume        exec pamixer -i 5
+bindsym XF86AudioLowerVolume        exec pamixer -d 5
+bindsym XF86AudioMute               exec pamixer -t
+bindsym XF86AudioMicMute            exec pamixer --default-source -t
 bindsym XF86AudioPause              exec playerctl play-pause
 bindsym XF86AudioPlay               exec playerctl play-pause
 bindsym XF86AudioNext               exec playerctl next
 bindsym XF86AudioPrev               exec playerctl previous
 bindsym XF86AudioStop               exec playerctl stop
-bindsym XF86MonBrightnessUp         exec swayosd-client --brightness +5
-bindsym XF86MonBrightnessDown       exec swayosd-client --brightness -5
+bindsym XF86MonBrightnessUp         exec brightnessctl s 5%+
+bindsym XF86MonBrightnessDown       exec brightnessctl s 5%-
 bindsym XF86News                    exec $rss
 bindsym XF86Display                 exec wdisplays
 

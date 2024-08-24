@@ -3,20 +3,18 @@ exec {
     dbus-update-activation-environment --systemd --all
     systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     /usr/lib/xdg-desktop-portal-wlr
-    kanshi
     $HOME/.config/sway/scripts/idle
     wl-paste --type text --watch cliphist store
     wl-paste --type image --watch cliphist store
     mako -c ~/.config/mako/config
-    swayosd-server
+    kanshi
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     gnome-keyring-daemon --start --components=secrets
     /usr/bin/emacs emacs --daemon
 }
 
 exec_always {
-    pidof kanshi && kill -1 $(pidof kanshi)
-    kanshi
+    pidof kanshi && kill -1 $(pidof kanshi) || kanshi
 }
 
 bar swaybar_command waybar
