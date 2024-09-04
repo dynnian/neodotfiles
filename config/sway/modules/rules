@@ -100,10 +100,14 @@ for_window {
 
 #misc
 	[class="steam"] floating enable; max_render_time off; blur disabled
+	[class="wgc.exe"] floating enable; max_render_time off; blur disabled
 	[app_id="org.telegram.desktop" title="Telegram"] floating disable; inhibit_idle none
 	[urgent=latest] focus
 	[floating] shadows enable
 	[app_id="alacritty"] saturation set 2; blur enable
 	[app_id="firefox" title="Firefox — Sharing Indicator"] floating enable; kill
 	[title="Wine System Tray"] floating enable; kill
+    [title="Android Emulator - *"] floating enable; border normal
+    [title="Emulator" window_type="utility"] move scratchpad
+    [app_id="brave-nngceckbapebfimnlniiiahkandclblb-Default"] floating enable; border normal
 }

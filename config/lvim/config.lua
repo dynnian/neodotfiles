@@ -31,7 +31,7 @@ vim.opt.wrap = true -- wrap lines
 vim.opt.spell = false
 vim.o.shell = '/usr/bin/fish'
 vim.o.autochdir = true
-vim.cmd('autocmd BufEnter * lcd %:p:h')
+--vim.cmd('autocmd BufEnter * lcd %:p:h')
 
 -- general
 lvim.use_icons = true
@@ -45,6 +45,7 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.project.manual_mode = true
 
 lvim.builtin.treesitter.ensure_installed = {
     "bash",
@@ -56,6 +57,7 @@ lvim.builtin.treesitter.ensure_installed = {
     "tsx",
     "css",
     "rust",
+    "dart",
     "java",
     "yaml",
     "toml",
@@ -70,7 +72,10 @@ lvim.plugins = {
     { "kristijanhusak/vim-dadbod-ui" },
     { "kristijanhusak/vim-dadbod-completion", after = "nvim-cmp" },
     { "SirVer/ultisnips" },
-    { "mfussenegger/nvim-dap" }
+    { "mfussenegger/nvim-dap" },
+    { "akinsho/flutter-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim", "stevearc/dressing.nvim" },
+  },
 }
 
 -- configuring colorscheme
@@ -97,11 +102,69 @@ require("gruvbox").setup({
     transparent_mode = false,
 })
 
+require('flutter-tools').setup {
+    decorations = {
+        statusline = {
+            app_version = false,
+            device = true,
+            project_config = false,
+        }
+    },
+    dev_log = {
+        enabled = true,
+        notify_errors = true,
+        open_cmd = "tabedit",
+    },
+    lsp = {
+        color = {
+            enabled = true,
+            background = false,
+            foreground = false,
+            virtual_text = true,
+            virtual_text_str = "■",
+        },
+        settings = {
+            showTodos = true,
+            completeFunctionCalls = true,
+            renameFilesWithClasses = "prompt",
+            enableSnippets = true,
+            enableSdkFormatter = true,
+        },
+    },
+}
+
+-- Flutter .arb files should be concidered as json files
+vim.filetype.add {
+    extension = {
+        arb = 'json',
+    }
+}
+
 lvim.keys.normal_mode["<leader>D"] = ":DBUIToggle<CR>"
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["F"] = {
+    name = "+Flutter",
+    c = { "<cmd>Telescope flutter commands<cr>", "Open Flutter Commans" },
+    d = { "<cmd>FlutterDevices<cr>", "Flutter Devices" },
+    e = { "<cmd>FlutterEmulators<cr>", "Flutter Emulators" },
+    r = { "<cmd>FlutterReload<cr>", "Hot Reload App" },
+    R = { "<cmd>FlutterRestart<cr>", "Hot Restart app" },
+    q = { "<cmd>FlutterQuit<cr>", "Quit running application" },
+    v = { "<cmd>Telescope flutter fvm<cr>", "Flutter version" },
+}
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "sql", "mysql", "plsql" },
   command = ":lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "dart",
+  callback = function()
+    vim.bo.tabstop = 2 -- Set tabstop to 2 spaces for Dart
+    vim.bo.shiftwidth = 2 -- Set shiftwidth to 2 spaces for Dart
+    vim.bo.expandtab = true -- Use spaces instead of tabs
+  end,
 })
 
 local cmp = require("cmp")

@@ -4,6 +4,8 @@
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_LIB_HOME="$HOME/.local/lib"
+export XDG_BIN_HOME="$HOME/.local/bin"
 
 # Sanely export XDG Base dir variables
 eval "$(sed 's/^[^#].*/export &/g;t;d' ~/.config/user-dirs.dirs)"
@@ -17,14 +19,32 @@ export INPUTRC="$HOME/.config/X11/inputrc"
 export GNUPGHOME="$HOME/.local/share/gnupg"
 export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
-export GOPATH="$HOME/.go"
 
 # Default apps
-export TERMINAL="foot"
-export EDITOR="emacsclient -t -a ''"
-export VISUAL="emacsclient -c -a 'emacs'"
-export BROWSER="flatpak run com.brave.Browser"
-export VIEWER="zathura"
+export EDITOR="$HOME/.local/bin/lvim"
+
+# Programming languages specific
+## Go
+export GOPATH="$XDG_DATA_HOME/go"
+## Rust
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+## Flutter
+export CHROME_EXECUTABLE="/var/lib/flatpak/app/com.brave.Browser/x86_64/stable/active/export/bin/com.brave.Browser"
+export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
+export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
+export FLUTTER_ANALYTICS_DISABLED=true
+export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
+## Android SDK/Emulator
+export ANDROID_HOME="$XDG_LIB_HOME/android"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
+export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
+export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+## Dotnet
+export NUGET_PACKAGES="$XDG_DATA_HOME/Nuget/packages"
+export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 
 # Set path
 if [ -d "$HOME/.bin" ]; then
@@ -33,17 +53,26 @@ fi
 if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-if [ -d "$HOME/.cargo/bin" ]; then
-    PATH="$HOME/.cargo/bin:$PATH"
+if [ -d "$CARGO_HOME/bin" ]; then
+    PATH="$CARGO_HOME/bin:$PATH"
 fi
 if [ -d "$GOPATH/bin" ]; then
     PATH="$GOPATH/bin:$PATH"
 fi
-if [ -d "$HOME/.local/lib/flutter/bin" ]; then
-    PATH="$HOME/.local/lib/flutter/bin:$PATH"
+if [ -d "$FLUTTER_ROOT/bin" ]; then
+    PATH="$FLUTTER_ROOT/bin:$PATH"
 fi
-if [ -d $HOME/.dotnet/tools ]; then
-    PATH="$HOME/.dotnet/tools:$PATH"
+if [ -d "$ANDROID_HOME/emulator" ]; then
+    PATH="$ANDROID_HOME/emulator:$PATH"
+fi
+if [ -d "$ANDROID_HOME/tools" ]; then
+    PATH="$ANDROID_HOME/tools:$PATH"
+fi
+if [ -d "$ANDROID_HOME/tools/bin" ]; then
+    PATH="$ANDROID_HOME/tools/bin:$PATH"
+fi
+if [ -d $DOTNET_CLI_HOME/tools ]; then
+    PATH="$DOTNET_CLI_HOME/tools:$PATH"
 fi
 if [ -d "$HOME/Applications" ]; then
     PATH="$HOME/Applications:$PATH"

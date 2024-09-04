@@ -3,14 +3,12 @@ exec {
     dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     dbus-update-activation-environment --systemd --all
     systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-    /usr/lib/xdg-desktop-portal-wlr
+    /usr/libexec/xdg-desktop-portal-wlr
     $HOME/.config/sway/scripts/idle
     wl-paste --type text --watch cliphist store
     wl-paste --type image --watch cliphist store
     mako -c ~/.config/mako/config
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-    gnome-keyring-daemon --start --components=secrets
-    /usr/bin/emacs emacs --daemon
+    /usr/libexec/polkit-gnome-authentication-agent-1
 }
 
 exec_always {

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 lockcmd="swaylock -f -i '$HOME/.config/sway/wallpaper/locked.*'"
-screenoff="chayang -d 5 && swaymsg 'output * power off'"
+screenoff="swaymsg 'output * power off'"
 screenon="swaymsg 'output * power on'"
 
 swayidle -w \
