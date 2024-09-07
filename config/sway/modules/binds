@@ -11,9 +11,10 @@ set $right l
 set $term foot
 set $chat flatpak run org.signal.Signal
 set $office flatpak run org.libreoffice.LibreOffice
+set $notes joplin-desktop
 set $browser flatpak run com.brave.Browser
 set $file foot -T yazi -a yazi yazi
-set $editor neovide --neovim-bin $HOME/.local/bin/lvim
+set $editor foot -T lunarvim -a lunarvim $HOME/.local/bin/lvim
 set $music foot -T cmus -a cmus cmus
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
@@ -192,6 +193,7 @@ mode "apps" {
     bindsym w exec $browser; mode "default"
     bindsym c exec $chat; mode "default"
     bindsym o exec $office; mode "default"
+    bindsym n exec $notes; mode "default"
     bindsym m exec $music; mode "default"
     bindsym r exec $rss; mode "default"
     bindsym Shift+b exec $monitor; mode "default"

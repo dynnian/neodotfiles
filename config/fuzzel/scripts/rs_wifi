@@ -108,7 +108,7 @@ password() {
     elif nmcli -f BSSID,SECURITY dev wifi list | grep -w "$bssid" | awk '{print $2}' | grep -q -- "--"; then
         pass=""
     else
-        pass=$($RUNNER -l 0 --password -p "[Enter Password ]  " );
+        pass=$($RUNNER -l 0 --password -p "[Enter Password  ]  " );
         if [ -z "$pass" ]; then
             exit 0
         fi

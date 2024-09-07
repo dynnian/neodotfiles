@@ -9,7 +9,7 @@
 # First line removes the path; second line sets it.  Without the first line,
 # your path gets massive and fish becomes very slow.
 set -e fish_user_paths
-set -U fish_user_paths $HOME/.bin  $HOME/.local/bin $HOME/.go/bin $HOME/.cargo/bin $HOME/.local/lib/flutter/bin $HOME/Applications $HOME/.local/share/JetBrains/Toolbox/scripts $HOME/.config/vifm/scripts /var/lib/flatpak/exports/bin/ $fish_user_paths
+set -U fish_user_paths $HOME/.bin  $HOME/.local/bin $HOME/.go/bin $HOME/.cargo/bin $HOME/.local/lib/flutter/bin $HOME/.local/lib/android/emulator $HOME/.local/share/JetBrains/Toolbox/scripts /var/lib/flatpak/exports/bin/ $fish_user_paths
 
 ### EXPORT ###
 set fish_greeting                                 # Supresses fish's intro message
@@ -161,9 +161,6 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
 # file management
-alias fm="$HOME/.config/vifm/scripts/vifmrun"
-alias flm="$HOME/.config/vifm/scripts/vifmrun"
-alias vifm="$HOME/.config/vifm/scripts/vifmrun"
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -vI'
@@ -221,10 +218,10 @@ alias yta-opus="yt-dlp --extract-audio --audio-format opus "
 alias yta-vorbis="yt-dlp --extract-audio --audio-format vorbis "
 alias yta-wav="yt-dlp --extract-audio --audio-format wav "
 alias ytv-best="yt-dlp -f bestvideo+bestaudio "
-alias yt='ytfzf -ftslT kitty'
-alias youtube='ytfzf -ftslT kitty'
-alias ytm='ytfzf -mtslT kitty'
-alias youtube-music='ytfzf -mtslT kitty'
+alias yt='ytfzf -ftslT chafa'
+alias youtube='ytfzf -ftslT chafa'
+alias ytm='ytfzf -mtslT chafa'
+alias youtube-music='ytfzf -mtslT chafa'
 
 # network and bluetooth
 alias netstats='nmcli dev'
@@ -234,6 +231,11 @@ alias wfi-edit='nmtui-edit'
 alias wfi-on='nmcli radio wifi on'
 alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
+
+# android emulator
+alias avd='QT_QPA_PLATFORM=xcb emulator -avd Pixel_6_Pro_API_35'
+alias avds='emulator -list-avds'
+alias avde='QT_QPA_PLATFORM=xcb emulator -avd'
 
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source

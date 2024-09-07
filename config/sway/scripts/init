@@ -23,7 +23,7 @@ export GTK_CSD=0
 # GTK & cursor stuff
 export XCURSOR_PATH="$XDG_DATA_HOME/icons/"
 export XCURSOR_THEME="Simp1e-Gruvbox-Dark"
-export GTK_THEME="Gruvbox-Dark"
+export GTK_THEME="Gruvbox-Material-Dark"
 export GTK_ICON_THEME="Papirus-Dark"
 export GTK_CURSOR_THEME="Simp1e-Gruvbox-Dark"
 

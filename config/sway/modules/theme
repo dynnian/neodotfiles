@@ -30,7 +30,7 @@ gaps inner 5
 
 # gsettings
 exec gsettings set org.gnome.desktop.interface {
-    gtk-theme 'Gruvbox-Dark'
+    gtk-theme 'Gruvbox-Material-Dark'
     icon-theme 'Papirus-Dark'
     cursor-theme 'Simp1e-Gruvbox-Dark'
     font-name 'Inter 10'

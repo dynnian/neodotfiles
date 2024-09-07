@@ -112,7 +112,11 @@
             "phone": "\udb80\udff2",
             "portable": "\udb80\udff2",
             "car": "\udb80\udd0b",
-            "default": ["\udb81\udd7f", "\udb81\udd80", "\udb81\udd7e"]
+            "default": [
+                "\udb81\udd7f",
+                "\udb81\udd80",
+                "\udb81\udd7e"
+            ]
         },
         "on-click": "foot -T audiomixer -a audiomixer pulsemixer"
     },

@@ -98,7 +98,8 @@ window#waybar {
 #workspaces button {
     font-family: Symbols Nerd Font Mono;
     font-size: 16px;
-    padding: 4px 0px;
+    padding: 0px 0px;
+    margin: 0 0;
     color: @white;
 }
 
