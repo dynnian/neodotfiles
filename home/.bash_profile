@@ -40,11 +40,8 @@ export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
 export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
+export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
-## Dotnet
-export NUGET_PACKAGES="$XDG_DATA_HOME/Nuget/packages"
-export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
 
 # Set path
 if [ -d "$HOME/.bin" ]; then
@@ -65,6 +62,9 @@ fi
 if [ -d "$ANDROID_HOME/emulator" ]; then
     PATH="$ANDROID_HOME/emulator:$PATH"
 fi
+if [ -d "$ANDROID_HOME/cmdline-tools/latest/bin" ]; then
+    PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+fi
 if [ -d "$ANDROID_HOME/tools" ]; then
     PATH="$ANDROID_HOME/tools:$PATH"
 fi
@@ -79,9 +79,6 @@ if [ -d "$HOME/Applications" ]; then
 fi
 if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
     PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
-fi
-if [ -d "$HOME/.config/vifm/scripts" ]; then
-    PATH="$HOME/.config/vifm/scripts:$PATH"
 fi
 
 # export SSH_AUTH_SOCK
