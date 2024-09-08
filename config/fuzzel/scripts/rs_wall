@@ -49,7 +49,7 @@ CheckDependencies() {
 CheckDependencies
 
 cd "$walldir" || exit 1
-wallpaper=$(fd -p "$walldir" | $RUNNER -l 5 -i -p "[󰋩 Wallpaper Selector]  ")
+wallpaper=$(/bin/ls | sort -n | $RUNNER -l 5 -i -p "[󰋩 Wallpaper Selector]  ")
 if [ -n "$wallpaper" ]; then
     if [[ "$wallpaper" == *.jpg ]]; then
         rm -f "$HOME/.config/sway/wallpaper/"*
