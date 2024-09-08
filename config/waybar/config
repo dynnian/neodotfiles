@@ -8,14 +8,12 @@
     "modules-left": [
         "sway/workspaces",
         "sway/mode",
-        "sway/scratchpad"
-    ],
-
-    "modules-center": [
+        "sway/scratchpad",
         "sway/window"
     ],
 
     "modules-right": [
+        "tray",
         "custom/arrow1",
         "clock",
         "custom/arrow2",
@@ -75,7 +73,12 @@
         "icon": true,
         "icon-size": 16,
         "separate-outputs": true,
-        "max-length": 70
+        "max-length": 60
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
     },
 
     "cpu": {
