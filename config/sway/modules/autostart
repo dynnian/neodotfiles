@@ -1,3 +1,5 @@
+bar swaybar_command waybar
+
 exec {
     kanshi
     dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -9,10 +11,10 @@ exec {
     wl-paste --type image --watch cliphist store
     mako -c ~/.config/mako/config
     /usr/libexec/polkit-gnome-authentication-agent-1
+    sway-audio-idle-inhibit
+    $HOME/.config/sway/scripts/nextinit
 }
 
 exec_always {
     pidof kanshi && kill -1 $(pidof kanshi) || kanshi
 }
-
-bar swaybar_command waybar
