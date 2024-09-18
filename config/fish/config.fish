@@ -161,6 +161,8 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
 # file management
+alias fm="yazi"
+alias flm="yazi"
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -vI'
@@ -170,9 +172,9 @@ alias mkdir='mkdir -pv'
 # audio
 alias mx='pulsemixer'
 alias amx='alsamixer'
-alias mk='cmus'
-alias ms='cmus'
-alias music='cmus'
+alias mk='musikcube'
+alias ms='musikcube'
+alias music='musikcube'
 
 # multimedia scripts
 alias fli='flix-cli'
@@ -180,8 +182,8 @@ alias ani='ani-cli'
 alias aniq='ani-cli -q'
 
 # adding flags
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
+alias df='df -h'
+alias free='free -m'
 
 # ps
 alias psa="ps auxf"
@@ -233,7 +235,7 @@ alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
 
 # android emulator
-alias avd='QT_QPA_PLATFORM=xcb emulator -avd Pixel_6_Pro_API_35'
+alias avd='QT_QPA_PLATFORM=xcb emulator -avd Pixel_7_Pro_API_35'
 alias avds='emulator -list-avds'
 alias avde='QT_QPA_PLATFORM=xcb emulator -avd'
 

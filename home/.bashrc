@@ -18,25 +18,17 @@ set -o vi
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
-# ignore upper and lowercase when TAB completion
-bind "set completion-ignore-case on"
-
-# sudo not required for some system commands
-for command in cryptsetup mount umount poweroff reboot ; do
-alias $command="sudo $command"
-done; unset command
-
-### CHANGE TITLE OF TERMINALS
+### CHANGE TITLE OF TERMINALS ###
 case ${TERM} in
-  xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st|konsole*)
-    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
+    xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|alacritty|st|konsole*)
+        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
         ;;
-  screen*)
-    PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
+    screen*)
+        PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
     ;;
 esac
 
-### SHOPT
+### SHOPT ###
 shopt -s autocd # change to named directory
 shopt -s cdspell # autocorrects cd misspellings
 shopt -s cmdhist # save multi-line commands in history as single line
@@ -45,78 +37,59 @@ shopt -s histappend # do not overwrite history
 shopt -s expand_aliases # expand aliases
 shopt -s checkwinsize # checks term size when bash regains control
 
-### COUNTDOWN
-cdown () {
-    N=$1
-  while [[ $((--N)) -gt  0 ]]
-    do
-        echo "$N" |  figlet -c | lolcat &&  sleep 1
-    done
-}
+# ignore upper and lowercase when TAB completion
+bind "set completion-ignore-case on"
 
-### Function extract for common file formats ###
-SAVEIFS=$IFS
-IFS=$(echo -en "\n\b")
+# sudo not required for some system commands
+for command in cryptsetup mount umount poweroff reboot ; do
+alias $command="sudo $command"
+done; unset command
 
-### ARCHIVE EXTRACTION
+### ARCHIVE EXTRACTION ###
 # usage: ex <file>
-function ex {
- if [ -z "$1" ]; then
-    # display usage if no parameters given
-    echo "Usage: ex <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
-    echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
- else
-    for n in "$@"
-    do
-      if [ -f "$n" ] ; then
-          case "${n%,}" in
-            *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
-                         tar xvf "$n"       ;;
-            *.lzma)      unlzma ./"$n"      ;;
-            *.bz2)       bunzip2 ./"$n"     ;;
-            *.cbr|*.rar)       unrar x -ad ./"$n" ;;
-            *.gz)        gunzip ./"$n"      ;;
-            *.cbz|*.epub|*.zip)       unzip ./"$n"       ;;
-            *.z)         uncompress ./"$n"  ;;
-            *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
-                         7z x ./"$n"        ;;
-            *.xz)        unxz ./"$n"        ;;
-            *.exe)       cabextract ./"$n"  ;;
-            *.cpio)      cpio -id < ./"$n"  ;;
-            *.cba|*.ace)      unace x ./"$n"      ;;
-            *)
-                         echo "ex: '$n' - unknown archive method"
-                         return 1
-                         ;;
-          esac
-      else
-          echo "'$n' - file does not exist"
-          return 1
-      fi
-    done
-fi
+function ex() {
+    if [ -f "$1" ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf "$1"   ;;
+            *.tar.gz)    tar xzf "$1"   ;;
+            *.bz2)       bunzip2 "$1"   ;;
+            *.rar)       unrar x "$1"   ;;
+            *.gz)        gunzip "$1"    ;;
+            *.tar)       tar xf "$1"    ;;
+            *.tbz2)      tar xjf "$1"   ;;
+            *.tgz)       tar xzf "$1"   ;;
+            *.zip)       unzip "$1"     ;;
+            *.Z)         uncompress "$1";;
+            *.7z)        7zz x "$1"     ;;
+            *.deb)       ar x "$1"      ;;
+            *.tar.xz)    tar xf "$1"    ;;
+            *.tar.zst)   unzstd "$1"    ;;
+            *)           echo "'$1' cannot be extracted via ex()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }
 
-IFS=$SAVEIFS
-
+### ALIASES ###
 # navigation
-up () {
-  local d=""
-  local limit="$1"
+function up () {
+    local d=""
+    local limit="$1"
 
-  # Default to limit of 1
-  if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
-    limit=1
-  fi
+    # Default to limit of 1
+    if [ -z "$limit" ] || [ "$limit" -le 0 ]; then
+        limit=1
+    fi
 
-  for ((i=1;i<=limit;i++)); do
-    d="../$d"
-  done
+    for ((i=1;i<=limit;i++)); do
+        d="../$d"
+    done
 
-  # perform cd. Show error if cd fails
-  if ! cd "$d"; then
-    echo "Couldn't go up $limit dirs.";
-  fi
+    # perform cd. Show error if cd fails
+    if ! cd "$d"; then
+        echo "Couldn't go up $limit dirs.";
+    fi
 }
 
 # unlock ssh keys
@@ -124,7 +97,6 @@ function unlock() {
     ssh-add "$HOME/.ssh/$1"
 }
 
-### ALIASES ###
 # cd
 alias \
     ..="cd .." \
@@ -156,12 +128,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="paru -Syyu" \
+    pkg-update="paru -Syu" \
     pkg-install="paru -S" \
     pkg-remove="paru -Rcns" \
     pkg-remove-sec="paru -R" \
-    pkg-autoremove="paru -Scc && paru -Rns (pacman -Qtdq)" \
-    pkg-search="paru -Ss"
+    pkg-clean="paru -Scc && paru -Rns (pacman -Qtdq)" \
+    pkg-search="paru -Qs"
 
 # colorize grep output (good for log files)
 alias \
@@ -198,9 +170,9 @@ alias \
 # audio
 alias \
     mx="pulsemixer" \
-    mk="cmus" \
-    ms="cmus" \
-    music="cmus"
+    mk="musikcube" \
+    ms="musikcube" \
+    music="musikcube"
 
 # power management
 alias \
@@ -248,75 +220,10 @@ alias \
     wfi-off="nmcli radio wifi off" \
     blt="bluetoothctl"
 
-# Automatically add completion for all aliases to commands having completion functions
-# this currently slows startup a bit, but it isn't terrible
-function alias_completion {
-    local namespace="alias_completion"
-
-    # parse function based completion definitions, where capture group 2 => function and 3 => trigger
-    local compl_regex='complete( +[^ ]+)* -F ([^ ]+) ("[^"]+"|[^ ]+)'
-    # parse alias definitions, where capture group 1 => trigger, 2 => command, 3 => command arguments
-    local alias_regex="alias ([^=]+)='(\"[^\"]+\"|[^ ]+)(( +[^ ]+)*)'"
-
-    # create array of function completion triggers, keeping multi-word triggers together
-    eval "local completions=($(complete -p | sed -Ene "/$compl_regex/s//'\3'/p"))"
-    (( ${#completions[@]} == 0 )) && return 0
-
-    # create temporary file for wrapper functions and completions
-    command rm -f "/tmp/${namespace}-*.tmp" &> /dev/null # preliminary cleanup
-    local tmp_file; tmp_file="$(mktemp "/tmp/${namespace}-${RANDOM}XXX.tmp")" || return 1
-
-    local completion_loader; completion_loader="$(complete -p -D 2>/dev/null | sed -Ene 's/.* -F ([^ ]*).*/\1/p')"
-
-    # read in "<alias> '<aliased command>' '<command args>'" lines from defined aliases
-    local line; while read line; do
-        eval "local alias_tokens; alias_tokens=($line)" 2>/dev/null || continue # some alias arg patterns cause an eval parse error
-        local alias_name="${alias_tokens[0]}" alias_cmd="${alias_tokens[1]}" alias_args="${alias_tokens[2]# }"
-
-        # skip aliases to pipes, boolean control structures and other command lists
-        # (leveraging that eval errs out if $alias_args contains unquoted shell metacharacters)
-        eval "local alias_arg_words; alias_arg_words=($alias_args)" 2>/dev/null || continue
-        # avoid expanding wildcards
-        read -a alias_arg_words <<< "$alias_args"
-
-        # skip alias if there is no completion function triggered by the aliased command
-        if [[ ! " ${completions[*]} " =~ " $alias_cmd " ]]; then
-            if [[ -n "$completion_loader" ]]; then
-                # force loading of completions for the aliased command
-                eval "$completion_loader $alias_cmd"
-                # 124 means completion loader was successful
-                [[ $? -eq 124 ]] || continue
-                completions+=($alias_cmd)
-            else
-                continue
-            fi
-        fi
-        local new_completion="$(complete -p "$alias_cmd")"
-
-        # create a wrapper inserting the alias arguments if any
-        if [[ -n $alias_args ]]; then
-            local compl_func="${new_completion/#* -F /}"; compl_func="${compl_func%% *}"
-            # avoid recursive call loops by ignoring our own functions
-            if [[ "${compl_func#_$namespace::}" == $compl_func ]]; then
-                local compl_wrapper="_${namespace}::${alias_name}"
-                    echo "function $compl_wrapper {
-                        (( COMP_CWORD += ${#alias_arg_words[@]} ))
-                        COMP_WORDS=($alias_cmd $alias_args \${COMP_WORDS[@]:1})
-                        (( COMP_POINT -= \${#COMP_LINE} ))
-                        COMP_LINE=\${COMP_LINE/$alias_name/$alias_cmd $alias_args}
-                        (( COMP_POINT += \${#COMP_LINE} ))
-                        $compl_func
-                    }" >> "$tmp_file"
-                    new_completion="${new_completion/ -F $compl_func / -F $compl_wrapper }"
-            fi
-        fi
-
-        # replace completion trigger by alias
-        new_completion="${new_completion% *} $alias_name"
-        echo "$new_completion" >> "$tmp_file"
-    done < <(alias -p | sed -Ene "s/$alias_regex/\1 '\2' '\3'/p")
-    source "$tmp_file" && command rm -f "$tmp_file" &> /dev/null
-}; alias_completion
+# android emulator
+alias avd="QT_QPA_PLATFORM=xcb emulator -avd Pixel_7_Pro_API_35"
+alias avds="emulator -list-avds"
+alias avde="QT_QPA_PLATFORM=xcb emulator -avd"
 
 # starship prompt
 eval "$(starship init bash)"

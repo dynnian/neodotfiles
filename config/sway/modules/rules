@@ -109,5 +109,7 @@ for_window {
 	[title="Wine System Tray"] floating enable; kill
     [title="Android Emulator - *"] floating enable; border normal
     [title="Emulator" window_type="utility"] move scratchpad
-    [app_id="brave-nngceckbapebfimnlniiiahkandclblb-Default"] floating enable; border normal
+    [app_id="brave-nngceckbapebfimnlniiiahkandclblb-Default"] floating enable
+    [app_id="xdg-desktop-portal-gtk"] floating enable
+    [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable
 }

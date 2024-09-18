@@ -14,8 +14,8 @@ set $office flatpak run org.libreoffice.LibreOffice
 set $notes joplin-desktop
 set $browser flatpak run com.brave.Browser
 set $file foot -T yazi -a yazi yazi
-set $editor foot -T lunarvim -a lunarvim $HOME/.local/bin/lvim
-set $music foot -T cmus -a cmus cmus
+set $editor zed
+set $music foot -T musikcube -a musikcube musikcube
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
 set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flstT chafa

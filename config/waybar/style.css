@@ -1,34 +1,25 @@
 /* =====================================
-   Colors (Gruvbox theme)
+   Colors (Catppuccin Mocha)
    ===================================== */
-@define-color black     #1d2021;
-@define-color red       #cc241d;
-@define-color green     #98971a;
-@define-color yellow    #d79921;
-@define-color orange    #fe8019;
-@define-color blue      #458588;
-@define-color purple    #b16286;
-@define-color aqua      #689d6a;
-@define-color gray      #a89984;
-/* Brighter variants */
-@define-color brgray    #928374;
-@define-color brred     #fb4934;
-@define-color brgreen   #b8bb26;
-@define-color bryellow  #fabd2f;
-@define-color brblue    #83a598;
-@define-color brpurple  #d3869b;
-@define-color braqua    #8ec07c;
-@define-color white     #ebdbb2;
-@define-color bg2       #504945;
-/* Darker variants */
-@define-color drred     #9d0006;
-@define-color drgreen   #79740e;
-@define-color drpurple  #8f3f71;
-@define-color drorange  #af3a03;
-@define-color drgray    #3c3836;
-@define-color drblue    #076678;
-@define-color draqua    #427b58;
-@define-color dryellow  #b57614;
+@define-color white     #cdd6f4;
+@define-color black     #1e1e2e;
+@define-color red       #e78284;
+@define-color green     #a6d189;
+@define-color yellow    #e5c890;
+@define-color orange    #ef9f76;
+@define-color blue      #8caaee;
+@define-color purple    #ca9ee6;
+@define-color aqua      #81c8be;
+@define-color gray      #313244;
+/* Brigher variants */
+@define-color brred     #f38ba8;
+@define-color brgreen   #a6e3a1;
+@define-color brpurple  #cba6f7;
+@define-color brorange  #fab387;
+@define-color brgray    #45475a;
+@define-color brblue    #89b4fa;
+@define-color braqua    #94e2d5;
+@define-color bryellow  #f9e2af;
 
 /* =====================================
    Color Definitions for Modules
@@ -37,16 +28,16 @@
 @define-color unfocused             @braqua;
 @define-color focused               @red;
 @define-color inactive              @brgray;
-@define-color clock                 @drpurple;
-@define-color monitor               @drblue;
-@define-color language              @draqua;
-@define-color idle                  @drgreen;
-@define-color powerprofile          @drgreen;
-@define-color battery               @drgreen;
-@define-color volume                @dryellow;
-@define-color backlight             @drorange;
-@define-color network               @drred;
-@define-color wbackground           rgba(29, 32, 33, 0.95);
+@define-color clock                 @purple;
+@define-color monitor               @blue;
+@define-color language              @aqua;
+@define-color idle                  @green;
+@define-color powerprofile          @green;
+@define-color battery               @green;
+@define-color volume                @yellow;
+@define-color backlight             @orange;
+@define-color network               @red;
+@define-color wbackground           rgba(30, 30, 46, 0.90);
 
 /* =====================================
    Keyframes
@@ -108,7 +99,7 @@ window#waybar {
 }
 
 #workspaces button.focused {
-    color: @white;
+    color: @black;
     background: @focused;
 }
 
@@ -123,13 +114,14 @@ window#waybar {
 
 #workspaces button:hover {
     background: @yellow;
-    color: @white;
+    color: @black;
 }
 
 /* =====================================
    Mode Module
    ===================================== */
 #mode {
+    color: @black;
     background-color: @red;
     border-bottom: 3px solid @white;
     padding: 3px;
@@ -173,7 +165,7 @@ window#waybar {
 #network,
 #bluetooth,
 #clock {
-    color: @white;
+    color: @black;
     padding-left: 4px;
 }
 
