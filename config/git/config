@@ -1,0 +1,6 @@
+[user]
+	mail = maverick.xero@proton.me
+	name = Lian Drake
+	email = maverick.xero@proton.me
+[safe]
+	directory = /usr/share/flutter
