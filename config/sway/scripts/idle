@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-lockcmd="swaylock -f -C '$HOME/.config/sway/swaylock/config' -i '$HOME/.config/sway/wallpaper/locked.*'"
+lockcmd="swaylock -f -i '$HOME/.config/sway/wallpaper/locked.*'"
 screenoff="swaymsg 'output * power off'"
 screenon="swaymsg 'output * power on'"
 
