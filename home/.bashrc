@@ -3,7 +3,7 @@ export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 
 ### "bat" as manpager
-export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+export MANPAGER="batman"
 
 # use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
@@ -128,12 +128,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="paru -Syu" \
-    pkg-install="paru -S" \
-    pkg-remove="paru -Rcns" \
-    pkg-remove-sec="paru -R" \
-    pkg-clean="paru -Scc && paru -Rns (pacman -Qtdq)" \
-    pkg-search="paru -Qs"
+    xbu="sudo xbps-install -Su" \
+    xbi="sudo xbps-install -S" \
+    xbr="sudo xbps-remove -R" \
+    xbrs="sudo xbps-remove" \
+    xbc="sudo xbps-remove -Oo" \
+    xbs="sudo xbps-query -R"
 
 # colorize grep output (good for log files)
 alias \
@@ -176,9 +176,9 @@ alias \
 
 # power management
 alias \
-    po="systemctl poweroff" \
-    sp="systemctl suspend" \
-    rb="systemctl reboot"
+    po="loginctl poweroff" \
+    sp="loginctl suspend" \
+    rb="loginctl reboot"
 
 # file management
 alias \
@@ -220,10 +220,13 @@ alias \
     wfi-off="nmcli radio wifi off" \
     blt="bluetoothctl"
 
-# android emulator
-alias avd="QT_QPA_PLATFORM=xcb emulator -avd Pixel_7_Pro_API_35"
-alias avds="emulator -list-avds"
-alias avde="QT_QPA_PLATFORM=xcb emulator -avd"
+export SSH_AUTH_SOCK=${HOME}/.ssh/agent
+if ! pgrep -u ${USER} ssh-agent > /dev/null; then
+    rm -f ${SSH_AUTH_SOCK}
+fi
+if [ ! -S ${SSH_AUTH_SOCK} ]; then
+    eval $(ssh-agent -a ${SSH_AUTH_SOCK} 2> /dev/null)
+fi   
 
 # starship prompt
 eval "$(starship init bash)"

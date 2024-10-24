@@ -23,8 +23,8 @@ export BASHRC="$HOME/.bashrc"
 # Default apps
 export TERMINAL="foot"
 export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="zed"
-export BROWSER="flatpak run com.brave.Browser"
+export VISUAL="foot -T lunarvim -a lunarvim lvim"
+export BROWSER="flatpak run org.mozilla.firefox"
 export VIEWER="zathura"
 
 # Programming languages specific environment variables
@@ -35,7 +35,7 @@ export GOPATH="$XDG_DATA_HOME/go"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 ## Flutter
-export CHROME_EXECUTABLE="/var/lib/flatpak/app/com.brave.Browser/x86_64/stable/active/export/bin/com.brave.Browser"
+export CHROME_EXECUTABLE="/var/lib/flatpak/app/io.github.ungoogled_software.ungoogled_chromium/x86_64/stable/active/export/bin/io.github.ungoogled_software.ungoogled_chromium"
 export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
 export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
 export FLUTTER_ANALYTICS_DISABLED=true
@@ -47,7 +47,7 @@ export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
 export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-export JAVA_HOME="/usr/lib/jvm/jre-17-openjdk"
+export JAVA_HOME="/usr/lib/jvm/openjdk21"
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 
 # Set path
@@ -106,11 +106,6 @@ fi
 # Create config directories if they don't exist
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
-fi
-
-# export SSH_AUTH_SOCK
-if [[ -z "${SSH_CONNECTION}" ]]; then
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 fi
 
 # Bashrc

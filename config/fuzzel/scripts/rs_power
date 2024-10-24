@@ -56,13 +56,13 @@ case "$action" in
         loginctl kill-session self
         ;;
     "$option2")
-        systemctl reboot
+        loginctl reboot
         ;;
     "$option3")
-        systemctl poweroff
+        loginctl poweroff
         ;;
     "$option4")
-        systemctl suspend
+        loginctl suspend
         ;;
     "$option5")
         swaylock -i "$currwall"

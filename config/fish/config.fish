@@ -16,7 +16,7 @@ set fish_greeting                                 # Supresses fish's intro messa
 set TERM "xterm-256color"                         # Sets the terminal type
 
 ### SET BAT AS MANPAGER
-set -x MANPAGER "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+#set -x MANPAGER "batman"
 
 ### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
 function fish_user_key_bindings
@@ -148,12 +148,12 @@ alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
 # package management
-alias pkg-update="paru -Syu"
-alias pkg-install="paru -S"
-alias pkg-remove="paru -Rcns"
-alias pkg-remove-sec="paru -R"
-alias pkg-search="paru -Ss"
-alias pkg-clean="paru -Scc && paru -Rns (pacman -Qtdq)"
+alias xbu="sudo xbps-install -Su"
+alias xbi="sudo xbps-install -S"
+alias xbr="sudo xbps-remove -R"
+alias xbrs="sudo xbps-remove"
+alias xbc="sudo xbps-remove -Oo"
+alias xbs="sudo xbps-query -R"
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'

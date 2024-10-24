@@ -4,7 +4,6 @@ set {
 	$game inhibit_idle focus; floating enable; border none; fullscreen enable; shadows disable
 	$popup floating enable; border pixel 1; sticky enable; shadows enable
 	$float floating enable; border pixel 1; shadows enable
-	$video inhibit_idle fullscreen; border none; max_render_time off
 	$important inhibit_idle open; floating enable; border pixel 1
 	$max inhibit_idle visible; floating enable; sticky enable; border pixel 1
 }
@@ -73,14 +72,6 @@ for_window {
 	[window_type="tooltip"] $float; shadows enable
 	[window_type="notification"] $float; shadows enable
 
-#video - inhibit_idle fullscreen; border none; max_render_time off
-	[instance="chromium"] $video
-	[app_id="mpv"] $video
-	[app_id="vlc"] $video
-	[class="firefox"] $video
-	[app_id="firefox"] $video
-	[class="Nightly"] $video
-
 #important - inhibit_idle open; floating enable; border pixel 1
 	[title="Move files" app_id="dolphin|org.kde.ark|pcmanfm|pcmanfm-qt"] $important
 	[title="^(Copying|Moving)\s*—\s*Dolphin" app_id="dolphin|org.kde.ark|pcmanfm|pcmanfm-qt"] $important
@@ -110,6 +101,8 @@ for_window {
     [title="Android Emulator - *"] floating enable; border normal
     [title="Emulator" window_type="utility"] move scratchpad
     [app_id="brave-nngceckbapebfimnlniiiahkandclblb-Default"] floating enable
+    [title="Extension: (Bitwarden Password Manager) - Bitwarden — Mozilla Firefox"] floating enable
     [app_id="xdg-desktop-portal-gtk"] floating enable
+    [app_id="qalculate-gtk"] floating enable
     [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable
 }

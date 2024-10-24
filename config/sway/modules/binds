@@ -11,18 +11,19 @@ set $right l
 set $term foot
 set $chat flatpak run org.signal.Signal
 set $office flatpak run org.libreoffice.LibreOffice
-set $notes joplin-desktop
-set $browser flatpak run com.brave.Browser
+set $passwords flatpak run com.bitwarden.desktop
+set $notes flatpak run net.cozic.joplin_desktop
+set $browser flatpak run org.mozilla.firefox
 set $file foot -T yazi -a yazi yazi
-set $editor zed
+set $editor foot -T lunarvim -a lunarvim lvim
 set $music foot -T musikcube -a musikcube musikcube
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
 set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flstT chafa
 set $ytfzf-music foot -T ytfzf-music -a ytfzf-music ytfzf -mlstT chafa
 set $flix-cli foot -T flix-cli -a flix-cli flix-cli
-set $audiomixer foot -T audiomixer -a audiomixer pulsemixer
-set $monitor foot -T monitor -a monitor btop
+set $audiomixer foot -T pulsemixer -a pulsemixer pulsemixer
+set $monitor foot -T btop -a btop btop
 
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
@@ -55,7 +56,6 @@ bindsym XF86AudioStop               exec playerctl stop
 bindsym XF86MonBrightnessUp         exec brightnessctl s 5%+
 bindsym XF86MonBrightnessDown       exec brightnessctl s 5%-
 bindsym XF86News                    exec $rss
-bindsym XF86Display                 exec wdisplays
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
@@ -196,6 +196,7 @@ mode "apps" {
     bindsym n exec $notes; mode "default"
     bindsym m exec $music; mode "default"
     bindsym r exec $rss; mode "default"
+    bindsym p exec $passwords; mode "default"
     bindsym Shift+b exec $monitor; mode "default"
     bindsym Shift+p exec $audiomixer; mode "default"
     bindsym Shift+y exec $ytfzf; mode "default"

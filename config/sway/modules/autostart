@@ -1,17 +1,18 @@
 bar swaybar_command waybar
 
 exec {
-    kanshi
-    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-    dbus-update-activation-environment --systemd --all
-    systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+    hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+    $HOME/.config/sway/scripts/pipeinit
     /usr/libexec/xdg-desktop-portal-wlr
+    /usr/libexec/xdg-desktop-portal-gtk
     $HOME/.config/sway/scripts/idle
     wl-paste --type text --watch cliphist store
     wl-paste --type image --watch cliphist store
     mako -c ~/.config/mako/config
     /usr/libexec/polkit-gnome-authentication-agent-1
+    gnome-keyring-daemon --start --components=secrets
     sway-audio-idle-inhibit
+    dex -a -s ~/.config/autostart
     $HOME/.config/sway/scripts/nextinit
 }
 
