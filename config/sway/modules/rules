@@ -102,6 +102,8 @@ for_window {
     [title="Emulator" window_type="utility"] move scratchpad
     [app_id="brave-nngceckbapebfimnlniiiahkandclblb-Default"] floating enable
     [title="Extension: (Bitwarden Password Manager) - Bitwarden — Mozilla Firefox"] floating enable
+    [title="Open File"] floating enable
+    [title="About"] floating enable
     [app_id="xdg-desktop-portal-gtk"] floating enable
     [app_id="qalculate-gtk"] floating enable
     [app_id="com.nextcloud.desktopclient.nextcloud"] floating enable

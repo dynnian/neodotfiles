@@ -14,6 +14,7 @@ set $office flatpak run org.libreoffice.LibreOffice
 set $passwords flatpak run com.bitwarden.desktop
 set $notes flatpak run net.cozic.joplin_desktop
 set $browser flatpak run org.mozilla.firefox
+set $vm virt-manager
 set $file foot -T yazi -a yazi yazi
 set $editor foot -T lunarvim -a lunarvim lvim
 set $music foot -T musikcube -a musikcube musikcube
@@ -24,6 +25,16 @@ set $ytfzf-music foot -T ytfzf-music -a ytfzf-music ytfzf -mlstT chafa
 set $flix-cli foot -T flix-cli -a flix-cli flix-cli
 set $audiomixer foot -T pulsemixer -a pulsemixer pulsemixer
 set $monitor foot -T btop -a btop btop
+
+# JetBrains IDEs
+set $rider ~/.local/share/JetBrains/Toolbox/scripts/rider
+set $idea ~/.local/share/JetBrains/Toolbox/scripts/idea
+set $clion ~/.local/share/JetBrains/Toolbox/scripts/clion
+set $goland ~/.local/share/JetBrains/Toolbox/scripts/goland
+set $rustrover ~/.local/share/JetBrains/Toolbox/scripts/rustrover
+set $webstorm ~/.local/share/JetBrains/Toolbox/scripts/webstorm
+set $pycharm ~/.local/share/JetBrains/Toolbox/scripts/pycharm
+set $datagrip ~/.local/share/JetBrains/Toolbox/scripts/datagrip
 
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
@@ -44,17 +55,17 @@ bindsym $mod+Return exec $term
 bindsym $mod+q kill
 
 # XF86 Keys
-bindsym XF86AudioRaiseVolume        exec pamixer -i 5
-bindsym XF86AudioLowerVolume        exec pamixer -d 5
-bindsym XF86AudioMute               exec pamixer -t
+bindsym XF86AudioRaiseVolume        exec pamixer -i 5 && pamixer --get-volume > /tmp/wobpipe
+bindsym XF86AudioLowerVolume        exec pamixer -d 5 && pamixer --get-volume > /tmp/wobpipe
+bindsym XF86AudioMute               exec sh -c 'pamixer -t && if [ "$(pamixer --get-mute)" = "true" ]; then echo "$(pamixer --get-volume) muted" > /tmp/wobpipe; else pamixer --get-volume > /tmp/wobpipe; fi'
 bindsym XF86AudioMicMute            exec pamixer --default-source -t
 bindsym XF86AudioPause              exec playerctl play-pause
 bindsym XF86AudioPlay               exec playerctl play-pause
 bindsym XF86AudioNext               exec playerctl next
 bindsym XF86AudioPrev               exec playerctl previous
 bindsym XF86AudioStop               exec playerctl stop
-bindsym XF86MonBrightnessUp         exec brightnessctl s 5%+
-bindsym XF86MonBrightnessDown       exec brightnessctl s 5%-
+bindsym XF86MonBrightnessUp         exec sh -c 'brightnessctl s 5%+ && brightnessctl -m | cut -d, -f4 | tr -d % > /tmp/wobpipe'
+bindsym XF86MonBrightnessDown       exec sh -c 'brightnessctl s 5%- && brightnessctl -m | cut -d, -f4 | tr -d % > /tmp/wobpipe'
 bindsym XF86News                    exec $rss
 
 # Drag floating windows by holding down $mod and left mouse button.
@@ -197,12 +208,21 @@ mode "apps" {
     bindsym m exec $music; mode "default"
     bindsym r exec $rss; mode "default"
     bindsym p exec $passwords; mode "default"
+    bindsym v exec $vm; mode "default"
     bindsym Shift+b exec $monitor; mode "default"
     bindsym Shift+p exec $audiomixer; mode "default"
     bindsym Shift+y exec $ytfzf; mode "default"
     bindsym Shift+m exec $ytfzf-music; mode "default"
     bindsym Shift+a exec $ani-cli; mode "default"
     bindsym Shift+f exec $flix-cli; mode "default"
+    bindsym Ctrl+d exec $rider; mode "default"
+    bindsym Ctrl+i exec $idea; mode "default"
+    bindsym Ctrl+g exec $goland; mode "default"
+    bindsym Ctrl+r exec $rustrover; mode "default"
+    bindsym Ctrl+c exec $clion; mode "default"
+    bindsym Ctrl+w exec $webstorm; mode "default"
+    bindsym Ctrl+p exec $pycharm; mode "default"
+    bindsym Ctrl+t exec $datagrip; mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }

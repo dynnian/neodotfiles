@@ -39,7 +39,7 @@ lvim.use_icons = true
 lvim.log.level = "info"
 
 -- change theme settings
-lvim.colorscheme = "catppuccin-mocha"
+lvim.colorscheme = "gruvbox"
 lvim.transparent_window = false
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
@@ -71,7 +71,33 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.plugins = {
     -- Colorschemes
     { "lunarvim/colorschemes" },
-    { "catppuccin/nvim" },
+    { "ellisonleao/gruvbox.nvim",
+        config = function()
+            require("gruvbox").setup({
+                undercurl = true,
+                underline = true,
+                bold = false,
+                italic = {
+                    strings = true,
+                    comments = true,
+                    operators = false,
+                    folds = true,
+                },
+                strikethrough = true,
+                invert_selection = false,
+                invert_signs = false,
+                invert_tabline = false,
+                invert_intend_guides = false,
+                inverse = true,    -- invert background for search, diffs, statuslines and errors
+                contrast = "hard", -- can be "hard", "soft" or empty string
+                palette_overrides = {},
+                overrides = {},
+                dim_inactive = false,
+                transparent_mode = true,
+            })
+        end
+
+    },
 
     -- Database UI (vim-dadbod)
     { "kristijanhusak/vim-dadbod-ui",

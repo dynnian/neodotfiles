@@ -130,14 +130,24 @@ alias .5='cd ../../../../..'
 
 # use lunarvim or neovim for vim if present.
 if test -x "$HOME/.local/bin/lvim"
-    alias vim "$HOME/.local/bin/lvim"
+    alias vim="$HOME/.local/bin/lvim"
 else if test -x (command -v nvim)
-    alias vim "nvim"
+    alias vim="nvim"
 end
 
 # bat as cat
 if test -x (command -v bat)
-    alias cat "bat"
+    alias cat="bat"
+end
+
+# fastfetch as neofetch
+if test -x (command -v fastfetch)
+    alias neofetch="fastfetch"
+end
+
+# btop as htop
+if test -x (command -v btop)
+    alias htop="btop"
 end
 
 # Changing "ls" to "eza"

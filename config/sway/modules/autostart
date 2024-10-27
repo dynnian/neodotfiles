@@ -14,6 +14,8 @@ exec {
     sway-audio-idle-inhibit
     dex -a -s ~/.config/autostart
     $HOME/.config/sway/scripts/nextinit
+    mkfifo /tmp/wobpipe
+    tail -f /tmp/wobpipe | wob -c ~/.config/wob/wob.ini
 }
 
 exec_always {

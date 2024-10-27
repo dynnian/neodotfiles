@@ -71,7 +71,7 @@ case "$action" in
         #####
         ## These conditions will be used for the prompt
         #####
-        pwraction=$(echo -e "$pwrs" | $RUNNER -l 3 -p "$prompt2")
+        pwraction=$(echo -e "$pwrs" | $RUNNER -l 4 -p "$prompt2")
         case "$pwraction" in
             "$pwr1")
                 if [ "$currentpwr" = "$pwr1" ]; then
