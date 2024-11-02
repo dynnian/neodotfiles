@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-currwall=$(tail --lines=1 "$HOME/.fehbg" | awk '{print $4}' | sed "s/'//g")
-slock -b "$currwall"

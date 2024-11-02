@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+##       ____             __                               ##
+##      / __ \_________ _/ /_____                          ##
+##     / / / / ___/ __ `/ //_/ _ \                         ##
+##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
+##   /_____/_/   \__,_/_/|_|\___/   My custom dwm build    ##
+
+# activate neccesary env variables for X11
+dbus-update-activation-environment DISPLAY XAUTHORITY &
+
+# start pipewire
+pidof pipewire || $XDG_SOURCE_HOME/dwm/scripts/pipeinit
+
+# # bind gnome secrets component to currently running gnome-keyring instance launched with PAM on login (this unlocks the keyring)
+# pidof gnome-keyring-daemon || gnome-keyring-daemon --start --components=secrets &
+
+# autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
+pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
+pidof dwmblocks || dwmblocks &
+pidof unclutter || unclutter --hide-on-touch &
+pidof dunst || dunst --config $XDG_CONFIG_HOME/dunst/dunstrc &
+pidof picom || picom &
+pidof xidlehook || xidlehook \
+    --not-when-fullscreen \
+    --not-when-audio \
+    --timer 60 \
+        "brightnessctl s 10%" \
+        "" \
+    --timer 30 \
+        "$XDG_SOURCE_HOME/dwm/scripts/lock" \
+        "" &
+#pidof clipmenud || clipmenud &
+
+# set theming and font thingy
+gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface cursor-size 16 &
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
+gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
+gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
+gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10' &
+gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10' &
+gsettings set org.gnome.desktop.interface font-antialiasing 'rgba' &
+gsettings set org.gnome.desktop.interface font-hinting 'full' &
+
+# grab monitor status (varies with the machine)
+### T480 monitors
+monitor1=$(cat /sys/class/drm/card0-HDMI-A-2/status)
+monitor2=$(cat /sys/class/drm/card0-DP-1/status)
+
+# if monitors are connected, then use xrandr to set desired settings
+if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
+    sleep 2
+    xrandr --output eDP1 --mode 1920x1080 --pos 3200x0 --rotate normal \
+           --output HDMI2 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal \
+           --output DP1 --mode 1280x1024 --rate 75.00 --pos 0x0 --rotate normal &
+elif [ "$monitor1" = "connected" ]; then
+    xrandr --output eDP1 --primary --auto \
+           --output HDMI2 --auto --scale-from 1920x1080 --same-as eDP1 &
+elif [ "$monitor2" = "connected" ]; then
+    xrandr --output eDP1 --primary --auto \
+           --output DP1 --auto --scale-from 1920x1080 --same-as eDP1 &
+else
+    xrandr --output eDP1 --primary --auto
+    sleep 1
+    xrandr --output HDMI2 --off --output DP1 --off &
+fi
+
+# set wallpaper
+sh "$XDG_SOURCE_HOME/dwm/scripts/restorewall" &
+pidof nextcloud || flatpak run com.nextcloud.desktopclient.nextcloud --background &

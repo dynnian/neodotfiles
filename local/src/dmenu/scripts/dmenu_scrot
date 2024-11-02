@@ -1,0 +1,273 @@
+#!/usr/bin/env bash
+
+# *** Script by Clay Gomera (Drake) ***
+# Description: A simple screenshot/screencast dmenu script
+# Dependencies: maim, slop, ffmpeg, dmenu, libnotify
+
+## Define directories for saving screenshots and screencasts
+SHOTDIR="$XDG_PICTURES_DIR/Screenshots"
+CASTDIR="$XDG_VIDEOS_DIR/Screencasts"
+mkdir -p "$SHOTDIR" "$CASTDIR"
+
+## Define available formats for images and videos
+image_formats="jpg\npng"
+video_formats="mp4\nmkv"
+
+## Define choices for the main menu
+mcho1="󰹑 Take a screenshot"
+mcho2="󰐍 Record the screen"
+mcho3="󰙧 Stop recording"
+mcho4="󱎘 Exit"
+mchos="$mcho1\n$mcho2\n$mcho3\n$mcho4"
+
+## Define choices for the screenshot submenu
+mscho1="󱣴 Capture the entire screen"
+mscho2="󱎫 Capture the entire screen (With delay)"
+mscho3="󱕻 Capture area"
+mscho4="󰖯 Capture active window"
+mscho5="󱎘 Exit"
+mschos="$mscho1\n$mscho2\n$mscho3\n$mscho4\n$mscho5"
+
+## Define choices for saving screenshots
+svcho1="󰆏 Copy to clipboard"
+svcho2="󰠘 Save to $SHOTDIR"
+svchos="$svcho1\n$svcho2"
+
+## Define delay options for screenshots
+del1="󱑀 3 sec delay"
+del2="󱑂 5 sec delay"
+del3="󱑇 10 sec delay"
+dels="$del1\n$del2\n$del3"
+
+# Check if required dependencies are installed
+check_dependencies() {
+    local dependencies=("maim" "ffmpeg" "dmenu" "notify-send" "xclip" "xdotool" "xdpyinfo")
+    for dep in "${dependencies[@]}"; do
+        if ! command -v "$dep" &>/dev/null; then
+            echo "$dep is required but not installed. Please install it and try again."
+            exit 1
+        fi
+    done
+}
+
+# Prompt the user to choose an action for saving the screenshot
+fsvchos() {
+    svchoice=$(echo -e "$svchos" | dmenu -i -l 2 -p "  What do you want to do with this screenshot?")
+}
+
+# Prompt the user to choose a delay option for screenshots
+fdel() {
+    del=$(echo -e "$dels" | dmenu -i -p " Select Delay")
+}
+
+# Prompt the user to choose the image format for screenshots
+fimage_format() {
+    image_format=$(echo -e "$image_formats" | dmenu -i -p " Choose screenshot format")
+}
+
+# Prompt the user to choose the video format for recordings
+fvideo_format() {
+    video_format=$(echo -e "$video_formats" | dmenu -i -p " Choose video format")
+}
+
+# Capture a full-screen screenshot without delay
+shot_screen() {
+    fimage_format
+    fsvchos
+    if [ "$svchoice" = "$svcho1" ]; then
+        maim -f "$image_format" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
+    elif [ "$svchoice" = "$svcho2" ]; then
+        maim -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved"
+    else
+        exit 0
+    fi
+}
+
+# Capture a full-screen screenshot with a user-defined delay
+shot_screen_delay() {
+    fimage_format
+    fsvchos
+    fdel
+    case $del in
+        "$del1")
+            for i in 3 2 1; do
+                notify-send -t 1000 "Capturing in $i.."
+                sleep 1
+            done
+            ;;
+        "$del2")
+            for i in 5 4 3 2 1; do
+                notify-send -t 1000 "Capturing in $i.."
+                sleep 1
+            done
+            ;;
+        "$del3")
+            for i in 10 9 8 7 6 5 4 3 2 1; do
+                notify-send -t 1000 "Capturing in $i.."
+                sleep 1
+            done
+            ;;
+    esac
+
+    sleep 1
+    if [ "$svchoice" = "$svcho1" ]; then
+        maim -f "$image_format" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
+    elif [ "$svchoice" = "$svcho2" ]; then
+        maim -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR"
+    else
+        exit 0
+    fi
+}
+
+# Capture a user-defined area of the screen
+shot_area() {
+    fimage_format
+    fsvchos
+    if [ "$svchoice" = "$svcho1" ]; then
+        maim -f "$image_format" -s | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
+    elif [ "$svchoice" = "$svcho2" ]; then
+        maim -s -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR"
+    else
+        exit 0
+    fi
+}
+
+# Capture a screenshot of the currently active window
+shot_window() {
+    fimage_format
+    fsvchos
+    if [ "$svchoice" = "$svcho1" ]; then
+        maim -f "$image_format" -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/"$image_format" && notify-send "Screenshot saved to clipboard"
+    elif [ "$svchoice" = "$svcho2" ]; then
+        maim -i "$(xdotool getactivewindow)" -f "$image_format" "$SHOTDIR/$(date +%s).$image_format" && notify-send "Screenshot saved to $SHOTDIR"
+    else
+        exit 0
+    fi
+}
+
+# Start recording the entire screen using ffmpeg
+rec_screen() {
+    fvideo_format
+    if pgrep -x "ffmpeg" > /dev/null; then
+        notify-send "A screen recording is already in progress."
+    else
+        filename="$CASTDIR/$(date +%s).$video_format"
+        resolution="$(xdpyinfo | grep dimensions | awk '{print $2}')"
+        ffmpeg -f x11grab -s "$resolution" -i :0.0 -c:v libx264 -preset fast -qp 0 "$filename" &
+        notify-send "Screen recording started."
+    fi
+}
+
+# Start recording the entire screen with a user-defined delay
+rec_screen_delay() {
+    fvideo_format
+    fdel
+    case $del in
+        "$del1")
+            for i in 3 2 1; do
+              notify-send -t 1000 "Starting in $i.."
+              sleep 1
+            done
+            ;;
+        "$del2")
+            for i in 5 4 3 2 1; do
+              notify-send -t 1000 "Starting in $i.."
+              sleep 1
+            done
+            ;;
+        "$del3")
+            for i in 10 9 8 7 6 5 4 3 2 1; do
+                notify-send -t 1000 "Starting in $i.."
+                sleep 1
+            done
+            ;;
+    esac
+
+    sleep 1
+    if pgrep -x "ffmpeg" > /dev/null; then
+        notify-send "A screen recording is already in progress."
+    else 
+        filename="$CASTDIR/$(date +%s).$video_format"
+        resolution="$(xdpyinfo | grep dimensions | awk '{print $2}')"
+        ffmpeg -f x11grab -s "$resolution" -i :0.0 -c:v libx264 -preset fast -qp 0 "$filename" &
+        notify-send "Screen recording started"
+    fi
+}
+
+# Start recording a user-defined area of the screen
+rec_area() {
+    fvideo_format
+    if pgrep -x "ffmpeg" > /dev/null; then
+        notify-send "A screen recording is already in progress."
+    else 
+        filename="$CASTDIR/$(date +%s).$video_format"
+        slop_result=$(slop -f "%x %y %w %h")
+        if [ -n "$slop_result" ]; then
+            IFS=' ' read -r x y w h <<< "$slop_result"
+            ffmpeg -f x11grab -s "${w}x${h}" -i :0.0+"$x","$y" -c:v libx264 -preset fast -qp 0 "$filename" &
+            notify-send "Screen recording started"
+        else
+            notify-send "No area selected. Aborting recording."
+        fi
+    fi
+}
+
+# Start recording the currently active window
+rec_window() {
+    fvideo_format
+    if pgrep -x "ffmpeg" > /dev/null; then
+        notify-send "A screen recording is already in progress."
+    else 
+        filename="$CASTDIR/$(date +%s).$video_format"
+        active_window_id=$(xdotool getactivewindow)
+        
+        if [ -n "$active_window_id" ]; then
+            ffmpeg -f x11grab -s "$(xdotool getwindowgeometry --shell $active_window_id | grep WIDTH | cut -d'=' -f2)x$(xdotool getwindowgeometry --shell $active_window_id | grep HEIGHT | cut -d'=' -f2)" -i :0.0+"$(xdotool getwindowgeometry --shell $active_window_id | grep X | cut -d'=' -f2)","$(xdotool getwindowgeometry --shell $active_window_id | grep Y | cut -d'=' -f2)" -c:v libx264 -preset fast -qp 0 "$filename" &
+            notify-send "Recording active window started"
+        else
+            notify-send "No active window found. Aborting recording."
+        fi
+    fi
+}
+
+# Stop the ongoing screen recording
+stop_recording() {
+    if pgrep -x "ffmpeg" > /dev/null; then
+        pkill -f "ffmpeg -f x11grab"
+        notify-send "Screen recording stopped. Video saved to $CASTDIR"
+    else
+        notify-send "No recording in progress."
+    fi
+}
+
+# Main script execution
+check_dependencies
+
+# Display the main menu and handle user choice
+mchoice=$(echo -e "$mchos" | dmenu -i -l 4 -p "  Screen Capture Menu")
+case $mchoice in
+    "$mcho1")
+        # Display the screenshot submenu and handle user choice
+        mschoice=$(echo -e "$mschos" | dmenu -i -l 9 -p "  Screenshot Menu")
+        case $mschoice in
+            "$mscho1") shot_screen ;;
+            "$mscho2") shot_screen_delay ;;
+            "$mscho3") shot_area ;;
+            "$mscho4") shot_window ;;
+            "$mscho5") exit 0 ;;
+        esac
+        ;;
+    "$mcho2")
+        # Display the screencast submenu and handle user choice
+        mschoice=$(echo -e "$mschos" | dmenu -i -l 9 -p "  Screencast Menu")
+        case $mschoice in
+            "$mscho1") rec_screen ;;
+            "$mscho2") rec_screen_delay ;;
+            "$mscho3") rec_area ;;
+            "$mscho4") rec_window ;;
+            "$mscho5") exit 0 ;;
+        esac
+        ;;
+    "$mcho3") stop_recording ;;
+    "$mcho4") exit 0 ;;
+esac
