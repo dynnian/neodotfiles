@@ -170,9 +170,9 @@ alias \
 # audio
 alias \
     mx="pulsemixer" \
-    mk="musikcube" \
-    ms="musikcube" \
-    music="musikcube"
+    mk="cmus" \
+    ms="cmus" \
+    music="cmus"
 
 # power management
 alias \
@@ -219,14 +219,6 @@ alias \
     wfi-on="nmcli radio wifi on" \
     wfi-off="nmcli radio wifi off" \
     blt="bluetoothctl"
-
-export SSH_AUTH_SOCK=${HOME}/.ssh/agent
-if ! pgrep -u ${USER} ssh-agent > /dev/null; then
-    rm -f ${SSH_AUTH_SOCK}
-fi
-if [ ! -S ${SSH_AUTH_SOCK} ]; then
-    eval $(ssh-agent -a ${SSH_AUTH_SOCK} 2> /dev/null)
-fi   
 
 # starship prompt
 eval "$(starship init bash)"
