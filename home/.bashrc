@@ -126,7 +126,7 @@ fi
     lt="eza --icons -aT --color=always --group-directories-first" \
     l.='eza --icons -a | grep -E "^\."'
 
-# function to detect os and assign aliases to package managers
+# package management
 alias \
     xbu="sudo xbps-install -Su" \
     xbi="sudo xbps-install -S" \

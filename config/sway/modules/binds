@@ -13,11 +13,11 @@ set $chat flatpak run org.signal.Signal
 set $office flatpak run org.libreoffice.LibreOffice
 set $passwords flatpak run com.bitwarden.desktop
 set $notes flatpak run net.cozic.joplin_desktop
-set $browser flatpak run org.mozilla.firefox
-set $vm virt-manager
+set $browser $BROWSER
+set $vm flatpak run org.gnome.Boxes
 set $file foot -T yazi -a yazi yazi
-set $editor foot -T lunarvim -a lunarvim lvim
-set $music foot -T musikcube -a musikcube musikcube
+set $editor $VISUAL
+set $music foot -T cmus -a cmus cmus
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
 set $ytfzf foot -T ytfzf -a ytfzf ytfzf -flstT chafa
