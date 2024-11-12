@@ -128,10 +128,11 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pku="sudo pacman -Syu" \
-    pki="sudo pacman -S" \
-    pkr="sudo pacman -Rcns" \
-    pks="sudo pacman -Ss"
+    pku="paru -Syu" \
+    pki="paru -S" \
+    pkr="paru -Rcns" \
+    pks="paru -Ss" \
+    pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
 
     #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)
