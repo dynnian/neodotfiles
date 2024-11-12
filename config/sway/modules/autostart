@@ -2,20 +2,19 @@ bar swaybar_command waybar
 
 exec {
     hash dbus-update-activation-environment 2>/dev/null && dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-    $HOME/.config/sway/scripts/pipeinit
-    /usr/libexec/xdg-desktop-portal-wlr
-    /usr/libexec/xdg-desktop-portal-gtk
-    $HOME/.config/sway/scripts/idle
+    /usr/lib/xdg-desktop-portal-wlr
+    /usr/lib/xdg-desktop-portal-gtk
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+    startidle
+    sway-audio-idle-inhibit
+    fnott
     wl-paste --type text --watch cliphist store
     wl-paste --type image --watch cliphist store
-    mako -c ~/.config/mako/config
-    /usr/libexec/polkit-gnome-authentication-agent-1
-    gnome-keyring-daemon --start --components=secrets
-    sway-audio-idle-inhibit
     dex -a -s ~/.config/autostart
-    $HOME/.config/sway/scripts/nextinit
     mkfifo /tmp/wobpipe
     tail -f /tmp/wobpipe | wob -c ~/.config/wob/wob.ini
+    nextinit
+    paplay /usr/share/sounds/ocean/stereo/desktop-login.oga
 }
 
 exec_always {

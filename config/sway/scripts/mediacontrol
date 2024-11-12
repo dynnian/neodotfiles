@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+
+# dependencies: pamixer, brightnessctl, wob, pulseaudio-utils
+
+# Configuration
+WOBPIPE="/tmp/wobpipe"
+SOUND_EFFECT="/usr/share/sounds/ocean/stereo/audio-volume-change.oga"
+DEFAULT_VOLUME_STEP=5
+DEFAULT_BRIGHTNESS_STEP=5
+
+# Function to display help message
+show_help() {
+    echo "Usage: $0 [command] [options]"
+    echo ""
+    echo "Commands:"
+    echo "  volume-up [STEP]        Increase volume by STEP (default: $DEFAULT_VOLUME_STEP)"
+    echo "  volume-down [STEP]      Decrease volume by STEP (default: $DEFAULT_VOLUME_STEP)"
+    echo "  volume-mute             Toggle mute for speakers"
+    echo "  mic-mute                Toggle mute for microphone"
+    echo "  media-play-pause        Play/pause media"
+    echo "  media-next              Skip to the next track"
+    echo "  media-prev              Go back to the previous track"
+    echo "  media-stop              Stop media playback"
+    echo "  brightness-up [STEP]    Increase brightness by STEP% (default: $DEFAULT_BRIGHTNESS_STEP)"
+    echo "  brightness-down [STEP]  Decrease brightness by STEP% (default: $DEFAULT_BRIGHTNESS_STEP)"
+    echo ""
+}
+
+# Function to get current volume with mute status
+get_volume_status() {
+    local volume="$(pamixer --get-volume)"
+    if [ "$(pamixer --get-mute)" = "true" ]; then
+        echo "$volume muted"
+    else
+        echo "$volume"
+    fi
+}
+
+# Function to update wobpipe with current volume/mute status
+update_volume_wobpipe() {
+    update_wobpipe "$(get_volume_status)"
+}
+
+# Function to update wobpipe with a custom message
+update_wobpipe() {
+    echo "$1" > "$WOBPIPE"
+}
+
+# Function to change volume with custom step
+change_volume() {
+    local action="$1"
+    local step="${2:-$DEFAULT_VOLUME_STEP}"
+    if [ "$action" = "up" ]; then
+        pamixer -i "$step"
+    elif [ "$action" = "down" ]; then
+        pamixer -d "$step"
+    fi
+    update_volume_wobpipe
+    paplay "$SOUND_EFFECT"
+}
+
+# Function to toggle mute
+toggle_mute() {
+    pamixer -t
+    update_volume_wobpipe
+}
+
+# Function to change brightness with custom step
+change_brightness() {
+    local action="$1"
+    local step="${2:-$DEFAULT_BRIGHTNESS_STEP}"
+    if [ "$action" = "up" ]; then
+        brightnessctl s "$step%+"
+    elif [ "$action" = "down" ]; then
+        brightnessctl s "$step%-"
+    fi
+    update_wobpipe "$(brightnessctl -m | cut -d, -f4 | tr -d '%')"
+}
+
+# Parse command-line arguments
+case "$1" in
+    volume-up)
+        change_volume "up" "$2"
+        ;;
+    volume-down)
+        change_volume "down" "$2"
+        ;;
+    volume-mute)
+        toggle_mute
+        ;;
+    mic-mute)
+        pamixer --default-source -t
+        ;;
+    media-play-pause)
+        playerctl play-pause
+        ;;
+    media-next)
+        playerctl next
+        ;;
+    media-prev)
+        playerctl previous
+        ;;
+    media-stop)
+        playerctl stop
+        ;;
+    brightness-up)
+        change_brightness "up" "$2"
+        ;;
+    brightness-down)
+        change_brightness "down" "$2"
+        ;;
+    -h|--help)
+        show_help
+        ;;
+    *)
+        echo "Invalid command: $1"
+        show_help
+        ;;
+esac

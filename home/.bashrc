@@ -3,7 +3,7 @@ export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 
 ### "bat" as manpager
-export MANPAGER="batman"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
@@ -126,15 +126,14 @@ fi
     lt="eza --icons -aT --color=always --group-directories-first" \
     l.='eza --icons -a | grep -E "^\."'
 
-# package management
+# function to detect os and assign aliases to package managers
 alias \
-    xbu="sudo xbps-install -Su" \
-    xbi="sudo xbps-install -S" \
-    xbr="sudo xbps-remove -R" \
-    xbrs="sudo xbps-remove" \
-    xbc="sudo xbps-remove -Oo" \
-    xbs="sudo xbps-query -R"
+    pku="sudo pacman -Syu" \
+    pki="sudo pacman -S" \
+    pkr="sudo pacman -Rcns" \
+    pks="sudo pacman -Ss"
 
+    #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)
 alias \
     grep="grep --color=auto" \
@@ -176,9 +175,9 @@ alias \
 
 # power management
 alias \
-    po="loginctl poweroff" \
-    sp="loginctl suspend" \
-    rb="loginctl reboot"
+    po="systemctl poweroff" \
+    sp="systemctl suspend" \
+    rb="systemctl reboot"
 
 # file management
 alias \

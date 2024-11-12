@@ -31,4 +31,4 @@ export GTK_CURSOR_THEME="Simp1e-Gruvbox-Dark"
 export RUNNER="fuzzel --dmenu"
 
 # Start compositor
-dbus-launch sway
+exec sway

@@ -55,17 +55,17 @@ bindsym $mod+Return exec $term
 bindsym $mod+q kill
 
 # XF86 Keys
-bindsym XF86AudioRaiseVolume        exec pamixer -i 5 && pamixer --get-volume > /tmp/wobpipe
-bindsym XF86AudioLowerVolume        exec pamixer -d 5 && pamixer --get-volume > /tmp/wobpipe
-bindsym XF86AudioMute               exec sh -c 'pamixer -t && if [ "$(pamixer --get-mute)" = "true" ]; then echo "$(pamixer --get-volume) muted" > /tmp/wobpipe; else pamixer --get-volume > /tmp/wobpipe; fi'
-bindsym XF86AudioMicMute            exec pamixer --default-source -t
-bindsym XF86AudioPause              exec playerctl play-pause
-bindsym XF86AudioPlay               exec playerctl play-pause
-bindsym XF86AudioNext               exec playerctl next
-bindsym XF86AudioPrev               exec playerctl previous
-bindsym XF86AudioStop               exec playerctl stop
-bindsym XF86MonBrightnessUp         exec sh -c 'brightnessctl s 5%+ && brightnessctl -m | cut -d, -f4 | tr -d % > /tmp/wobpipe'
-bindsym XF86MonBrightnessDown       exec sh -c 'brightnessctl s 5%- && brightnessctl -m | cut -d, -f4 | tr -d % > /tmp/wobpipe'
+bindsym XF86AudioRaiseVolume        exec mediacontrol volume-up 5
+bindsym XF86AudioLowerVolume        exec mediacontrol volume-down 5
+bindsym XF86AudioMute               exec mediacontrol volume-mute
+bindsym XF86AudioMicMute            exec mediacontrol mic-mute
+bindsym XF86AudioPause              exec mediacontrol media-play-pause
+bindsym XF86AudioPlay               exec mediacontrol media-play-pause
+bindsym XF86AudioNext               exec mediacontrol media-play-next
+bindsym XF86AudioPrev               exec mediacontrol media-play-prev
+bindsym XF86AudioStop               exec mediacontrol media-play-stop
+bindsym XF86MonBrightnessUp         exec mediacontrol brightness-up 5
+bindsym XF86MonBrightnessDown       exec mediacontrol brightness-down 5
 bindsym XF86News                    exec $rss
 
 # Drag floating windows by holding down $mod and left mouse button.

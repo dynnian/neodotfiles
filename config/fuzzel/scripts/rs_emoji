@@ -2,7 +2,7 @@
 
 # rs_emoji - A simple emoji picker menu script for rofi/dmenu/wofi/fuzzel
 # Author: Clay Gomera (Drake)
-# Dependencies: {rofi || dmenu || wofi || fuzzel}, wl-clipboard (wl-copy)
+# Dependencies: fuzzel, wl-clipboard (wl-copy)
 
 ########################
 # Function Definitions #

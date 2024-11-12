@@ -16,7 +16,7 @@ set fish_greeting                                 # Supresses fish's intro messa
 set TERM "xterm-256color"                         # Sets the terminal type
 
 ### SET BAT AS MANPAGER
-#set -x MANPAGER "batman"
+set -x MANPAGER "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 ### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
 function fish_user_key_bindings
@@ -130,24 +130,14 @@ alias .5='cd ../../../../..'
 
 # use lunarvim or neovim for vim if present.
 if test -x "$HOME/.local/bin/lvim"
-    alias vim="$HOME/.local/bin/lvim"
+    alias vim "$HOME/.local/bin/lvim"
 else if test -x (command -v nvim)
-    alias vim="nvim"
+    alias vim "nvim"
 end
 
 # bat as cat
 if test -x (command -v bat)
-    alias cat="bat"
-end
-
-# fastfetch as neofetch
-if test -x (command -v fastfetch)
-    alias neofetch="fastfetch"
-end
-
-# btop as htop
-if test -x (command -v btop)
-    alias htop="btop"
+    alias cat "bat"
 end
 
 # Changing "ls" to "eza"
@@ -158,12 +148,11 @@ alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
 # package management
-alias xbu="sudo xbps-install -Su"
-alias xbi="sudo xbps-install -S"
-alias xbr="sudo xbps-remove -R"
-alias xbrs="sudo xbps-remove"
-alias xbc="sudo xbps-remove -Oo"
-alias xbs="sudo xbps-query -R"
+alias pku="paru -Syu"
+alias pki="paru -S"
+alias pkr="paru -Rcns"
+alias pks="paru -Ss"
+alias pkc="paru -Scc && paru -Rns (pacman -Qtdq)"
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -182,9 +171,9 @@ alias mkdir='mkdir -pv'
 # audio
 alias mx='pulsemixer'
 alias amx='alsamixer'
-alias mk='musikcube'
-alias ms='musikcube'
-alias music='musikcube'
+alias mk='cmus'
+alias ms='cmus'
+alias music='cmus'
 
 # multimedia scripts
 alias fli='flix-cli'
@@ -243,11 +232,6 @@ alias wfi-edit='nmtui-edit'
 alias wfi-on='nmcli radio wifi on'
 alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
-
-# android emulator
-alias avd='QT_QPA_PLATFORM=xcb emulator -avd Pixel_7_Pro_API_35'
-alias avds='emulator -list-avds'
-alias avde='QT_QPA_PLATFORM=xcb emulator -avd'
 
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source

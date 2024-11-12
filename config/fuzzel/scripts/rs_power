@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
 # ***This script was made by Clay Gomera (Drake)***
-#  - Description: A simple power menu script for rofi/dmenu/wofi
-#  - Dependencies: {rofi||dmenu||wofi}, power-profiles-daemon, swaylock
-#
+#  - Description: A simple power menu script for fuzzel
+#  - Dependencies: fuzzel, power-profiles-daemon, libnotify (notify-send)
 
-#######################
-## Main manu options ##
-#######################
+#####################
+# Main manu options #
+#####################
 option1="  Logout"
 option2="  Reboot"
 option3="  Power off"
@@ -17,23 +16,22 @@ option6="  Change power profile"
 option7="  Exit"
 options="$option1\n$option2\n$option3\n$option4\n$option5\n$option6\n$option7"
 
-####################################
-## Power profiles submenu options ##
-####################################
+##################################
+# Power profiles submenu options #
+##################################
 pwr1="󰓅 Performance"
 pwr2="󰾅 Balanced"
 pwr3="󰾆 Power Saver"
 pwr4=" Cancel"
 pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
 
-##### 
-## This variable will store the current wallpaper
-#####
+###################
+# Other variables #
+###################
+# This variable will store the current wallpaper
 currwall="$HOME/.config/sway/wallpaper/locked.*"
 
-##### 
-## This variable will store the current power profile
-#####
+# This variable will store the current power profile
 currentpwr=$(powerprofilesctl get)
 if [ "$currentpwr" = "performance" ]; then
     currentpwr="$pwr1"
@@ -47,54 +45,94 @@ fi
 prompt1="[  Power Options]  "
 prompt2="[  Power Profiles - Currently set to: $currentpwr]  "
 
-##########
-## main ##
-##########
-action=$(echo -e "$options" | $RUNNER -l 7 -p "$prompt1") # main menu prompt
+########################
+# Function Definitions #
+########################
+# Check for missing dependencies
+check_dependencies() {
+    local missing_deps=()
+    for dep in fuzzel powerprofilesctl notify-send; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing_deps+=("$dep")
+        fi
+    done
+
+    if [ ${#missing_deps[@]} -ne 0 ]; then
+        echo "Missing dependencies: ${missing_deps[*]}"
+        exit 1
+    fi
+}
+
+## Ask yes/no for action confirmation
+confirm_action() {
+    local prompt="$1"
+    echo -e "  Yes\n  No" | $RUNNER -i -l 2 -p "$prompt" | grep -q "  Yes"
+}
+
+####################
+# Main Script Flow #
+####################
+
+check_dependencies
+
+action=$(echo -e "$options" | $RUNNER -i -l 7 -p "$prompt1") # main menu prompt
+if [ -z "$action" ]; then
+    exit 0
+fi
+
 case "$action" in
     "$option1")
-        loginctl kill-session self
+        if confirm_action "[  Are you sure you want to logout?]  "; then
+            paplay /usr/share/sounds/ocean/stereo/desktop-logout.oga &
+            sleep 1
+            loginctl kill-session self
+        fi
         ;;
     "$option2")
-        loginctl reboot
+        if confirm_action "[  Are you sure you want to reboot?]  "; then
+            paplay /usr/share/sounds/ocean/stereo/desktop-logout.oga &
+            sleep 1
+            systemctl reboot
+        fi
         ;;
     "$option3")
-        loginctl poweroff
+        if confirm_action "[  Are you sure you want to power off?]  "; then
+            paplay /usr/share/sounds/ocean/stereo/desktop-logout.oga &
+            sleep 1
+            systemctl poweroff
+        fi
         ;;
     "$option4")
-        loginctl suspend
+        systemctl suspend
         ;;
     "$option5")
-        swaylock -i "$currwall"
+        loginctl lock-session
         ;;
     "$option6")
-        #####
-        ## These conditions will be used for the prompt
-        #####
-        pwraction=$(echo -e "$pwrs" | $RUNNER -l 4 -p "$prompt2")
+        pwraction=$(echo -e "$pwrs" | $RUNNER -l 4 -i -p "$prompt2")
         case "$pwraction" in
             "$pwr1")
                 if [ "$currentpwr" = "$pwr1" ]; then
-                    notify-send "The power profile is already set to performance"
+                    notify-send "Power Menu" "The power profile is already set to performance"
                     exit 1
                 else
-                    powerprofilesctl set performance && notify-send "Power profile switched to performance"
+                    powerprofilesctl set performance && notify-send "Power Menu" "Power profile switched to performance"
                 fi
                 ;;
             "$pwr2")
                 if [ "$currentpwr" = "$pwr2" ]; then
-                    notify-send "The power profile is already set to balanced"
+                    notify-send "Power Menu" "The power profile is already set to balanced"
                     exit 1
                 else
-                    powerprofilesctl set balanced && notify-send "Power profile switched to balanced"
+                    powerprofilesctl set balanced && notify-send "Power Menu" "Power profile switched to balanced"
                 fi
                 ;;
             "$pwr3")
                 if [ "$currentpwr" = "$pwr3" ]; then
-                    notify-send "The power profile is already set to power saver"
+                    notify-send "Power Menu" "The power profile is already set to power saver"
                     exit 1
                 else
-                    powerprofilesctl set power-saver && notify-send "Power profile switched to power saver"
+                    powerprofilesctl set power-saver && notify-send "Power Menu" "Power profile switched to power saver"
                 fi
                 ;;
             "$pwr4")

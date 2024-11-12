@@ -35,7 +35,7 @@ export GOPATH="$XDG_DATA_HOME/go"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 ## Flutter
-export CHROME_EXECUTABLE="/var/lib/flatpak/app/io.github.ungoogled_software.ungoogled_chromium/x86_64/stable/active/export/bin/io.github.ungoogled_software.ungoogled_chromium"
+export CHROME_EXECUTABLE="/var/lib/flatpak/app/com.brave.Browser/x86_64/stable/active/export/bin/com.brave.Browser"
 export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
 export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
 export FLUTTER_ANALYTICS_DISABLED=true
@@ -47,7 +47,7 @@ export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
 export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-export JAVA_HOME="/usr/lib/jvm/openjdk21"
+export JAVA_HOME="/usr/lib/jvm/jre-21-openjdk"
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 
 # Set path
@@ -103,6 +103,10 @@ if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
     PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
 fi
 
+if [ -d "$XDG_CONFIG_HOME/sway/scripts" ]; then
+    PATH="$XDG_CONFIG_HOME/sway/scripts:$PATH"
+fi
+
 # Create config directories if they don't exist
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
@@ -113,6 +117,6 @@ source "$BASHRC"
 
 # Starting wayland session
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    sh "$HOME/.config/sway/scripts/init" &>/dev/null
+    startsway &>/dev/null
     logout
 fi
