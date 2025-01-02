@@ -122,6 +122,7 @@ static const Rule rules[] = {
     {"thunderbird-esr",                 NULL,        NULL,      1 << 2,     0,   -1},
     /* 4 - Chat Tag */
     {"Signal",                          NULL,        NULL,      1 << 3,     0,   -1},
+    {"ZapZap",                          NULL,        NULL,      1 << 3,     0,   -1},
     {"Revolt",                          NULL,        NULL,      1 << 3,     0,   -1},
     {"Element",                         NULL,        NULL,      1 << 3,     0,   -1},
     /* 5 - Audio Tools Tag */
@@ -238,17 +239,22 @@ static const char *monocles[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳"
 
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]       = { "st", NULL };
-static const char *editor[]        = { "bash", "-c", "st -n lunarvim -c lunarvim -e $XDG_BIN_HOME/lvim", NULL };
-static const char *browser[]       = { "flatpak", "run", "org.mozilla.firefox", NULL };
-static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
-static const char *vm[]            = { "virt-manager", NULL };
-static const char *office[]        = { "flatpak", "run", "org.libreoffice.LibreOffice", NULL };
-static const char *notes[]         = { "flatpak", "run", "net.cozic.joplin_desktop", NULL };
-static const char *videoeditor[]   = { "flatpak", "run", "org.kde.kdenlive", NULL };
-static const char *imageeditor[]   = { "flatpak", "run", "org.gimp.GIMP", NULL };
-static const char *audioeditor[]   = { "flatpak", "run", "org.tenacityaudio.Tenacity", NULL };
-static const char *game[]          = { "flatpak", "run", "com.valvesoftware.Steam", NULL };
+static const char *termcmd[]       = { "bash", "-c", "$TERMINAL", NULL };
+static const char *editor[]        = { "bash", "-c", "$VISUAL", NULL };
+static const char *browser1[]      = { "bash", "-c", "$BROWSER", NULL };
+static const char *browser2[]      = { "bash", "-c", "$BROWSER2", NULL };
+static const char *browser3[]      = { "bash", "-c", "$BROWSER3", NULL };
+static const char *email[]         = { "bash", "-c", "$EMAIL", NULL };
+static const char *chat1[]         = { "bash", "-c", "$CHAT1", NULL };
+static const char *chat2[]         = { "bash", "-c", "$CHAT2", NULL };
+static const char *chat3[]         = { "bash", "-c", "$CHAT3", NULL };
+static const char *vmachine[]      = { "bash", "-c", "$VMACHINE", NULL };
+static const char *office[]        = { "bash", "-c", "$OFFICE", NULL };
+static const char *notes[]         = { "bash", "-c", "$NOTES", NULL };
+static const char *videoeditor[]   = { "bash", "-c", "$VEDITOR", NULL };
+static const char *imageeditor[]   = { "bash", "-c", "$IEDITOR", NULL };
+static const char *audioeditor[]   = { "bash", "-c", "$AEDITOR", NULL };
+static const char *game[]          = { "bash", "-c", "$GAME", NULL };
 
 /* Keybindings */
 static Keychord *keychords[] = {
@@ -262,21 +268,27 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_i}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_wifi") }),    /* Launch wifi configuration menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_s}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_scrot") }),   /* Launch screenshot/screencast menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_w}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_wall") }),    /* Launch wallpaper configuration menu */
-    &((Keychord){2, {{MODKEY, XK_p}, {0, XK_e}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_edit") }),    /* Launch open-in-editor menu */
+    &((Keychord){2, {{MODKEY, XK_p}, {0, XK_o}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_open") }),    /* Launch open-in-editor menu */
+    &((Keychord){2, {{MODKEY, XK_p}, {0, XK_e}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_emoji") }),   /* Launch open-in-editor menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_b}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_blue") }),    /* Launch bluetooth configuration menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_q}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dmenu/scripts/dmenu_power") }),   /* Launch power menu */
     &((Keychord){2, {{MODKEY, XK_p}, {0, XK_c}},            spawn,          SHCMD("clipmenu") }),                                     /* Launch clipboard menu */
 
     /* Apps */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor       (tag 1) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vm } }),              /* Launch vm manager        (tag 2) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),         /* Launch web browser       (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat } }),            /* Launch chat app          (tag 4) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_a}},            spawn,          {.v = audioeditor } }),     /* Launch audio editor      (tag 5) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vmachine } }),        /* Launch vm manager        (tag 2) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_a}},            spawn,          {.v = browser1 } }),        /* Launch web browser 1     (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_s}},            spawn,          {.v = browser2 } }),        /* Launch web browser 2     (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_d}},            spawn,          {.v = browser3 } }),        /* Launch web browser 3     (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = email } }),           /* Launch email client      (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat1 } }),           /* Launch chat app 1        (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_x}},            spawn,          {.v = chat2 } }),           /* Launch chat app 2        (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_z}},            spawn,          {.v = chat3 } }),           /* Launch chat app 3        (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_j}},            spawn,          {.v = audioeditor } }),     /* Launch audio editor      (tag 5) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_k}},            spawn,          {.v = videoeditor } }),     /* Launch video editor      (tag 6) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_i}},            spawn,          {.v = imageeditor } }),     /* Launch image editor      (tag 7) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_o}},            spawn,          {.v = office } }),          /* Launch office suite      (tag 8) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_n}},            spawn,          {.v = notes } }),           /* Launch note taking app   (tag 8) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_l}},            spawn,          {.v = imageeditor } }),     /* Launch image editor      (tag 7) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_h}},            spawn,          {.v = office } }),          /* Launch office suite      (tag 8) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_q}},            spawn,          {.v = notes } }),           /* Launch note taking app   (tag 8) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_g}},            spawn,          {.v = game } }),            /* Launch gaming platform   (tag 9) */
 
     /* Keyboard Layouts */

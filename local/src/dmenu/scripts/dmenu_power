@@ -39,21 +39,21 @@ fi
 case "$action" in
     "$option1")
         if confirm_action "  Are you sure you want to logout?"; then
-            pkill X
+            loginctl kill-session self
         fi
         ;;
     "$option2")
         if confirm_action "  Are you sure you want to reboot?"; then
-            loginctl reboot
+            systemctl reboot
         fi
         ;;
     "$option3")
         if confirm_action "  Are you sure you want to power off?"; then
-            loginctl poweroff
+            systemctl poweroff
         fi
         ;;
     "$option4")
-        loginctl suspend
+        systemctl suspend
         ;;
     "$option5")
         "$XDG_SOURCE_HOME/dwm/scripts/lock"

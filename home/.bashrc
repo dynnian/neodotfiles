@@ -3,7 +3,7 @@ export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 
 ### "bat" as manpager
-export MANPAGER="batman"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
@@ -111,9 +111,6 @@ alias \
 # fastfetch as neofetch
 [ -x "$(command -v fastfetch)" ] && alias neofetch="fastfetch"
 
-# btop as htop
-[ -x "$(command -v btop)" ] && alias htop="btop"
-
 # use lunarvim or neovim for vim if present.
 if [ -x "$(command -v $HOME/.local/bin/lvim)" ]; then
     alias vim="$HOME/.local/bin/lvim"
@@ -131,13 +128,13 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    xbu="sudo xbps-install -Su" \
-    xbi="sudo xbps-install -S" \
-    xbr="sudo xbps-remove -R" \
-    xbrs="sudo xbps-remove" \
-    xbc="sudo xbps-remove -Oo" \
-    xbs="sudo xbps-query -R"
+    pku="paru -Syu" \
+    pki="paru -S" \
+    pkr="paru -Rcns" \
+    pks="paru -Ss" \
+    pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
 
+    #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)
 alias \
     grep="grep --color=auto" \
@@ -173,15 +170,15 @@ alias \
 # audio
 alias \
     mx="pulsemixer" \
-    mk="musikcube" \
-    ms="musikcube" \
-    music="musikcube"
+    mk="cmus" \
+    ms="cmus" \
+    music="cmus"
 
 # power management
 alias \
-    po="loginctl poweroff" \
-    sp="loginctl suspend" \
-    rb="loginctl reboot"
+    po="systemctl poweroff" \
+    sp="systemctl suspend" \
+    rb="systemctl reboot"
 
 # file management
 alias \
@@ -209,7 +206,7 @@ alias \
     yta-opus="yt-dlp --extract-audio --audio-format opus" \
     yta-vorbis="yt-dlp --extract-audio --audio-format vorbis" \
     yta-wav="yt-dlp --extract-audio --audio-format wav" \
-    ytv-best="yt-dlp -f bestvideo+bestaudio" \
+    ytv-best="yt-dlp -f bestvideo+bestaudio --video-format mp4" \
     yt="ytfzf -ftsl" \
     ytm="ytfzf -mtsl"
 

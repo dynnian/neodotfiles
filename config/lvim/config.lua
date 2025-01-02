@@ -30,7 +30,7 @@ vim.opt.relativenumber = true
 vim.cmd('autocmd FileType markdown setlocal nospell')
 vim.opt.wrap = true -- wrap lines
 vim.opt.spell = false
-vim.o.shell = '/usr/bin/fish'
+vim.o.shell = '/usr/bin/bash'
 vim.o.autochdir = true
 vim.cmd('autocmd BufEnter * lcd %:p:h')
 

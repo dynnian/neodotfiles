@@ -197,6 +197,9 @@ fileviewer *.djvu
         \ %pc
         \ vifmimg clear
 
+filextype *.epub
+        \ {View in calibre}
+        \ flatpak run com.calibre_ebook.calibre %f
 fileviewer *.epub
         \ vifmimg epub %px %py %pw %ph %c
         \ %pc

@@ -25,11 +25,24 @@ export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
 
 # Default apps
-export TERMINAL="foot"
+export TERMINAL="st"
 export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="foot -T lunarvim -a lunarvim lvim"
-export BROWSER="flatpak run org.mozilla.firefox"
+export VISUAL="st -n lunarvim -c lunarvim -e $XDG_BIN_HOME/lvim"
 export VIEWER="zathura"
+export VIDEO="mpv"
+export BROWSER="qutebrowser"
+export BROWSER2="flatpak run org.mozilla.firefox"
+export BROWSER3="flatpak run org.chromium.Chromium"
+export EMAIL="flatpak run org.mozilla.Thunderbird"
+export CHAT1="flatpak run org.signal.Signal"
+export CHAT2="flatpak run com.rtosta.zapzap"
+export VMACHINE="flatpak run org.gnome.Boxes"
+export OFFICE="flatpak run org.libreoffice.LibreOffice"
+export NOTES="flatpak run net.cozic.joplin_desktop"
+export VEDITOR="flatpak run org.kde.kdenlive"
+export IEDITOR="flatpak run org.gimp.GIMP"
+export AEDITOR="flatpak run org.tenacityaudio.Tenacity"
+export GAME="flatpak run net.lutris.Lutris"
 
 # Programming languages specific environment variables
 ## Go
@@ -39,7 +52,7 @@ export GOPATH="$XDG_DATA_HOME/go"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 ## Flutter
-export CHROME_EXECUTABLE="/var/lib/flatpak/app/io.github.ungoogled_software.ungoogled_chromium/x86_64/stable/active/export/bin/io.github.ungoogled_software.ungoogled_chromium"
+export CHROME_EXECUTABLE="/var/lib/flatpak/app/org.chromium.Chromium/x86_64/stable/active/export/bin/org.chromium.Chromium"
 export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
 export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
 export FLUTTER_ANALYTICS_DISABLED=true
@@ -51,7 +64,7 @@ export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
 export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-export JAVA_HOME="/usr/lib/jvm/openjdk21"
+export JAVA_HOME="/usr/lib/jvm/default/"
 export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 
 ## Dotnet
