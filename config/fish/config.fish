@@ -148,11 +148,18 @@ alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
 # package management
-alias pkg-update="sudo dnf update"
-alias pkg-install="sudo dnf install"
-alias pkg-remove="sudo dnf remove"
-alias pkg-search="sudo dnf search"
-alias pkg-clean="sudo dnf autoremove"
+## pacman (paru)
+alias pku="paru -Syu"
+alias pki="paru -S"
+alias pkr="paru -Rcns"
+alias pks="paru -Ss"
+alias pkc="paru -Scc && paru -Rns (pacman -Qtdq)"
+## flatpak
+alias fku="flatpak update"
+alias fki="flatpak install"
+alias fkr="flatpak remove"
+alias fks="flatpak search"
+alias fkc="flatpak remove --unused && flatpak remove --delete-data"
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -171,9 +178,9 @@ alias mkdir='mkdir -pv'
 # audio
 alias mx='pulsemixer'
 alias amx='alsamixer'
-alias mk='musikcube'
-alias ms='musikcube'
-alias music='musikcube'
+alias mk='cmus'
+alias ms='cmus'
+alias music='cmus'
 
 # multimedia scripts
 alias fli='flix-cli'
@@ -233,12 +240,6 @@ alias wfi-on='nmcli radio wifi on'
 alias wfi-off='nmcli radio wifi off'
 alias blt='bluetoothctl'
 
-# android emulator
-alias avd='QT_QPA_PLATFORM=xcb emulator -avd Pixel_7_Pro_API_35'
-alias avds='emulator -list-avds'
-alias avde='QT_QPA_PLATFORM=xcb emulator -avd'
-
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source
 zoxide init fish | source
-clido completion fish | source

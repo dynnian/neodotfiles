@@ -3672,6 +3672,10 @@ filechooser stack.view frame > border {
   border-bottom-left-radius: 12px;
 }
 
+filechooser paned > separator {
+  background: none;
+}
+
 /***********
  * Sidebar *
  ***********/
@@ -8428,8 +8432,8 @@ read if you used those and something break with a version upgrade you're on your
 @define-color wm_focused_bg #1e1e2e;
 @define-color wm_unfocused_bg #1e1e2e;
 @define-color wm_button_icon #eff1f5;
-@define-color wm_button_focused_bg rgba(239, 241, 245, 0.04);
-@define-color wm_button_unfocused_bg rgba(239, 241, 245, 0.04);
+@define-color wm_button_focused_bg #2b2b3a;
+@define-color wm_button_unfocused_bg #2b2b3a;
 @define-color wm_button_hover_fg rgba(30, 30, 46, 0.87);
 @define-color wm_button_active_fg rgba(30, 30, 46, 0.87);
 @define-color wm_button_hover_bg #e6e9ef;
@@ -8439,7 +8443,7 @@ read if you used those and something break with a version upgrade you're on your
 @define-color placeholder_text_color #b6b8c0;
 /* Very contrasty background for text views (@theme_text_color foreground) */
 @define-color text_view_bg #313244;
-@define-color budgie_tasklist_indicator_color rgba(239, 241, 245, 0.3);
+@define-color budgie_tasklist_indicator_color rgba(121, 122, 133, 0.7);
 @define-color budgie_tasklist_indicator_color_active #89b4fa;
 @define-color budgie_tasklist_indicator_color_active_window rgba(108, 140, 195, 0.816);
 @define-color budgie_tasklist_indicator_color_attention #df8e1d;

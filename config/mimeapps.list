@@ -41,6 +41,8 @@ video/x-theora=mpv.desktop;
 video/x-theora+ogg=mpv.desktop;
 x-scheme-handler/http=com.brave.Browser.desktop;
 x-scheme-handler/https=com.brave.Browser.desktop;
+x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
+application/vnd.oasis.opendocument.text=org.libreoffice.LibreOffice.writer.desktop
 
 [Default Applications]
 image/=imv.desktop
@@ -86,3 +88,4 @@ video/x-theora+ogg=mpv.desktop;
 x-scheme-handler/http=com.brave.Browser.desktop;
 x-scheme-handler/https=com.brave.Browser.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
+application/vnd.oasis.opendocument.text=org.libreoffice.LibreOffice.writer.desktop

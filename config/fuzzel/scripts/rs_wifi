@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# rs_wifi - A simple WiFi menu script for rofi/dmenu/wofi
+# rs_wifi - A simple WiFi menu script for rofi/dmenu/wofi/fuzzel
 # Author: Clay Gomera (Drake)
-# Dependencies: {rofi || dmenu || wofi}, NetworkManager, libnotify (notify-send)
+# Dependencies: {rofi || dmenu || wofi || fuzzel}, NetworkManager, libnotify (notify-send)
 
 ############################
 # Configuration Parameters #
@@ -28,7 +28,7 @@ read -r wlan constate <<< "$wifi_info"
 # Check for missing dependencies
 check_dependencies() {
     local run_launcher_found=false
-    for launcher in rofi dmenu wofi; do
+    for launcher in rofi dmenu wofi fuzzel; do
         if command -v "$launcher" &> /dev/null; then
             run_launcher_found=true
             break
@@ -36,7 +36,7 @@ check_dependencies() {
     done
 
     if [ "$run_launcher_found" = false ]; then
-        echo "Missing dependency: one of rofi, dmenu, or wofi is required."
+        echo "Missing dependency: one of rofi, dmenu, wofi or fuzzel is required."
         exit 1
     fi
 
@@ -57,9 +57,9 @@ check_dependencies() {
 turnoff() {
     nmcli radio wifi off
     if [ $? -eq 0 ]; then
-        notify-send "WiFi has been turned off"
+        notify-send "Wifi Menu" "WiFi has been turned off"
     else
-        notify-send "Failed to turn off WiFi"
+        notify-send "Wifi Menu" "Failed to turn off WiFi"
     fi
 }
 
@@ -67,33 +67,33 @@ turnoff() {
 turnon() {
     nmcli radio wifi on
     if [ $? -eq 0 ]; then
-        notify-send "WiFi has been turned on"
+        notify-send "Wifi Menu" "WiFi has been turned on"
     else
-        notify-send "Failed to turn on WiFi"
+        notify-send "Wifi Menu" "Failed to turn on WiFi"
     fi
 }
 
 # Disconnect from WiFi
 disconnect() {
     if [ "$constate" = "disconnected" ]; then
-        notify-send "WiFi is already disconnected"
+        notify-send "Wifi Menu" "WiFi is already disconnected"
     elif [ "$constate" = "connected" ]; then
         nmcli device disconnect "$wlan"
         if [ $? -eq 0 ]; then
-            notify-send "WiFi has been disconnected"
+            notify-send "Wifi Menu" "WiFi has been disconnected"
         else
-            notify-send "Failed to disconnect WiFi"
+            notify-send "Wifi Menu" "Failed to disconnect WiFi"
         fi
     else
-        notify-send "Unknown WiFi state"
+        notify-send "Wifi Menu" "Unknown WiFi state"
     fi
 }
 
 # Connect to a WiFi network
 connect() {
-    notify-send -t 5000 "Scanning networks..."
+    notify-send "Wifi Menu" -t 5000 "Scanning networks..."
     nmcli dev wifi rescan
-    wifinet=$(nmcli -f BSSID,SSID,BARS dev wifi list | sed -n '1!p' | $RUNNER -i -p "  Select a Wifi Network  ")
+    wifinet=$(nmcli -f BSSID,SSID,BARS,SECURITY dev wifi list | sed -n '1!p' | $RUNNER -i -l 10 -p "[  Select a Wifi Network]  ");
     if [ -z "$wifinet" ]; then
         exit 0
     fi
@@ -108,7 +108,7 @@ password() {
     elif nmcli -f BSSID,SECURITY dev wifi list | grep -w "$bssid" | awk '{print $2}' | grep -q -- "--"; then
         pass=""
     else
-        pass=$($RUNNER -password -p "Enter Password    ")
+        pass=$($RUNNER -l 0 --password -p "[Enter Password  ]  " );
         if [ -z "$pass" ]; then
             exit 0
         fi
@@ -123,9 +123,9 @@ action() {
         nmcli dev wifi connect "$bssid"
     fi
     if [ $? -eq 0 ]; then
-        notify-send "Connected to $ssid"
+        notify-send "Wifi Menu" "Connected to $ssid"
     else
-        notify-send "Failed to connect to $ssid"
+        notify-send "Wifi Menu" "Failed to connect to $ssid"
     fi
 }
 
@@ -136,8 +136,7 @@ action() {
 # Check for dependencies
 check_dependencies
 
-# Display main menu and execute selected option
-cases=$(echo -e "$options" | $RUNNER -i -p "  Wifi Settings  ")
+cases=$(echo -e "$options" | $RUNNER -i -l 6 -p "[  Wifi Settings]  " ) # main menu prompt
 if [ -z "$cases" ]; then
     exit 0
 fi

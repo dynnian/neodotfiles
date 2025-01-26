@@ -128,12 +128,13 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="sudo dnf update" \
-    pkg-install="sudo dnf install" \
-    pkg-remove="sudo dnf remove" \
-    pkg-clean="sudo dnf autoremove" \
-    pkg-search="sudo dnf search"
+    pku="paru -Syu" \
+    pki="paru -S" \
+    pkr="paru -Rcns" \
+    pks="paru -Ss" \
+    pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
 
+    #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)
 alias \
     grep="grep --color=auto" \
@@ -169,9 +170,9 @@ alias \
 # audio
 alias \
     mx="pulsemixer" \
-    mk="musikcube" \
-    ms="musikcube" \
-    music="musikcube"
+    mk="cmus" \
+    ms="cmus" \
+    music="cmus"
 
 # power management
 alias \
@@ -205,7 +206,7 @@ alias \
     yta-opus="yt-dlp --extract-audio --audio-format opus" \
     yta-vorbis="yt-dlp --extract-audio --audio-format vorbis" \
     yta-wav="yt-dlp --extract-audio --audio-format wav" \
-    ytv-best="yt-dlp -f bestvideo+bestaudio" \
+    ytv-best="yt-dlp -f bestvideo+bestaudio --video-format mp4" \
     yt="ytfzf -ftsl" \
     ytm="ytfzf -mtsl"
 
@@ -218,11 +219,6 @@ alias \
     wfi-on="nmcli radio wifi on" \
     wfi-off="nmcli radio wifi off" \
     blt="bluetoothctl"
-
-# android emulator
-alias avd="QT_QPA_PLATFORM=xcb emulator -avd Pixel_7_Pro_API_35"
-alias avds="emulator -list-avds"
-alias avde="QT_QPA_PLATFORM=xcb emulator -avd"
 
 # starship prompt
 eval "$(starship init bash)"

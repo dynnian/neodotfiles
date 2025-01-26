@@ -6,6 +6,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_LIB_HOME="$HOME/.local/lib"
 export XDG_BIN_HOME="$HOME/.local/bin"
+export XDG_SOURCE_HOME="$HOME/.local/src"
 
 # Sanely export XDG Base dir variables
 eval "$(sed 's/^[^#].*/export &/g;t;d' ~/.config/user-dirs.dirs)"
@@ -21,11 +22,11 @@ export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
 
 # Default apps
-export TERMINAL="kitty"
+export TERMINAL="foot"
 export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="zed"
-export BROWSER="flatpak run com.brave.Browser"
+export VISUAL="foot -T lunarvim -a lunarvim $XDG_BIN_HOME/lvim"
 export VIEWER="zathura"
+export BROWSER="flatpak run org.mozilla.firefox"
 
 # Programming languages specific environment variables
 ## Go
@@ -34,21 +35,21 @@ export GOPATH="$XDG_DATA_HOME/go"
 ## Rust
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
-## Flutter
-export CHROME_EXECUTABLE="/var/lib/flatpak/app/com.brave.Browser/x86_64/stable/active/export/bin/com.brave.Browser"
-export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
-export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
-export FLUTTER_ANALYTICS_DISABLED=true
-export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
+# ## Flutter
+# export CHROME_EXECUTABLE="/var/lib/flatpak/app/org.chromium.Chromium/x86_64/stable/active/export/bin/org.chromium.Chromium"
+# export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
+# export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
+# export FLUTTER_ANALYTICS_DISABLED=true
+# export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
 
-## Android SDK/Emulator
-export ANDROID_HOME="$XDG_LIB_HOME/android"
-export ANDROID_SDK_ROOT="$ANDROID_HOME"
-export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
-export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
-export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-export JAVA_HOME="/usr/lib/jvm/jre-17-openjdk"
-export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+# ## Android SDK/Emulator
+# export ANDROID_HOME="$XDG_LIB_HOME/android"
+# export ANDROID_SDK_ROOT="$ANDROID_HOME"
+# export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
+# export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
+# export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
+# export JAVA_HOME="/usr/lib/jvm/default/"
+# export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 
 # Set path
 ## local bin paths
@@ -69,28 +70,28 @@ if [ -d "$GOPATH/bin" ]; then
     PATH="$GOPATH/bin:$PATH"
 fi
 
-## flutter sdk
-if [ -d "$FLUTTER_ROOT/bin" ]; then
-    PATH="$FLUTTER_ROOT/bin:$PATH"
-fi
+# ## flutter sdk
+# if [ -d "$FLUTTER_ROOT/bin" ]; then
+#     PATH="$FLUTTER_ROOT/bin:$PATH"
+# fi
 
-## android sdk
-if [ -d "$ANDROID_HOME/emulator" ]; then
-    PATH="$ANDROID_HOME/emulator:$PATH"
-fi
-if [ -d "$ANDROID_HOME/cmdline-tools/latest/bin" ]; then
-    PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
-fi
-if [ -d "$ANDROID_HOME/tools" ]; then
-    PATH="$ANDROID_HOME/tools:$PATH"
-fi
-if [ -d "$ANDROID_HOME/tools/bin" ]; then
-    PATH="$ANDROID_HOME/tools/bin:$PATH"
-fi
+# ## android sdk
+# if [ -d "$ANDROID_HOME/emulator" ]; then
+#     PATH="$ANDROID_HOME/emulator:$PATH"
+# fi
+# if [ -d "$ANDROID_HOME/cmdline-tools/latest/bin" ]; then
+#     PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+# fi
+# if [ -d "$ANDROID_HOME/tools" ]; then
+#     PATH="$ANDROID_HOME/tools:$PATH"
+# fi
+# if [ -d "$ANDROID_HOME/tools/bin" ]; then
+#     PATH="$ANDROID_HOME/tools/bin:$PATH"
+# fi
 
-## dotnet sdk tools
-if [ -d $DOTNET_CLI_HOME/tools ]; then
-    PATH="$DOTNET_CLI_HOME/tools:$PATH"
+## dotnet tools
+if [ -d "$HOME/.dotnet/tools" ]; then
+    PATH="$HOME/.dotnet/tools:$PATH"
 fi
 
 ## AppImage applications
@@ -103,21 +104,22 @@ if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
     PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
 fi
 
+## Sway scripts
+if [ -d "$XDG_CONFIG_HOME/sway/scripts" ]; then
+    PATH="$XDG_CONFIG_HOME/sway/scripts:$PATH"
+fi
+
 # Create config directories if they don't exist
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
 fi
 
-# export SSH_AUTH_SOCK
-if [[ -z "${SSH_CONNECTION}" ]]; then
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-fi
-
 # Bashrc
 source "$BASHRC"
 
-# Starting Hyprland
+# Starting wayland session
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec Hyprland &>/dev/null
+    #startsway &>/dev/null
+    Hyprland &>/dev/null
     logout
 fi

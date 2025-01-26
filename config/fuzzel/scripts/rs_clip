@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# rs_clip - A simple clipboard menu script for rofi/dmenu/wofi/fuzzel
+# Author: Clay Gomera (Drake)
+# Dependencies: fuzzel, cliphist, wl-clipboard (wl-copy)
+
+########################
+# Function Definitions #
+########################
+
+# Check for missing dependencies
+check_dependencies() {
+    local missing_deps=()
+    for dep in fuzzel cliphist wl-copy; do
+        if ! command -v "$dep" &> /dev/null; then
+            missing_deps+=("$dep")
+        fi
+    done
+
+    if [ ${#missing_deps[@]} -ne 0 ]; then
+        echo "Missing dependencies: ${missing_deps[*]}"
+        exit 1
+    fi
+}
+
+####################
+# Main Script Flow #
+####################
+
+# Check for dependencies
+check_dependencies
+
+# Pass clipboard data into the menu
+cliphist list | $RUNNER -l 10 -p "[󱉧  Clipboard]  " | cliphist decode | wl-copy
