@@ -1,19 +1,20 @@
-configuration {
-    modi: "run,drun,window";
+configuration{
+    modi: "run,drun,window,filebrowser";
     lines: 10;
-    font: "mononoki Nerd Font 10";
     show-icons: true;
     icon-theme: "Papirus-Dark";
-    terminal: "kitty";
+    terminal: "alacritty";
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
     hide-scrollbar: true;
-    display-drun: " 󰀻 Apps ";
-    display-run: "  Run ";
-    display-window: " 󰖯 Window ";
+    display-drun: "   Apps ";
+    display-run: "   Run ";
+    display-window: " 󰕰  Window ";
     display-Network: " 󰤨  Network ";
+    display-filebrowser: "   Browser ";
     sidebar-mode: true;
+    font: "mononoki Nerd Font 12";
     dpi: 100;
 }
 

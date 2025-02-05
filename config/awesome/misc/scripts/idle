@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Define brightness adjustment commands
+adjust_brightness_all() {
+    for output in $(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print $4}')
+    do
+        xrandr --output "$output" --brightness "$1"
+    done
+}
+
+# Create temporary scripts for brightness adjustments
+BRIGHTNESS_DIM_SCRIPT=$(mktemp)
+BRIGHTNESS_NORMAL_SCRIPT=$(mktemp)
+
+# Write the commands to temporary scripts
+cat <<EOF > "$BRIGHTNESS_DIM_SCRIPT"
+#!/bin/bash
+for output in \$(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print \$4}'); do
+    xrandr --output "\$output" --brightness 0.5
+done
+EOF
+
+cat <<EOF > "$BRIGHTNESS_NORMAL_SCRIPT"
+#!/bin/bash
+for output in \$(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print \$4}'); do
+    xrandr --output "\$output" --brightness 1
+done
+EOF
+
+# Make the scripts executable
+chmod +x "$BRIGHTNESS_DIM_SCRIPT" "$BRIGHTNESS_NORMAL_SCRIPT"
+
+# Start xidlehook
+pidof xidlehook || xidlehook \
+    --detect-sleep \
+    --not-when-fullscreen \
+    --not-when-audio \
+    --timer 60 \
+        "$BRIGHTNESS_DIM_SCRIPT" \
+        "$BRIGHTNESS_NORMAL_SCRIPT" \
+    --timer 30 \
+        "$XDG_SOURCE_HOME/dwm/scripts/lock" \
+        "$BRIGHTNESS_NORMAL_SCRIPT"
+
+# Clean up temporary scripts on exit
+trap "rm -f $BRIGHTNESS_DIM_SCRIPT $BRIGHTNESS_NORMAL_SCRIPT" EXIT

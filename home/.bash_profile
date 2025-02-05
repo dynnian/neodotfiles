@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
+# .bash_profile
 
-# Home folders
+# Home XDG folders
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_LIB_HOME="$HOME/.local/lib"
+export XDG_BIN_HOME="$HOME/.local/bin"
+export XDG_SOURCE_HOME="$HOME/.local/src"
 
 # X11
 export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
@@ -22,59 +25,55 @@ export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
 
 # Default apps
-export TERMINAL="kitty"
-export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="kitty --class neovim -- $EDITOR"
-export BROWSER="brave"
+export TERMINAL="alacritty"
+export EDITOR="$XDG_BIN_HOME/lvim"
+export VISUAL="alacritty --class lunarvim -e $XDG_BIN_HOME/lvim"
 export VIEWER="zathura"
+export BROWSER="flatpak run com.brave.Browser"
 
-# Dev Tools Envs
-export GOPATH="$HOME/.go"
+# Programming languages specific environment variables
+## Go
+export GOPATH="$XDG_DATA_HOME/go"
+
+## Rust
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 # Set path
+## local bin paths
 if [ -d "$HOME/.bin" ]; then
     PATH="$HOME/.bin:$PATH"
 fi
 if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-if [ -d "$HOME/.cargo/bin" ]; then
-    PATH="$HOME/.cargo/bin:$PATH"
-fi
-if [ -d "$HOME/.go/bin" ]; then
-    PATH="$HOME/.go/bin:$PATH"
-fi
-if [ -d "$HOME/.local/lib/flutter/bin" ]; then
-    PATH="$HOME/.local/lib/flutter/bin:$PATH"
-fi
-if [ -d $HOME/.dotnet/tools ]; then
-    PATH="$HOME/.dotnet/tools:$PATH"
-fi
-if [ -d "$HOME/Applications" ]; then
-    PATH="$HOME/Applications:$PATH"
-fi
-if [ -d $XDG_DATA_HOME/JetBrains/Toolbox/scripts ]; then
-    PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
-fi
-if [ -d $HOME/.config/vifm/scripts ]; then
-    PATH="$HOME/.config/vifm/scripts:$PATH"
+
+## rust tools and programs
+if [ -d "$CARGO_HOME/bin" ]; then
+    PATH="$CARGO_HOME/bin:$PATH"
 fi
 
-# Bashrc
-source "$BASHRC"
+## golang tools and programs
+if [ -d "$GOPATH/bin" ]; then
+    PATH="$GOPATH/bin:$PATH"
+fi
+
+## dotnet tools
+if [ -d "$HOME/.dotnet/tools" ]; then
+    PATH="$HOME/.dotnet/tools:$PATH"
+fi
+
+## jetbrains toolbox
+if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
+    PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
+fi
 
 # Create config directories if they don't exist
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
 fi
-if [ ! -f "$WGETRC" ]; then
-    touch "$WGETRC"
-fi
 
-# bind sshagent
-if [[ -z "${SSH_CONNECTION}" ]]; then
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-fi
+# Bashrc
+source "$BASHRC"
 
 # Starting xsession
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then

@@ -3,7 +3,7 @@ export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 
 ### "bat" as manpager
-export MANPAGER="bat -p"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
@@ -128,11 +128,11 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pkg-update="sudo pacman -Syyu" \
-    pkg-install="sudo pacman -S" \
-    pkg-remove="sudo pacman -Rcns" \
-    pkg-autoremove="sudo xbps-remove -Oo" \
-    pkg-search="sudo pacman -Ss"
+    pku="paru -Syu" \
+    pki="paru -S --needed" \
+    pkr="paru -Rcns" \
+    pks="paru -Ss" \
+    pkc="paru -Scc && paru -Rcns $(pacman -Qtdq)"
 
 # colorize grep output (good for log files)
 alias \
@@ -181,9 +181,8 @@ alias \
 
 # file management
 alias \
-    fm="$HOME/.config/vifm/scripts/vifmrun" \
-    flm="$HOME/.config/vifm/scripts/vifmrun" \
-    vifm="$HOME/.config/vifm/scripts/vifmrun" \
+    fm="yazi" \
+    flm="yazi" \
     rm="rm -vI" \
     mv="mv -iv" \
     cp="cp -iv" \
@@ -206,9 +205,8 @@ alias \
     yta-opus="yt-dlp --extract-audio --audio-format opus" \
     yta-vorbis="yt-dlp --extract-audio --audio-format vorbis" \
     yta-wav="yt-dlp --extract-audio --audio-format wav" \
-    ytv-best="yt-dlp -f bestvideo+bestaudio" \
-    yt="ytfzf -ftsl" \
-    ytm="ytfzf -mtsl"
+    ytv-best="yt-dlp -f bestvideo+bestaudio --video-format mp4" \
+    yt="yt-x" \
 
 # network and bluetooth
 alias \
@@ -220,6 +218,5 @@ alias \
     wfi-off="nmcli radio wifi off" \
     blt="bluetoothctl"
 
-# starship and zoxide
+# starship prompt
 eval "$(starship init bash)"
-eval "$(zoxide init bash)"

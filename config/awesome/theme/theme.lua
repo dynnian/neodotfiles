@@ -11,7 +11,8 @@ local theme                    = {}
 -- }}}
 
 -- {{{ theme font
-theme.font                     = "mononoki Nerd Font 10"
+theme.font                     = "mononoki Nerd Font Mono 10"
+theme.icon_font                = "Symbols Nerd Font Mono 12"
 --- }}}
 
 -- {{{ bar colors
@@ -25,7 +26,7 @@ theme.bar_clock                = "#3c3836"
 
 -- {{{ Colors
 theme.fg_normal                = "#ebdbb2"
-theme.fg_focus                 = "#dfc4a1"
+theme.fg_focus                 = "#d5c4a1"
 theme.fg_urgent                = "#fb4934"
 theme.bg_normal                = "#1d2021"
 -- theme.bg_focus                 = "#3c3836"
@@ -38,11 +39,11 @@ theme.useless_gap              = dpi(4)
 theme.border_width             = dpi(2)
 theme.border_normal            = "#504945"
 theme.border_focus             = "#cc241d"
-theme.border_marked            = "#cc241d"
+theme.border_marked            = theme.border_focus
 -- }}}
 
 -- {{{ Taglist
-theme.taglist_font             = "Symbols Nerd Font Mono 12"
+theme.taglist_font             = "Symbols Nerd Font Mono 14"
 -- theme.taglist_bg               = "#282828"
 theme.taglist_fg_focus         = "#fb4934"
 theme.taglist_fg_occupied      = "#8ec07c"
@@ -55,9 +56,11 @@ theme.taglist_spacing          = 7
 theme.notification_font        = "mononoki Nerd Font 10"
 theme.notification_bg          = "#1d2021"
 theme.notification_bg_alt      = "#282828"
-theme.notification_fg          = "#ebdbb2"
+theme.notification_fg          = "#fbf1c7"
 theme.notification_fg_alt      = "#282828"
 theme.notification_critical    = "#fb4934"
+theme.notification_border_color = "#504945"
+theme.notification_border_width = dpi(2)
 theme.notification_shape       = gears.shape.rounded_rect
 -- }}}
 

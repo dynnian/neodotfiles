@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# Function to extract monitor name from EDID
+get_monitor_name() {
+    local monitor_name=""
+    
+    # Iterate over all possible DP monitors
+    for dp in /sys/class/drm/card*-DP-*; do
+        edid_file="$dp/edid"
+        if [ -f "$edid_file" ]; then
+            monitor_name=$(strings "$edid_file" | grep -m1 -oE "[a-zA-Z0-9 -_]{8,}")
+            [ -n "$monitor_name" ] && echo "$monitor_name" && return
+        fi
+    done
+    
+    echo ""
+}
+
+# Check for work monitor
+work_monitor_name="DELL P2423DE"
+connected_monitor_name=$(get_monitor_name)
+
+# Grab hostname to determine the machine
+hostname=$(cat /etc/hostname)
+
+if [ "$hostname" = "lain" ]; then
+    monitor1=$(cat /sys/class/drm/card1-HDMI-A-2/status 2>/dev/null)
+    monitor2=$(cat /sys/class/drm/card1-DP-1/status 2>/dev/null)
+
+    if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
+        xrandr --output eDP-1 --mode 1920x1080 --pos 3200x0 --rotate normal \
+               --output DP-1 --mode 1280x1024 --pos 0x0 --rate 75.02 --rotate normal \
+               --output HDMI-2 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal
+    elif [ "$monitor1" = "connected" ]; then
+        xrandr --output eDP-1 --primary --auto \
+               --output HDMI-2 --auto --scale-from 1920x1080 --same-as eDP-1
+    elif [ "$monitor2" = "connected" ]; then
+        if [ "$connected_monitor_name" = "$work_monitor_name" ]; then
+            xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal \
+                   --output DP-1 --primary --mode 2560x1440 --rate 59.95 --pos 1920x0
+        else
+            xrandr --output eDP-1 --primary --auto \
+                   --output DP-1 --auto --scale-from 1920x1080 --same-as eDP-1
+        fi
+    else
+        xrandr --output eDP-1 --primary --auto
+        sleep 1
+        xrandr --output HDMI-2 --off --output DP-1 --off
+    fi
+elif [ "$hostname" = "workpad" ]; then
+    monitor1=$(cat /sys/class/drm/card1-HDMI-A-1/status 2>/dev/null)
+    monitor2=$(cat /sys/class/drm/card1-DP-1/status 2>/dev/null)
+    monitor3=$(cat /sys/class/drm/card1-DP-2/status 2>/dev/null)
+
+    if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
+        xrandr --output eDP-1 --mode 1920x1080 --pos 3200x0 --rotate normal \
+               --output DP-1 --mode 1280x1024 --pos 0x0 --rate 75.02 --rotate normal \
+               --output HDMI-1 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal
+    elif [ "$monitor1" = "connected" ] && [ "$monitor3" = "connected" ]; then
+        xrandr --output eDP-1 --mode 1920x1080 --pos 3200x0 --rotate normal \
+               --output DP-2 --mode 1280x1024 --pos 0x0 --rate 75.02 --rotate normal \
+               --output HDMI-1 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal
+    elif [ "$monitor1" = "connected" ]; then
+        xrandr --output eDP-1 --primary --auto \
+               --output HDMI-1 --auto --scale-from 1920x1080 --same-as eDP-1
+    elif [ "$monitor2" = "connected" ]; then
+        if [ "$connected_monitor_name" = "$work_monitor_name" ]; then
+            xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal \
+                   --output DP-1 --primary --mode 2560x1440 --rate 59.95 --pos 1920x0
+        else
+            xrandr --output eDP-1 --primary --auto \
+                   --output DP-1 --auto --scale-from 1920x1080 --same-as eDP-1
+        fi
+    elif [ "$monitor3" = "connected" ]; then
+        if [ "$connected_monitor_name" = "$work_monitor_name" ]; then
+            xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal \
+                   --output DP-2 --primary --mode 2560x1440 --rate 59.95 --pos 1920x0
+        else
+            xrandr --output eDP-1 --primary --auto \
+                   --output DP-2 --auto --scale-from 1920x1080 --same-as eDP-1
+        fi
+    else
+        xrandr --output eDP-1 --primary --auto
+        sleep 1
+        xrandr --output HDMI-1 --off \
+               --output DP-1 --off \
+               --output DP-2 --off
+    fi
+fi

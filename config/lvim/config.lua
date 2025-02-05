@@ -1,3 +1,28 @@
+-- neovide options
+vim.o.guifont = "mononoki Nerd Font:h12"
+vim.g.neovide_hide_mouse_when_typing = true
+vim.g.neovide_no_idle = true
+vim.g.neovide_confirm_quit = true
+vim.g.neovide_input_use_logo = true
+
+vim.g.neovide_cursor_antialiasing = true
+vim.g.neovide_cursor_animate_in_insert_mode = true
+vim.g.neovide_cursor_vfx_mode = "pixiedust"
+vim.g.neovide_cursor_vfx_particle_speed = 20.0
+
+vim.g.neovide_padding_top = 0
+vim.g.neovide_padding_bottom = 0
+vim.g.neovide_padding_right = 0
+vim.g.neovide_padding_left = 0
+
+-- Helper function for transparency formatting
+local alpha = function()
+  return string.format("%x", math.floor(255 * (vim.g.transparency or 0.98)))
+end
+vim.g.neovide_transparency = 0.95
+vim.g.transparency = 0.95
+vim.g.neovide_background_color = "#1D2021" .. alpha()
+
 -- nvim options
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
@@ -15,16 +40,19 @@ lvim.log.level = "info"
 
 -- change theme settings
 lvim.colorscheme = "gruvbox"
-lvim.transparent_window = true
+lvim.transparent_window = false
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
+lvim.builtin.project.manual_mode = false
 
 lvim.builtin.treesitter.ensure_installed = {
     "bash",
     "c",
+    "cpp",
+    "c_sharp",
     "javascript",
     "json",
     "python",
@@ -32,6 +60,7 @@ lvim.builtin.treesitter.ensure_installed = {
     "tsx",
     "css",
     "rust",
+    "dart",
     "java",
     "yaml",
     "toml",
@@ -40,44 +69,163 @@ lvim.builtin.treesitter.ensure_installed = {
 
 -- additional Plugins
 lvim.plugins = {
+    -- Colorschemes
     { "lunarvim/colorschemes" },
-    { "ellisonleao/gruvbox.nvim" },
-    { "tpope/vim-dadbod" },
-    { "kristijanhusak/vim-dadbod-ui" },
-    { "kristijanhusak/vim-dadbod-completion", after = "nvim-cmp" },
+    { "ellisonleao/gruvbox.nvim",
+        config = function()
+            require("gruvbox").setup({
+                undercurl = true,
+                underline = true,
+                bold = false,
+                italic = {
+                    strings = true,
+                    comments = true,
+                    operators = false,
+                    folds = true,
+                },
+                strikethrough = true,
+                invert_selection = false,
+                invert_signs = false,
+                invert_tabline = false,
+                invert_intend_guides = false,
+                inverse = true,    -- invert background for search, diffs, statuslines and errors
+                contrast = "hard", -- can be "hard", "soft" or empty string
+                palette_overrides = {},
+                overrides = {},
+                dim_inactive = false,
+                transparent_mode = true,
+            })
+        end
+
+    },
+
+    -- Database UI (vim-dadbod)
+    { "kristijanhusak/vim-dadbod-ui",
+        dependencies = {
+            { 'tpope/vim-dadbod', lazy = true },
+            { 'kristijanhusak/vim-dadbod-completion',
+                after = "nvim-cmp",
+                ft = { 'sql', 'mysql', 'plsql' },
+                lazy = true
+            },
+        },
+        cmd = {
+            'DBUI',
+            'DBUIToggle',
+            'DBUIAddConnection',
+            'DBUIFindBuffer',
+        },
+        init = function()
+            vim.g.db_ui_use_nerd_fonts = 1
+        end,
+    },
+
+    -- Snippets
     { "SirVer/ultisnips" },
-    { "mfussenegger/nvim-dap" }
+
+    -- DAP
+    { "mfussenegger/nvim-dap" },
+
+    -- Dotnet Tools
+    { "MoaidHathot/dotnet.nvim",
+        config = function()
+            require("dotnet").setup({})
+        end
+    },
+
+    -- Flutter Tools
+    { "akinsho/flutter-tools.nvim",
+        dependencies = {
+            { "nvim-lua/plenary.nvim" },
+            { "stevearc/dressing.nvim" }
+        },
+        config = function()
+            require('flutter-tools').setup {
+                decorations = {
+                    statusline = {
+                        app_version = false,
+                        device = true,
+                        project_config = false,
+                    }
+                },
+                dev_log = {
+                    enabled = true,
+                    notify_errors = true,
+                    open_cmd = "tabedit",
+                },
+                lsp = {
+                    color = {
+                        enabled = true,
+                        background = false,
+                        foreground = false,
+                        virtual_text = true,
+                        virtual_text_str = "■",
+                    },
+                    settings = {
+                        showTodos = true,
+                        completeFunctionCalls = true,
+                        renameFilesWithClasses = "prompt",
+                        enableSnippets = true,
+                        enableSdkFormatter = true,
+                    },
+                },
+            }
+        end
+    },
 }
 
--- configuring colorscheme
-require("gruvbox").setup({
-    undercurl = true,
-    underline = true,
-    bold = false,
-    italic = {
-        strings = true,
-        comments = true,
-        operators = false,
-        folds = true,
-    },
-    strikethrough = true,
-    invert_selection = false,
-    invert_signs = false,
-    invert_tabline = false,
-    invert_intend_guides = false,
-    inverse = true,    -- invert background for search, diffs, statuslines and errors
-    contrast = "hard", -- can be "hard", "soft" or empty string
-    palette_overrides = {},
-    overrides = {},
-    dim_inactive = false,
-    transparent_mode = false,
-})
-
+-- Keybindigns
+-- vim-dadbod-ui
 lvim.keys.normal_mode["<leader>D"] = ":DBUIToggle<CR>"
 
+-- telescope projects
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+
+-- flutter
+lvim.builtin.which_key.mappings["F"] = {
+    name = "+Flutter",
+    c = { "<cmd>Telescope flutter commands<cr>", "Open Flutter Commans" },
+    d = { "<cmd>FlutterDevices<cr>", "Flutter Devices" },
+    e = { "<cmd>FlutterEmulators<cr>", "Flutter Emulators" },
+    r = { "<cmd>FlutterReload<cr>", "Hot Reload App" },
+    R = { "<cmd>FlutterRestart<cr>", "Hot Restart app" },
+    q = { "<cmd>FlutterQuit<cr>", "Quit running application" },
+    v = { "<cmd>Telescope flutter fvm<cr>", "Flutter version" },
+}
+
+-- dotnet
+lvim.builtin.which_key.mappings["N"] = {
+    name = "+Dotnet",
+    n = { "<cmd>DotnetUI new_item<cr>", "Create a dotnet project" },
+    a = { "<cmd>DotnetUI project package add<cr>", "Install a NuGet package" },
+    r = { "<cmd>DotnetUI project package remove<cr>", "Remove a NuGet package" },
+    A = { "<cmd>DotnetUI project reference add<cr>", "Add a project reference" },
+    R = { "<cmd>DotnetUI project reference remove<cr>", "Remove a project reference" },
+}
+
+-- Flutter .arb files should be concidered as json files
+vim.filetype.add {
+    extension = {
+        arb = 'json',
+    }
+}
+
+-- Dart files should use two spaces indentation
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "sql", "mysql", "plsql" },
-  command = ":lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })",
+    pattern = "dart",
+    callback = function()
+        vim.bo.tabstop = 2 -- Set tabstop to 2 spaces for Dart
+        vim.bo.shiftwidth = 2 -- Set shiftwidth to 2 spaces for Dart
+        vim.bo.expandtab = true -- Use spaces instead of tabs
+    end,
 })
 
+-- Setup auto completion of SQL files with vim-dadbod-completion
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "sql", "mysql", "plsql" },
+    command = ":lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })",
+})
+
+-- Fix weird bug with vim-dadbod under lunarvim 
+-- https://github.com/kristijanhusak/vim-dadbod-completion/issues/53
 local cmp = require("cmp")

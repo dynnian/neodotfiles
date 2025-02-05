@@ -10,7 +10,7 @@ CASTDIR="$XDG_VIDEOS_DIR/Screencasts"
 mkdir -p "$SHOTDIR" "$CASTDIR"
 
 ## Format Variables
-image_formats="jpg\npng"
+image_formats="png\njpg"
 video_formats="mp4\nmkv"
 
 ## Main menu choices

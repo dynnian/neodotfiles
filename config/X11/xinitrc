@@ -30,12 +30,21 @@ fi
 
 # X11 Stuff
 export MOZ_USE_XINPUT2=1
+export QT_QPA_PLATFORMTHEME=qt5ct:qt6ct
 export QT_STYLE_OVERRIDE=kvantum
+export QT_AUT_SCREEN_SCALE_FACTOR=1
+export XKB_DEFAULT_LAYOUT=us
 export XDG_SESSION_TYPE=X11
+export XDG_CURRENT_DESKTOP=GNOME
+export XDG_SESSION_DESKTOP=GNOME
+export XDG_MENU_PREFIX=gnome-
+export WINDOW_MANAGER=dwm
+export SSH_ASKPASS=/usr/lib/ssh/gnome-ssh-askpass3
 
 # GTK & cursor stuff
 export XCURSOR_PATH="$XDG_DATA_HOME/icons/"
 export XCURSOR_THEME="Simp1e-Gruvbox-Dark"
+export XCURSOR_SIZE=16
 export GTK_THEME="Gruvbox-Dark"
 export GTK_ICON_THEME="Papirus-Dark"
 

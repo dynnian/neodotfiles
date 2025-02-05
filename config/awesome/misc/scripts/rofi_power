@@ -28,18 +28,10 @@ pwrs="$pwr1\n$pwr2\n$pwr3\n$pwr4"
 ## This variable will store the current power profile
 currentpwr=$(powerprofilesctl get)
 
-## This variable will store the current wallpaper set by feh
-currentwall=$(tail --lines=1 "$HOME/.fehbg" | awk '{print $4}' | sed "s/'//g")
-
 # Check for missing dependencies
 check_dependencies() {
-    if ! [ -x "$(command -v rofi)" ]; then
-        echo "Missing dependency: rofi is required."
-        exit 1
-    fi
-
     local missing_deps=()
-    for dep in loginctl powerprofilesctl notify-send; do
+    for dep in rofi powerprofilesctl notify-send; do
         if ! command -v "$dep" &> /dev/null; then
             missing_deps+=("$dep")
         fi

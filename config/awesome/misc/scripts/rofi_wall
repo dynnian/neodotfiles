@@ -4,51 +4,60 @@
 #  - Description: A simple rofi script to set the wallpaper on X
 #  - Dependencies: rofi, fd, feh, betterlockscreen
 
-##########################
-## Wallpapers Directory ##
-##########################
+# Directory containing wallpapers
 walldir="$XDG_PICTURES_DIR/Wallpapers"
-cd "$walldir" || exit # we cd into $walldir in order to get only the file name on the main prompt
+restorescript="$XDG_CONFIG_HOME/awesome/misc/scripts/restorewall"
 
-#######################
-## Wallpaper options ##
-#######################
+# Define wallpaper options for xwallpaper
 option1="Fill"
 option2="Center"
 option3="Tile"
-option4="Max"
-option5="Scale"
+option4="Maximize"
+option5="Stretch"
 options="$option1\n$option2\n$option3\n$option4\n$option5"
 
-##########
-## main ##
-##########
-wallpaper=$(fd -p ./ | rofi -dmenu -i -p " 󰋩 Select a wallpaper ") # main prompt
-if [ "$wallpaper" ]; then # if the user made a choice
-    chosenwall=$wallpaper # reassign $wallpaper to $chosenwall
-else
+# Prompt user to select a wallpaper
+cd "$walldir" || exit 1
+wallpaper=$(/bin/ls | sort -n | rofi -dmenu -i -p " 󰋩 Select a wallpaper ") # main prompt
+if [ -z "$wallpaper" ]; then
     exit 0
 fi
+
+# Store the selected wallpaper
+chosenwall="$wallpaper"
+
+# Function to generate a script to restore wallpaper
+generateScript() {
+    echo "#!/bin/sh" > "$restorescript"
+    echo "xwallpaper $1 \"$walldir/$chosenwall\"" >> "$restorescript"
+    chmod +x "$restorescript"
+}
+
 action=$(echo -e "$options" | rofi -dmenu -i -p "  Chose the format ") # options prompt
 case "$action" in
     $option1*)
-        feh --bg-fill "$chosenwall";
+        xwallpaper --zoom "$chosenwall"
+        generateScript "--zoom"
         betterlockscreen -u "$chosenwall" -q &
         ;;
     $option2*)
-        feh --bg-center "$chosenwall";
+        xwallpaper --center "$chosenwall"
+        generateScript "--center"
         betterlockscreen -u "$chosenwall" -q &
         ;;
     $option3*)
-        feh --bg-tile "$chosenwall";
+        xwallpaper --tile "$chosenwall"
+        generateScript "--tile"
         betterlockscreen -u "$chosenwall" -q &
         ;;
     $option4*)
-        feh --bg-max "$chosenwall";
+        xwallpaper --maximize "$chosenwall"
+        generateScript "--maximize"
         betterlockscreen -u "$chosenwall" -q &
         ;;
     $option5*)
-        feh --bg-scale "$chosenwall";
+        xwallpaper --stretch "$chosenwall"
+        generateScript "--stretch"
         betterlockscreen -u "$chosenwall" -q &
         ;;
 esac

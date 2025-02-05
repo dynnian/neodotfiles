@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+##       ____             __                                 ##
+##      / __ \_________ _/ /_____                            ##
+##     / / / / ___/ __ `/ //_/ _ \                           ##
+##    / /_/ / /  / /_/ / ,< /  __/  Lian Dynn (Drake)        ##
+##   /_____/_/   \__,_/_/|_|\___/   My custom awesome build  ##
+##                                                           ##
+
+# activate neccesary env variables for X11
+dbus-update-activation-environment DISPLAY XAUTHORITY &
+
+# autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
+pidof polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+pidof unclutter || unclutter --hide-on-touch &
+pidof picom || picom --config $XDG_CONFIG_HOME/awesome/misc/picom/picom.conf &
+pidof xidlehook || $XDG_SOURCE_HOME/awesome/misc/scripts/idle &
+pidof xss-lock || xss-lock $XDG_CONFIG_HOME/awesome/misc/scripts/lock &
+pidof greenclip || greenclip daemon &
+
+# set theming and font thingy
+gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface cursor-size 16 &
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
+gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
+gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
+gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10' &
+gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10' &
+gsettings set org.gnome.desktop.interface font-antialiasing 'rgba' &
+gsettings set org.gnome.desktop.interface font-hinting 'full' &
+
+# set monitor settings and restore wallpaper
+bash -c "$XDG_CONFIG_HOME/awesome/misc/scripts/monitors" && sh "$XDG_CONFIG_HOME/awesome/misc/scripts/restorewall" &
+
+pidof nextcloud || flatpak run com.nextcloud.desktopclient.nextcloud --background &

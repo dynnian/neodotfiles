@@ -114,7 +114,6 @@ ruled.client.connect_signal(
             rule_any = {
                 class = {
                     "cmus",
-                    "musytfzf",
                     "Audacity",
                     "Ardour",
                     "Carla2",
@@ -140,7 +139,7 @@ ruled.client.connect_signal(
                     "mpv",
                     "ani-cli",
                     "flix-cli",
-                    "vidytfzf"
+                    "ytx"
                 }
             },
             properties = { tag = "󰯜" }
@@ -169,7 +168,8 @@ ruled.client.connect_signal(
                     "Soffice",
                     "Notesnook",
                     "libreoffice-startcenter",
-                    "Joplin"
+                    "Joplin",
+                    "Geogebra"
                 }
             },
             properties = { tag = "󰧮" }

@@ -9,17 +9,14 @@
 # First line removes the path; second line sets it.  Without the first line,
 # your path gets massive and fish becomes very slow.
 set -e fish_user_paths
-set -U fish_user_paths $HOME/.bin  $HOME/.local/bin $HOME/.go/bin $HOME/.cargo/bin $HOME/.local/lib/flutter/bin $HOME/Applications $HOME/.local/share/JetBrains/Toolbox/scripts $HOME/.config/vifm/scripts /var/lib/flatpak/exports/bin/ $fish_user_paths
+set -U fish_user_paths $HOME/.bin $HOME/.local/bin $HOME/.go/bin $HOME/.cargo/bin $HOME/.local/share/JetBrains/Toolbox/scripts /var/lib/flatpak/exports/bin/ $fish_user_paths
 
 ### EXPORT ###
 set fish_greeting                                 # Supresses fish's intro message
 set TERM "xterm-256color"                         # Sets the terminal type
-set EDITOR "$HOME/.local/bin/lvim"
-set VISUAL "wezterm start --class neovim $HOME/.local/bin/lvim"
-set GOPATH "$HOME/.go"
 
 ### SET BAT AS MANPAGER
-#set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -x MANPAGER "sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 ### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
 function fish_user_key_bindings
@@ -65,57 +62,6 @@ else
   bind '$' __history_previous_command_arguments
 end
 
-# Function for creating a backup file
-# ex: backup file.txt
-# result: copies file as file.txt.bak
-function backup --argument filename
-    cp $filename $filename.bak
-end
-
-# Function for copying files and directories, even recursively.
-# ex: copy DIRNAME LOCATIONS
-# result: copies the directory and all of its contents.
-function copy
-    set count (count $argv | tr -d \n)
-    if test "$count" = 2; and test -d "$argv[1]"
-	set from (echo $argv[1] | trim-right /)
-	set to (echo $argv[2])
-        command cp -r $from $to
-    else
-        command cp $argv
-    end
-end
-
-# Function for printing a column (splits input on whitespace)
-# ex: echo 1 2 3 | coln 3
-# output: 3
-function coln
-    while read -l input
-        echo $input | awk '{print $'$argv[1]'}'
-    end
-end
-
-# Function for printing a row
-# ex: seq 3 | rown 3
-# output: 3
-function rown --argument index
-    sed -n "$index p"
-end
-
-# Function for ignoring the first 'n' lines
-# ex: seq 10 | skip 5
-# results: prints everything but the first 5 lines
-function skip --argument n
-    tail +(math 1 + $n)
-end
-
-# Function for taking the first 'n' lines
-# ex: seq 10 | take 5
-# results: prints only the first 5 lines
-function take --argument number
-    head -$number
-end
-
 # unlock ssh keys
 function unlock
     ssh-add "$HOME/.ssh/$argv[1]"
@@ -151,12 +97,14 @@ alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
 # package management
-alias pkg-update="paru -Syu"
-alias pkg-install="paru -S"
-alias pkg-remove="paru -Rcns"
-alias pkg-remove-sec="paru -R"
-alias pkg-search="paru -Ss"
-alias pkg-clean="paru -Scc && paru -Rns (pacman -Qtdq)"
+alias pku="paru -Syu"
+alias pki="paru -S"
+alias pkr="paru -Rcns"
+alias pks="paru -Ss"
+alias pkc="paru -Scc && paru -Rns (pacman -Qtdq)"
+alias fki="flatpak install"
+alias fkr="flatpak remove"
+alias fku="flatpak update"
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -164,9 +112,8 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
 # file management
-alias fm="$HOME/.config/vifm/scripts/vifmrun"
-alias flm="$HOME/.config/vifm/scripts/vifmrun"
-alias vifm="$HOME/.config/vifm/scripts/vifmrun"
+alias fm="yazi"
+alias flm="yazi"
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias rm='rm -vI'
@@ -186,8 +133,8 @@ alias ani='ani-cli'
 alias aniq='ani-cli -q'
 
 # adding flags
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
+alias df='df -h'
+alias free='free -m'
 
 # ps
 alias psa="ps auxf"
@@ -224,10 +171,7 @@ alias yta-opus="yt-dlp --extract-audio --audio-format opus "
 alias yta-vorbis="yt-dlp --extract-audio --audio-format vorbis "
 alias yta-wav="yt-dlp --extract-audio --audio-format wav "
 alias ytv-best="yt-dlp -f bestvideo+bestaudio "
-alias yt='ytfzf -ftslT kitty'
-alias youtube='ytfzf -ftslT kitty'
-alias ytm='ytfzf -mtslT kitty'
-alias youtube-music='ytfzf -mtslT kitty'
+alias yt='yt-x'
 
 # network and bluetooth
 alias netstats='nmcli dev'
@@ -240,4 +184,3 @@ alias blt='bluetoothctl'
 
 ### SETTING THE STARSHIP PROMPT ###
 starship init fish | source
-zoxide init fish | source

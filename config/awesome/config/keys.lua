@@ -1,6 +1,9 @@
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup"); require("awful.hotkeys_popup.keys")
 local apps = require("apps")
+local volume_widget = require("ui.widgets.volume")
+local brightness_widget = require("ui.widgets.brightness")
+local layout_widget = require("ui.widgets.layout")
 require("awful.autofocus")
 
 -- Modkeys.
@@ -494,6 +497,7 @@ awful.keyboard.append_global_keybindings({
         "XF86AudioRaiseVolume",
         function()
             awful.spawn("pamixer -i 5")
+            volume_widget.update()
         end,
         {
             description = "Increase volume by +5%",
@@ -505,6 +509,7 @@ awful.keyboard.append_global_keybindings({
         "XF86AudioLowerVolume",
         function()
             awful.spawn("pamixer -d 5")
+            volume_widget.update()
         end,
         {
             description = "Decrease volume by +5%",
@@ -516,6 +521,7 @@ awful.keyboard.append_global_keybindings({
         "XF86AudioMute",
         function()
             awful.spawn("pamixer -t")
+            volume_widget.update()
         end,
         {
             description = "Mute volume",
@@ -540,6 +546,7 @@ awful.keyboard.append_global_keybindings({
         "XF86MonBrightnessUp",
         function()
             awful.spawn("brightnessctl s 5%+")
+            brightness_widget.update()
         end,
         {
             description = "Increase brightness by +5%",
@@ -551,6 +558,7 @@ awful.keyboard.append_global_keybindings({
         "XF86MonBrightnessDown",
         function()
             awful.spawn("brightnessctl s 5%-")
+            brightness_widget.update()
         end,
         {
             description = "Decrease brightness by -5%",
@@ -571,6 +579,63 @@ awful.keyboard.append_global_keybindings({
         }
     ),
 
+    -- Media player
+    awful.key(
+        {},
+        "XF86AudioPause",
+        function()
+            awful.spawn("playerctl play-pause")
+        end,
+        {
+            description = "Pause/Play media toggle",
+            group = "Media keys"
+        }
+    ),
+    awful.key(
+        {},
+        "XF86AudioPlay",
+        function()
+            awful.spawn("playerctl play-pause")
+        end,
+        {
+            description = "Pause/Play media toggle",
+            group = "Media keys"
+        }
+    ),
+    awful.key(
+        {},
+        "XF86AudioNext",
+        function()
+            awful.spawn("playerctl next")
+        end,
+        {
+            description = "Switch to next media",
+            group = "Media keys"
+        }
+    ),
+    awful.key(
+        {},
+        "XF86AudioPrev",
+        function()
+            awful.spawn("playerctl previous")
+        end,
+        {
+            description = "Switch to previous media",
+            group = "Media keys"
+        }
+    ),
+    awful.key(
+        {},
+        "XF86AudioStop",
+        function()
+            awful.spawn("playerctl stop")
+        end,
+        {
+            description = "Stop media playback",
+            group = "Media keys"
+        }
+    ),
+
 -- Keychords
     -- Apps (Super + a followed by KEY)
     awful.key(
@@ -582,23 +647,31 @@ awful.keyboard.append_global_keybindings({
                     if event == "release" then
                         return
                     end
-                    if key == "1" then
+                    if key == "e" then
                         awful.util.spawn(apps.editor)      -- TAG 1
-                    elseif key == "2" then
+                    elseif key == "f" then
                         awful.util.spawn(apps.file)        -- TAG 2
-                    elseif key == "3" then
+                    elseif key == "w" then
                         awful.util.spawn(apps.browser)     -- TAG 3
-                    elseif key == "4" then
+                    elseif key == "s" then
+                        awful.util.spawn(apps.browser2)    -- TAG 3
+                    elseif key == "c" then
                         awful.util.spawn(apps.chat)        -- TAG 4
-                    elseif key == "5" then
+                    elseif key == "x" then
+                        awful.util.spawn(apps.chat2)       -- TAG 4
+                    elseif key == "z" then
+                        awful.util.spawn(apps.chat3)       -- TAG 4
+                    elseif key == "m" then
                         awful.util.spawn(apps.music)       -- TAG 5
-                    elseif key == "6" then
+                    elseif key == "k" then
                         awful.util.spawn(apps.videoeditor) -- TAG 5
-                    elseif key == "7" then
+                    elseif key == "i" then
                         awful.util.spawn(apps.imageeditor) -- TAG 5
-                    elseif key == "8" then
+                    elseif key == "o" then
                         awful.util.spawn(apps.office)      -- TAG 8
-                    elseif key == "9" then
+                    elseif key == "n" then
+                        awful.util.spawn(apps.notes)       -- TAG 8
+                    elseif key == "g" then
                         awful.util.spawn(apps.game)        -- TAG 9
                     end
                     awful.keygrabber.stop(grabber)
@@ -623,8 +696,10 @@ awful.keyboard.append_global_keybindings({
                     end
                     if key == "e" then
                         awful.util.spawn("setxkbmap es")
+                        layout_widget.update()
                     elseif key == "u" then
                         awful.util.spawn("setxkbmap us")
+                        layout_widget.update()
                     end
                     awful.keygrabber.stop(grabber)
                 end
@@ -650,6 +725,8 @@ awful.keyboard.append_global_keybindings({
                         awful.util.spawn(apps.drunner)
                     elseif key == "r" then
                         awful.util.spawn(apps.runner)
+                    elseif key == "o" then
+                        awful.util.spawn(apps.brunner)
                     elseif key == "q" then
                         awful.spawn.with_shell(apps.runner_power)
                     elseif key == "i" then
@@ -664,6 +741,8 @@ awful.keyboard.append_global_keybindings({
                         awful.spawn.with_shell(apps.runner_mount)
                     elseif key == "b" then
                         awful.spawn.with_shell(apps.runner_blue)
+                    elseif key == "c" then
+                        awful.spawn.with_shell(apps.runner_clip)
                     end
                     awful.keygrabber.stop(grabber)
                 end
@@ -686,9 +765,7 @@ awful.keyboard.append_global_keybindings({
                         return
                     end
                     if key == "y" then
-                        awful.util.spawn(apps.ytfzfv)
-                    elseif key == "m" then
-                        awful.util.spawn(apps.ytfzfm)
+                        awful.util.spawn(apps.ytx)
                     elseif key == "a" then
                         awful.util.spawn(apps.ani_cli)
                     elseif key == "f" then
@@ -705,7 +782,7 @@ awful.keyboard.append_global_keybindings({
             )
         end,
         {
-            description = "Launch terminal scripts with {Super + t} and then {y, m, a, f, r, b, p}",
+            description = "Launch terminal scripts with {Super + t} and then {y, a, f, r, b, p}",
             group = "Keychords"
         }
     ),

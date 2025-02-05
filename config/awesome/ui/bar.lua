@@ -8,6 +8,7 @@ local brightness = require("ui.widgets.brightness")
 local layout = require("ui.widgets.layout")
 local wifi = require("ui.widgets.wifi")
 local volume = require("ui.widgets.volume")
+local clock = require("ui.widgets.clock")
 
 -- Function to show or hide the right-hand widgets based on screen focus
 local function update_right_widgets_visibility()
@@ -18,7 +19,6 @@ local function update_right_widgets_visibility()
     end
 end
 
--- Textclock widget
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Tag names for each screen
     awful.tag(
@@ -91,7 +91,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     end
                 ),
                 awful.button(
-                    { modkey },
+                    { Modkey },
                     1,
                     function(t)
                         if client.focus then
@@ -105,7 +105,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                     awful.tag.viewtoggle
                 ),
                 awful.button(
-                    { modkey },
+                    { Modkey },
                     3,
                     function(t)
                         if client.focus then
@@ -131,19 +131,38 @@ screen.connect_signal("request::desktop_decoration", function(s)
         }
     }
 
+    local clock_wid = {
+        wibox.container.background(wibox.widget.textbox(" "), theme.bar_clock),
+        wibox.container.background(clock, theme.bar_clock),
+        wibox.container.background(wibox.widget.textbox(" "), theme.bar_clock),
+        layout = wibox.layout.fixed.horizontal
+    }
+
+    local clock_widget = wibox.widget {
+        {
+            clock_wid,
+            widget = wibox.container.margin,
+            top = 5,
+            bottom = 5
+        },
+        widget = wibox.container.background,
+        shape = gears.shape.rounded_rect,
+        bg = theme.bar_clock
+    }
+
     -- Prepare custom widgets container
     local custom_widget_container = {
         -- Keyboard layout widget
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_one),
-        wibox.container.background(layout, theme.bar_bg_one),
+        wibox.container.background(layout.widget, theme.bar_bg_one),
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_one),
         -- Volume widget
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_two),
-        wibox.container.background(volume, theme.bar_bg_two),
+        wibox.container.background(volume.widget, theme.bar_bg_two),
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_two),
         -- Brightness widget
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_tre),
-        wibox.container.background(brightness, theme.bar_bg_tre),
+        wibox.container.background(brightness.widget, theme.bar_bg_tre),
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_tre),
         -- Battery widget
         wibox.container.background(wibox.widget.textbox(" "), theme.bar_bg_for),
@@ -165,8 +184,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
     --  Wibar
     s.mywibox = awful.wibar {
         position     = "top",
-        height       = (20),
-        border_width = (6),
+        height       = (26),
+        border_width = (8),
         border_color = theme.bg_normal,
         screen       = s,
         widget       = {
@@ -192,7 +211,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             {
                 -- [[ Center widgets ]]
                 -- Clock widget
-                wibox.widget.textclock(),
+                clock_widget,
                 valign = "center",
                 halign = "center",
                 layout = wibox.container.place,
