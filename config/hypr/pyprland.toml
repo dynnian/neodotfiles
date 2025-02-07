@@ -1,0 +1,60 @@
+[pyprland]
+plugins = [
+    "scratchpads"
+]
+
+[scratchpads.music]
+command = "foot -T cmus -a cmus cmus"
+class = "cmus"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.file]
+command = "foot -T yazi -a yazi yazi"
+class = "yazi"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.rss]
+command = "foot -T newsboat -a newsboat newsboat"
+class = "newsboat"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.anime]
+command = "foot -T ani-cli -a ani-cli ani-cli"
+class = "ani-cli"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.movies]
+command = "foot -T flix-cli -a flix-cli flix-cli"
+class = "flix-cli"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.youtube]
+command = "foot -T yt-x -a yt-x yt-x"
+class = "yt-x"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.audiomixer]
+command = "foot -T pulsemixer -a pulsemixer pulsemixer"
+class = "pulsemixer"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
+
+[scratchpads.monitor]
+command = "foot -T btop -a btop btop"
+class = "btop"
+size = "65% 65%"
+animation = "fromTop"
+multi = false
