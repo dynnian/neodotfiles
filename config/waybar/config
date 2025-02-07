@@ -44,14 +44,13 @@
         "format-icons": {
             "1": "\udb80\udd69 cde",
             "2": "\udb82\uddad tbx",
-            "3": "\udb80\ude56 fle",
-            "4": "\udb81\udd9f web",
-            "5": "\udb80\udf6a cht",
-            "6": "\udb83\udcb8 aud",
-            "7": "\udb82\udfdc vid",
-            "8": "\udb82\udd76 img",
-            "9": "\udb82\uddee doc",
-            "10": "\udb83\ude3f gme",
+            "3": "\udb81\udd9f web",
+            "4": "\udb80\udf6a cht",
+            "5": "\udb83\udcb8 aud",
+            "6": "\udb82\udfdc vid",
+            "7": "\udb82\udd76 img",
+            "8": "\udb82\uddee doc",
+            "9": "\udb83\ude3f gme",
         }
     },
 
