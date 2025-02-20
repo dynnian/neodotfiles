@@ -16,17 +16,13 @@ export W3M_DIR="$XDG_DATA_HOME/w3m"
 export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
 export WGETDIR="$XDG_CONFIG_HOME/wget"
 export WGETRC="$WGETDIR/wgetrc"
-export INPUTRC="$HOME/.config/X11/inputrc"
 export GNUPGHOME="$HOME/.local/share/gnupg"
 export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
 
-# Default apps
-export TERMINAL="foot"
+# Text editor
 export EDITOR="$HOME/.local/bin/lvim"
 export VISUAL="foot -T lunarvim -a lunarvim $XDG_BIN_HOME/lvim"
-export VIEWER="zathura"
-export BROWSER="flatpak run org.mozilla.firefox"
 
 # Programming languages specific environment variables
 ## Go
@@ -35,29 +31,10 @@ export GOPATH="$XDG_DATA_HOME/go"
 ## Rust
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
-# ## Flutter
-# export CHROME_EXECUTABLE="/var/lib/flatpak/app/org.chromium.Chromium/x86_64/stable/active/export/bin/org.chromium.Chromium"
-# export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
-# export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
-# export FLUTTER_ANALYTICS_DISABLED=true
-# export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
-
-# ## Android SDK/Emulator
-# export ANDROID_HOME="$XDG_LIB_HOME/android"
-# export ANDROID_SDK_ROOT="$ANDROID_HOME"
-# export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
-# export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
-# export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-# export JAVA_HOME="/usr/lib/jvm/default/"
-# export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
-
 # Set path
 ## local bin paths
-if [ -d "$HOME/.bin" ]; then
-    PATH="$HOME/.bin:$PATH"
-fi
-if [ -d "$HOME/.local/bin" ]; then
-    PATH="$HOME/.local/bin:$PATH"
+if [ -d "$XDG_BIN_HOME" ]; then
+    PATH="$XDG_BIN_HOME:$PATH"
 fi
 
 ## rust tools and programs
@@ -70,43 +47,14 @@ if [ -d "$GOPATH/bin" ]; then
     PATH="$GOPATH/bin:$PATH"
 fi
 
-# ## flutter sdk
-# if [ -d "$FLUTTER_ROOT/bin" ]; then
-#     PATH="$FLUTTER_ROOT/bin:$PATH"
-# fi
-
-# ## android sdk
-# if [ -d "$ANDROID_HOME/emulator" ]; then
-#     PATH="$ANDROID_HOME/emulator:$PATH"
-# fi
-# if [ -d "$ANDROID_HOME/cmdline-tools/latest/bin" ]; then
-#     PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
-# fi
-# if [ -d "$ANDROID_HOME/tools" ]; then
-#     PATH="$ANDROID_HOME/tools:$PATH"
-# fi
-# if [ -d "$ANDROID_HOME/tools/bin" ]; then
-#     PATH="$ANDROID_HOME/tools/bin:$PATH"
-# fi
-
 ## dotnet tools
 if [ -d "$HOME/.dotnet/tools" ]; then
     PATH="$HOME/.dotnet/tools:$PATH"
 fi
 
-## AppImage applications
-if [ -d "$HOME/Applications" ]; then
-    PATH="$HOME/Applications:$PATH"
-fi
-
 ## jetbrains toolbox
 if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
     PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
-fi
-
-## Sway scripts
-if [ -d "$XDG_CONFIG_HOME/sway/scripts" ]; then
-    PATH="$XDG_CONFIG_HOME/sway/scripts:$PATH"
 fi
 
 # Create config directories if they don't exist
@@ -119,7 +67,6 @@ source "$BASHRC"
 
 # Starting wayland session
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    #startsway &>/dev/null
     Hyprland &>/dev/null
     logout
 fi
