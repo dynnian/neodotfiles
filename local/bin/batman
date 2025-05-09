@@ -1,6 +1,0 @@
-#!/bin/sh
-if [ -f "$1" ]; then
-  col -bx < "$1" | bat --language man --plain
-else
-  col -bx | bat --language man --plain
-fi

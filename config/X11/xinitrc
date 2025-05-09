@@ -31,6 +31,7 @@ fi
 # X11 Stuff
 export MOZ_USE_XINPUT2=1
 export QT_STYLE_OVERRIDE=kvantum
+export QT_QPA_PLATFORMTHEME=qt5ct:qt6ct
 export XDG_SESSION_TYPE=X11
 
 # GTK & cursor stuff
@@ -41,4 +42,5 @@ export GTK_THEME="Gruvbox-Dark"
 export GTK_ICON_THEME="Papirus-Dark"
 
 # initialize dwm
+pkill dwm
 exec dwm

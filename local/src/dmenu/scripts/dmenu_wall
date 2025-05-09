@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# *** Script by Clay Gomera (Drake) ***
-# Description: A dmenu script to set the wallpaper on X using xwallpaper
+# dmenu_wall - A dmenu script to set the wallpaper on X using xwallpaper
+# Author: Lian Dynn (Dynnian)
 # Dependencies: dmenu, fd, xwallpaper
 
 # Directory containing wallpapers

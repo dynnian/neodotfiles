@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# ***This script was made by Clay Gomera (Drake)***
-#  - Description: A simple script for file editing in dmenu
-#  - Dependencies: dmenu, fd
+# dmenu_open - A simple script for file editing in dmenu
+# Author: Lian Dynn (Dynnian)
+# Dependencies: dmenu, fd
 
 # start from home directory
 cd "$HOME" || exit 0

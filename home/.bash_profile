@@ -26,23 +26,11 @@ export BASHRC="$HOME/.bashrc"
 
 # Default apps
 export TERMINAL="st"
-export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="st -n lunarvim -c lunarvim -e $XDG_BIN_HOME/lvim"
+export EDITOR="nvim"
+export VISUAL="emacsclient -c -a 'emacs'"
 export VIEWER="zathura"
 export VIDEO="mpv"
-export BROWSER="qutebrowser"
-export BROWSER2="flatpak run org.mozilla.firefox"
-export BROWSER3="flatpak run org.chromium.Chromium"
-export EMAIL="flatpak run org.mozilla.Thunderbird"
-export CHAT1="flatpak run org.signal.Signal"
-export CHAT2="flatpak run com.rtosta.zapzap"
-export VMACHINE="flatpak run org.gnome.Boxes"
-export OFFICE="flatpak run org.libreoffice.LibreOffice"
-export NOTES="flatpak run net.cozic.joplin_desktop"
-export VEDITOR="flatpak run org.kde.kdenlive"
-export IEDITOR="flatpak run org.gimp.GIMP"
-export AEDITOR="flatpak run org.tenacityaudio.Tenacity"
-export GAME="flatpak run net.lutris.Lutris"
+export BROWSER="flatpak run com.brave.Browser"
 
 # Programming languages specific environment variables
 ## Go
@@ -50,28 +38,6 @@ export GOPATH="$XDG_DATA_HOME/go"
 
 ## Rust
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
-
-## Flutter
-export CHROME_EXECUTABLE="/var/lib/flatpak/app/org.chromium.Chromium/x86_64/stable/active/export/bin/org.chromium.Chromium"
-export PUB_CACHE="$XDG_DATA_HOME/pub-cache"
-export FLUTTER_ROOT="$XDG_LIB_HOME/flutter"
-export FLUTTER_ANALYTICS_DISABLED=true
-export ANALYZER_STATE_LOCATION_OVERRIDE="$XDG_CACHE_HOME/dartServer"
-
-## Android SDK/Emulator
-export ANDROID_HOME="$XDG_LIB_HOME/android"
-export ANDROID_SDK_ROOT="$ANDROID_HOME"
-export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
-export ANDROID_EMULATOR_HOME="$ANDROID_USER_HOME"
-export ANDROID_AVD_HOME="$ANDROID_USER_HOME/avd"
-export JAVA_HOME="/usr/lib/jvm/default/"
-export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
-
-## Dotnet
-export DOTNET_CLI_HOME="$XDG_LIB_HOME/dotnet"
-export DOTNET_ROOT="$DOTNET_CLI_HOME"
-export DOTNET_CLI_TELEMETRY_OPTOUT=true
-export DOTENT_SKIP_FIRST_TIME_EXPERIENCE=true
 
 # Set path
 ## local bin paths
@@ -92,38 +58,9 @@ if [ -d "$GOPATH/bin" ]; then
     PATH="$GOPATH/bin:$PATH"
 fi
 
-## flutter sdk
-if [ -d "$FLUTTER_ROOT/bin" ]; then
-    PATH="$FLUTTER_ROOT/bin:$PATH"
-fi
-
-## android sdk
-if [ -d "$ANDROID_HOME/emulator" ]; then
-    PATH="$ANDROID_HOME/emulator:$PATH"
-fi
-if [ -d "$ANDROID_HOME/cmdline-tools/latest/bin" ]; then
-    PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
-fi
-if [ -d "$ANDROID_HOME/tools" ]; then
-    PATH="$ANDROID_HOME/tools:$PATH"
-fi
-if [ -d "$ANDROID_HOME/tools/bin" ]; then
-    PATH="$ANDROID_HOME/tools/bin:$PATH"
-fi
-
-## dotnet cli
-if [ -d $DOTNET_CLI_HOME ]; then
-    PATH="$DOTNET_CLI_HOME:$PATH"
-fi
-
-## dotnet sdk tools
-if [ -d $DOTNET_CLI_HOME/.dotnet/tools ]; then
-    PATH="$DOTNET_CLI_HOME/.dotnet/tools:$PATH"
-fi
-
-## AppImage applications
-if [ -d "$HOME/Applications" ]; then
-    PATH="$HOME/Applications:$PATH"
+## dotnet tools
+if [ -d "$HOME/.dotnet/tools" ]; then
+    PATH="$HOME/.dotnet/tools:$PATH"
 fi
 
 ## jetbrains toolbox

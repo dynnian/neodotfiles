@@ -134,7 +134,6 @@ alias \
     pks="paru -Ss" \
     pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
 
-    #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)
 alias \
     grep="grep --color=auto" \
@@ -206,9 +205,7 @@ alias \
     yta-opus="yt-dlp --extract-audio --audio-format opus" \
     yta-vorbis="yt-dlp --extract-audio --audio-format vorbis" \
     yta-wav="yt-dlp --extract-audio --audio-format wav" \
-    ytv-best="yt-dlp -f bestvideo+bestaudio --video-format mp4" \
-    yt="ytfzf -ftsl" \
-    ytm="ytfzf -mtsl"
+    ytv-best="yt-dlp -f bestvideo+bestaudio --video-format mp4"
 
 # network and bluetooth
 alias \

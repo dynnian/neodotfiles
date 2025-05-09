@@ -1,48 +1,37 @@
 #!/bin/bash
 
 # Grab monitor status (varies with the machine)
-monitor1=$(cat /sys/class/drm/card1-HDMI-A-2/status)
-monitor2=$(cat /sys/class/drm/card1-DP-1/status)
-
-# Function to extract monitor name from EDID
-get_monitor_name() {
-    # Extract monitor name from EDID using hexdump and strings
-    edid_file="/sys/class/drm/card1-DP-1/edid"
-    if [ -f "$edid_file" ]; then
-        strings "$edid_file" | grep -m1 -oE "[a-zA-Z0-9 -_]{8,}"
-    else
-        echo ""
-    fi
-}
-
-# Check for work monitor
-work_monitor_name="DELL P2423DE" # Your identified monitor name
-connected_monitor_name=$(get_monitor_name)
+docked_main=$(cat /sys/class/drm/card1-DP-3/status)
+docked_sec=$(cat /sys/class/drm/card1-DP-4/status)
+external_usbc=$(cat /sys/class/drm/card1-DP-1/status)
+external_hdmi=$(cat /sys/class/drm/card1-HDMI-A-1/status)
 
 # If both monitors are connected
-if [ "$monitor1" = "connected" ] && [ "$monitor2" = "connected" ]; then
-    xrandr --output eDP1 --mode 1920x1080 --pos 3200x0 --rotate normal \
-           --output DP1 --mode 1280x1024 --pos 0x0 --rate 75.02 --rotate normal \
-           --output HDMI2 --primary --mode 1920x1080 --rate 100.00 --pos 1280x0 --rotate normal
+if [ "$docked_main" = "connected" ] && [ "$external_usbc" = "connected" ]; then
+    xrandr --output eDP1 --off \
+           --output DP2-1 --primary --mode 1920x1080 --rate 100.00 --pos 0x0 --rotate normal \
+           --output DP1 --mode 1280x1024 --pos 1920x0 --rate 75.02 --rotate normal
+# If I'm with my work dock
+elif [ "$docked_main" = "connected" ] && [ "$docked_sec" = "connected" ]; then
+    xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal \
+	    --output DP2-1 --primary --mode 1920x1080 --pos 1920x0 --rotate normal \
+	    --output DP2-2 --mode 1920x1080 --pos 3840x0 --rotate left
 # If only HDMI is connected
-elif [ "$monitor1" = "connected" ]; then
+elif [ "$external_hdmi" = "connected" ]; then
     xrandr --output eDP1 --primary --auto \
-           --output HDMI2 --auto --scale-from 1920x1080 --same-as eDP1
+           --output HDMI2 --auto --scale-from 1920x1080 --same-as eDP-1
 # If only DP is connected
-elif [ "$monitor2" = "connected" ]; then
-    # Check if it's the specific work monitor
-    if [ "$connected_monitor_name" = "$work_monitor_name" ]; then
-        # Custom dual monitor setup for the DELL P2423DE
-        xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal \
-               --output DP1 --primary --mode 2560x1440 --rate 59.95 --pos 1920x0
-    else
-        # Default mirroring setup
-        xrandr --output eDP1 --primary --auto \
-               --output DP1 --auto --scale-from 1920x1080 --same-as eDP1
-    fi
+elif [ "$external_usbc" = "connected" ]; then
+    xrandr --output eDP1 --primary --auto \
+           --output DP1 --auto --scale-from 1920x1080 --same-as eDP-1
 else
     # Single internal monitor setup
-    xrandr --output eDP1 --primary --auto
-    sleep 1
-    xrandr --output HDMI2 --off --output DP1 --off
+    xrandr --output eDP1 --primary --auto && \
+    xrandr --output HDMI2 --off \
+        --output HDMI1 --off \
+        --output DP1 --off \
+        --output DP2 --off \
+        --output DP2-1 --off \
+        --output DP2-2 --off \
+        --output DP2-3 --off
 fi

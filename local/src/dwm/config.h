@@ -42,32 +42,30 @@ static const unsigned int alphas[][3]      = {
 const char *spcmd1[]  = {"bash", "-c", "st -n sptrm -c sptrm -g 140x35", NULL};
 const char *spcmd2[]  = {"bash", "-c", "st -n sptop -c sptop -g 140x35 -e btop", NULL};
 const char *spcmd3[]  = {"bash", "-c", "st -n sppmx -c sppmx -g 140x35 -e pulsemixer", NULL};
-const char *spcmd4[]  = {"bash", "-c", "st -n spfli -c spfli -g 140x35 -e flix-cli", NULL};
-const char *spcmd5[]  = {"bash", "-c", "st -n spani -c spani -g 140x35 -e ani-cli", NULL};
-const char *spcmd6[]  = {"bash", "-c", "st -n spytf -c spytf -g 140x35 -e ytfzf -flst", NULL};
-const char *spcmd7[]  = {"bash", "-c", "st -n spytm -c spytm -g 140x35 -e ytfzf -mlst", NULL};
+const char *spcmd4[]  = {"bash", "-c", "st -n spflm -c spflm -g 140x35 -e $XDG_CONFIG_HOME/vifm/scripts/vifmrun", NULL};
+const char *spcmd5[]  = {"bash", "-c", "st -n sprss -c sprss -g 140x35 -e newsboat", NULL};
+const char *spcmd6[]  = {"bash", "-c", "st -n spfli -c spfli -g 140x35 -e flix-cli", NULL};
+const char *spcmd7[]  = {"bash", "-c", "st -n spani -c spani -g 140x35 -e ani-cli", NULL};
 const char *spcmd8[]  = {"bash", "-c", "st -n spmsc -c spmsc -g 140x35 -e cmus", NULL};
-const char *spcmd9[]  = {"bash", "-c", "st -n spflm -c spflm -g 140x35 -e $XDG_CONFIG_HOME/vifm/scripts/vifmrun", NULL};
-const char *spcmd10[]  = {"bash", "-c", "st -n sprss -c sprss -g 140x35 -e newsboat", NULL};
-const char *spcmd11[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
-const char *spcmd12[]  = {"flatpak", "run", "io.github.Qalculate", NULL};
-const char *spcmd13[]  = {"arandr", NULL};
+const char *spcmd9[]  = {"bash", "-c", "st -n sptsc -c sptsc -g 140x35 -e termsonic", NULL};
+const char *spcmd10[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
+const char *spcmd11[]  = {"flatpak", "run", "io.github.Qalculate", NULL};
+const char *spcmd12[]  = {"arandr", NULL};
 
 static Sp scratchpads[] = {
     /* NAME         CMD */
     {"sptrm",      spcmd1},
     {"sptop",      spcmd2},
     {"sppmx",      spcmd3},
-    {"spfli",      spcmd4},
-    {"spani",      spcmd5},
-    {"spytf",      spcmd6},
-    {"spytm",      spcmd7},
+    {"spflm",      spcmd4},
+    {"sprss",      spcmd5},
+    {"spfli",      spcmd6},
+    {"spani",      spcmd7},
     {"spmsc",      spcmd8},
-    {"spflm",      spcmd9},
-    {"sprss",      spcmd10},
-    {"spbit",      spcmd11},
-    {"spqal",      spcmd12},
-    {"spdsp",      spcmd13},
+    {"sptsc",      spcmd9},
+    {"spbit",      spcmd10},
+    {"spqal",      spcmd11},
+    {"spdsp",      spcmd12},
 };
 
 /* Tag Definitions */
@@ -122,6 +120,7 @@ static const Rule rules[] = {
     {"thunderbird-esr",                 NULL,        NULL,      1 << 2,     0,   -1},
     /* 4 - Chat Tag */
     {"Signal",                          NULL,        NULL,      1 << 3,     0,   -1},
+    {"Ferdium",                         NULL,        NULL,      1 << 3,     0,   -1},
     {"ZapZap",                          NULL,        NULL,      1 << 3,     0,   -1},
     {"Revolt",                          NULL,        NULL,      1 << 3,     0,   -1},
     {"Element",                         NULL,        NULL,      1 << 3,     0,   -1},
@@ -165,6 +164,7 @@ static const Rule rules[] = {
     {"libreoffice-draw",                NULL,        NULL,      1 << 7,     0,   -1},
     {"libreoffice-math",                NULL,        NULL,      1 << 7,     0,   -1},
     {"Joplin",                          NULL,        NULL,      1 << 7,     0,   -1},
+    {"obsidian",                        NULL,        NULL,      1 << 7,     0,   -1},
     {"Notesnook",                       NULL,        NULL,      1 << 7,     0,   -1},
     {"com.github.johnfactotum.Foliate", NULL,        NULL,      1 << 7,     0,   -1},
     /* 9 - Games Tag */
@@ -191,17 +191,15 @@ static const Rule rules[] = {
     {NULL,                              "sptrm",     NULL,      SPTAG(0),   1,   -1},
     {NULL,                              "sptop",     NULL,      SPTAG(1),   1,   -1},
     {NULL,                              "sppmx",     NULL,      SPTAG(2),   1,   -1},
-    {NULL,                              "spfli",     NULL,      SPTAG(3),   1,   -1},
-    {NULL,                              "spani",     NULL,      SPTAG(4),   1,   -1},
-    {NULL,                              "spytf",     NULL,      SPTAG(5),   1,   -1},
-    {NULL,                              "spytm",     NULL,      SPTAG(6),   1,   -1},
+    {NULL,                              "spflm",     NULL,      SPTAG(3),   1,   -1},
+    {NULL,                              "sprss",     NULL,      SPTAG(4),   1,   -1},
+    {NULL,                              "spfli",     NULL,      SPTAG(5),   1,   -1},
+    {NULL,                              "spani",     NULL,      SPTAG(6),   1,   -1},
     {NULL,                              "spmsc",     NULL,      SPTAG(7),   1,   -1},
-    {NULL,                              "spflm",     NULL,      SPTAG(8),   1,   -1},
-    {NULL,                              "sprss",     NULL,      SPTAG(9),   1,   -1},
-    {"Bitwarden",                       NULL,        NULL,      SPTAG(10),  1,   -1},
-    {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(11),  1,   -1},
-    {"Lxrandr",                         NULL,        NULL,      SPTAG(12),  1,   -1},
-    {"Arandr",                          NULL,        NULL,      SPTAG(12),  1,   -1},
+    {NULL,                              "sptsc",     NULL,      SPTAG(8),  1,   -1},
+    {"Bitwarden",                       NULL,        NULL,      SPTAG(9),  1,   -1},
+    {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(10),  1,   -1},
+    {"Arandr",                          NULL,        NULL,      SPTAG(11),  1,   -1},
 };
 
 /* Layout(s) */
@@ -239,22 +237,16 @@ static const char *monocles[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳"
 
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]       = { "bash", "-c", "$TERMINAL", NULL };
-static const char *editor[]        = { "bash", "-c", "$VISUAL", NULL };
-static const char *browser1[]      = { "bash", "-c", "$BROWSER", NULL };
-static const char *browser2[]      = { "bash", "-c", "$BROWSER2", NULL };
-static const char *browser3[]      = { "bash", "-c", "$BROWSER3", NULL };
-static const char *email[]         = { "bash", "-c", "$EMAIL", NULL };
-static const char *chat1[]         = { "bash", "-c", "$CHAT1", NULL };
-static const char *chat2[]         = { "bash", "-c", "$CHAT2", NULL };
-static const char *chat3[]         = { "bash", "-c", "$CHAT3", NULL };
-static const char *vmachine[]      = { "bash", "-c", "$VMACHINE", NULL };
-static const char *office[]        = { "bash", "-c", "$OFFICE", NULL };
-static const char *notes[]         = { "bash", "-c", "$NOTES", NULL };
-static const char *videoeditor[]   = { "bash", "-c", "$VEDITOR", NULL };
-static const char *imageeditor[]   = { "bash", "-c", "$IEDITOR", NULL };
-static const char *audioeditor[]   = { "bash", "-c", "$AEDITOR", NULL };
-static const char *game[]          = { "bash", "-c", "$GAME", NULL };
+static const char *termcmd[]       = { "bash", "-c", "st", NULL };
+static const char *editor[]        = { "emacsclient", "-c", "-a", "emacs", NULL };
+static const char *browser[]       = { "flatpak", "run", "com.brave.Browser", NULL };
+static const char *email[]         = { "flatpak", "run", "org.mozilla.Thunderbird", NULL };
+static const char *chat[]          = { "flatpak", "run", "org.signal.Signal", NULL };
+static const char *ferdium[]       = { "flatpak", "run", "org.ferdium.Ferdium", NULL };
+static const char *vmachine[]      = { "virt-manager", NULL };
+static const char *office[]        = { "flatpak", "run", "org.libreoffice.LibreOffice", NULL };
+static const char *notes[]         = { "flatpak", "run", "md.obsidian.Obsidian", NULL };
+static const char *game[]          = { "flatpak", "run", "net.lutris.Lutris", NULL };
 
 /* Keybindings */
 static Keychord *keychords[] = {
@@ -277,18 +269,12 @@ static Keychord *keychords[] = {
     /* Apps */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor       (tag 1) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vmachine } }),        /* Launch vm manager        (tag 2) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_a}},            spawn,          {.v = browser1 } }),        /* Launch web browser 1     (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_s}},            spawn,          {.v = browser2 } }),        /* Launch web browser 2     (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_d}},            spawn,          {.v = browser3 } }),        /* Launch web browser 3     (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = email } }),           /* Launch email client      (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat1 } }),           /* Launch chat app 1        (tag 4) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_x}},            spawn,          {.v = chat2 } }),           /* Launch chat app 2        (tag 4) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_z}},            spawn,          {.v = chat3 } }),           /* Launch chat app 3        (tag 4) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_j}},            spawn,          {.v = audioeditor } }),     /* Launch audio editor      (tag 5) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_k}},            spawn,          {.v = videoeditor } }),     /* Launch video editor      (tag 6) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_l}},            spawn,          {.v = imageeditor } }),     /* Launch image editor      (tag 7) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_h}},            spawn,          {.v = office } }),          /* Launch office suite      (tag 8) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_q}},            spawn,          {.v = notes } }),           /* Launch note taking app   (tag 8) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),         /* Launch web browser 1     (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_m}},            spawn,          {.v = email } }),           /* Launch email client      (tag 3) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = chat } }),            /* Launch chat app          (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_f}},            spawn,          {.v = ferdium } }),         /* Launch ferdium           (tag 4) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_o}},            spawn,          {.v = office } }),          /* Launch office suite      (tag 8) */
+    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_n}},            spawn,          {.v = notes } }),           /* Launch note taking app   (tag 8) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_g}},            spawn,          {.v = game } }),            /* Launch gaming platform   (tag 9) */
 
     /* Keyboard Layouts */
@@ -345,26 +331,25 @@ static Keychord *keychords[] = {
     &((Keychord){1, {{MODKEY|Mod1Mask, XK_space}},          togglefloating, {0} }),                 /* Toggle floating mode on active window */
     &((Keychord){1, {{MODKEY, XK_0}},                       view,           {.ui = ~0 } }),         /* View all windows from all tags */
     &((Keychord){1, {{MODKEY|ShiftMask, XK_0}},             tag,            {.ui = ~0 } }),         /* View active window on all tags (similar to sticky, more nuclear) */
-    &((Keychord){1, {{MODKEY, XK_comma}},                   focusmon,       {.i = -1 } }),          /* Focus next screen */
-    &((Keychord){1, {{MODKEY, XK_period}},                  focusmon,       {.i = +1 } }),          /* Focus previous screen */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}},         tagmon,         {.i = -1 } }),          /* Move active window to next screen */
-    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}},        tagmon,         {.i = +1 } }),          /* Move active window to previous screen */
+    &((Keychord){1, {{MODKEY, XK_comma}},                   focusmon,       {.i = +1 } }),          /* Focus next screen */
+    &((Keychord){1, {{MODKEY, XK_period}},                  focusmon,       {.i = -1 } }),          /* Focus previous screen */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_comma}},         tagmon,         {.i = +1 } }),          /* Move active window to next screen */
+    &((Keychord){1, {{MODKEY|ShiftMask, XK_period}},        tagmon,         {.i = -1 } }),          /* Move active window to previous screen */
     &((Keychord){1, {{MODKEY, XK_b}},                       togglebar,      {0} }),                 /* Toggle bar */
 
     /* Scratchpads */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_Return}},       togglescratch,  {.ui = 0 } }),  /* Toggle scratch terminal */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_b}},            togglescratch,  {.ui = 1 } }),  /* Toggle system monitor scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_p}},            togglescratch,  {.ui = 2 } }),  /* Toggle audio mixer scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_f}},            togglescratch,  {.ui = 3 } }),  /* Toggle flix-cli scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},            togglescratch,  {.ui = 4 } }),  /* Toggle ani-cli scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_y}},            togglescratch,  {.ui = 5 } }),  /* Toggle ytfzf scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_n}},            togglescratch,  {.ui = 6 } }),  /* Toggle ytfzf (music) scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_v}},            togglescratch,  {.ui = 3 } }),  /* Toggle vifm scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},            togglescratch,  {.ui = 4 } }),  /* Toggle newsboat scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_f}},            togglescratch,  {.ui = 5 } }),  /* Toggle flix-cli scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},            togglescratch,  {.ui = 6 } }),  /* Toggle ani-cli scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},            togglescratch,  {.ui = 7 } }),  /* Toggle cmus scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_v}},            togglescratch,  {.ui = 8 } }),  /* Toggle vifm scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},            togglescratch,  {.ui = 9 } }),  /* Toggle newsboat scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 10 } }), /* Toggle Bitwarden scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 11 } }), /* Toggle Qalculate scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 12 } }), /* Toggle arandr scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_t}},            togglescratch,  {.ui = 8 } }),  /* Toggle termsonic scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 9 } }),  /* Toggle Bitwarden scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 10 } }), /* Toggle Qalculate scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 11 } }), /* Toggle arandr scratchpad */
 
     /* Session Management */
     &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_q}}, quit,           {0} }), 

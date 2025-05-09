@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Devices
+TOUCHPAD="Synaptics TM3276-022"
+
+# Wait for X to be ready
+while ! xinput list | grep -q "$TOUCHPAD"; do
+    sleep 0.5
+done
+
+# === Touchpad ===
+# Enable tapping
+xinput set-prop "$TOUCHPAD" "libinput Tapping Enabled" 1
+
+# Set click method to clickfinger (1 0)
+xinput set-prop "$TOUCHPAD" "libinput Click Method Enabled" 1 0
+
+# Enable natural scrolling
+xinput set-prop "$TOUCHPAD" "libinput Natural Scrolling Enabled" 1
+
+# Keep touchpad enabled while typing
+xinput set-prop "$TOUCHPAD" "libinput Disable While Typing Enabled" 0

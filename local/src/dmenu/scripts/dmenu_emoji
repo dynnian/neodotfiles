@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# rs_emoji - A simple emoji picker menu script for dmenu
-# Author: Clay Gomera (Drake)
+# dmenu_emoji - A simple emoji picker menu script for dmenu
+# Author: Lian Dynn (Drake)
 # Dependencies: dmenu, xclip
 
 ########################

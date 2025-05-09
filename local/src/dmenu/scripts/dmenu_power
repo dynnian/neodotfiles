@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# *** Script by Clay Gomera (Drake) ***
-# Description: A dmenu script for managing power options
+# dmenu_power - A powerful dmenu script for managing power options
+# Author: Lian Dynn (Dynnian)
 # Dependencies: dmenu, powerprofilesctl, slock, systemctl, notify-send
 
 # Main menu options

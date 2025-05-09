@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# *** Script by Clay Gomera (Drake) ***
-# Description: A simple screenshot/screencast dmenu script
+# dmenu_scrot - A powerful screenshot/screencast dmenu script
+# Author: Lian Dynn (Dynnian)
 # Dependencies: maim, slop, ffmpeg, dmenu, libnotify
 
 ## Define directories for saving screenshots and screencasts

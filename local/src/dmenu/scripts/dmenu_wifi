@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# *** Script by Clay Gomera (Drake) ***
-# Description: A simple WiFi management script using dmenu and NetworkManager
+# dmenu_wifi - A simple WiFi management script using dmenu and NetworkManager
+# Author: Lian Dynn (Dynnian)
 # Dependencies: dmenu, NetworkManager, notify-send
 
 # Main menu options

@@ -8,31 +8,23 @@
 # activate neccesary env variables for X11
 dbus-update-activation-environment DISPLAY XAUTHORITY &
 
-# autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
-pidof polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-pidof dwmblocks || dwmblocks &
-pidof unclutter || unclutter --hide-on-touch &
-pidof dunst || dunst --config $XDG_CONFIG_HOME/dunst/dunstrc &
-pidof picom || picom &
-pidof xidlehook || $XDG_SOURCE_HOME/dwm/scripts/idle &
-pidof xss-lock || xss-lock -- "$XDG_SOURCE_HOME/dwm/scripts/lock" &
-pidof clipmenud || clipmenud &
-
-# set theming and font thingy
-gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
-gsettings set org.gnome.desktop.interface cursor-size 16 &
-gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
-gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark' &
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
-gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
-gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10' &
-gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10' &
-gsettings set org.gnome.desktop.interface font-antialiasing 'rgba' &
-gsettings set org.gnome.desktop.interface font-hinting 'full' &
-
-sleep 2
+# configure input
+$XDG_SOURCE_HOME/dwm/scripts/input &
 
 # set monitor settings and restore wallpaper
 $XDG_SOURCE_HOME/dwm/scripts/monitors && sh "$XDG_SOURCE_HOME/dwm/scripts/restorewall" &
 
-#pidof nextcloud || flatpak run com.nextcloud.desktopclient.nextcloud --background &
+# set theming and font thingy
+$XDG_SOURCE_HOME/dwm/scripts/theme &
+
+# autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
+pidof dwmblocks || dwmblocks &
+pidof picom || picom &
+pidof xidlehook || $XDG_SOURCE_HOME/dwm/scripts/idle &
+pidof xss-lock || xss-lock -- "$XDG_SOURCE_HOME/dwm/scripts/lock" &
+pidof unclutter || unclutter --hide-on-touch &
+pidof dunst || dunst --config $XDG_CONFIG_HOME/dunst/dunstrc &
+pidof polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+pidof clipmenud || clipmenud &
+pidof emacs || /usr/bin/emacs --daemon &
+pidof nextcloud || flatpak run com.nextcloud.desktopclient.nextcloud --background &

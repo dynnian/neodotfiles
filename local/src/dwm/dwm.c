@@ -378,9 +378,9 @@ void applyrules(Client *c) {
 
 	for (i = 0; i < LENGTH(rules); i++) {
 		r = &rules[i];
-		if ((!r->title || strstr(c->name, r->title))
-		&& (!r->class || strstr(class, r->class))
-		&& (!r->instance || strstr(instance, r->instance)))
+		if ((!r->title || strcmp(c->name, r->title) == 0)
+		&& (!r->class || strcmp(class, r->class) == 0)
+		&& (!r->instance || strcmp(instance, r->instance) == 0))
 		{
 			c->isfloating = r->isfloating;
 			c->tags |= r->tags;
