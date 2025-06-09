@@ -128,13 +128,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pku="paru -Syu" \
-    pki="paru -S" \
-    pkr="paru -Rcns" \
-    pks="paru -Ss" \
-    pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
+    pku="yay -Syu" \
+    pki="yay -S" \
+    pkr="yay -Rcns" \
+    pks="yay -Ss" \
+    pkc="doas pacman -Scc && doas pacman -Rcns (pacman -Qtdq)"
 
-    #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)
 alias \
     grep="grep --color=auto" \
@@ -206,9 +205,7 @@ alias \
     yta-opus="yt-dlp --extract-audio --audio-format opus" \
     yta-vorbis="yt-dlp --extract-audio --audio-format vorbis" \
     yta-wav="yt-dlp --extract-audio --audio-format wav" \
-    ytv-best="yt-dlp -f bestvideo+bestaudio" \
-    yt="ytfzf -ftsl" \
-    ytm="ytfzf -mtsl"
+    ytv-best="yt-dlp -f bestvideo+bestaudio"
 
 # network and bluetooth
 alias \

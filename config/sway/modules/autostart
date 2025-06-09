@@ -14,7 +14,7 @@ exec {
     mkfifo /tmp/wobpipe
     tail -f /tmp/wobpipe | wob -c ~/.config/wob/wob.ini
     nextinit
-    paplay /usr/share/sounds/ocean/stereo/desktop-login.oga
+    /usr/bin/emacs --daemon
 }
 
 exec_always {

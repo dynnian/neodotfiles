@@ -1,28 +1,3 @@
--- neovide options
-vim.o.guifont = "mononoki Nerd Font:h12"
-vim.g.neovide_hide_mouse_when_typing = true
-vim.g.neovide_no_idle = true
-vim.g.neovide_confirm_quit = true
-vim.g.neovide_input_use_logo = true
-
-vim.g.neovide_cursor_antialiasing = true
-vim.g.neovide_cursor_animate_in_insert_mode = true
-vim.g.neovide_cursor_vfx_mode = "pixiedust"
-vim.g.neovide_cursor_vfx_particle_speed = 20.0
-
-vim.g.neovide_padding_top = 0
-vim.g.neovide_padding_bottom = 0
-vim.g.neovide_padding_right = 0
-vim.g.neovide_padding_left = 0
-
--- Helper function for transparency formatting
-local alpha = function()
-  return string.format("%x", math.floor(255 * (vim.g.transparency or 0.98)))
-end
-vim.g.neovide_transparency = 0.95
-vim.g.transparency = 0.95
-vim.g.neovide_background_color = "#1D2021" .. alpha()
-
 -- nvim options
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
@@ -71,6 +46,7 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.plugins = {
     -- Colorschemes
     { "lunarvim/colorschemes" },
+    { "preservim/vim-markdown" },
     { "ellisonleao/gruvbox.nvim",
         config = function()
             require("gruvbox").setup({
@@ -131,47 +107,7 @@ lvim.plugins = {
         config = function()
             require("dotnet").setup({})
         end
-    },
-
-    -- Flutter Tools
-    { "akinsho/flutter-tools.nvim",
-        dependencies = {
-            { "nvim-lua/plenary.nvim" },
-            { "stevearc/dressing.nvim" }
-        },
-        config = function()
-            require('flutter-tools').setup {
-                decorations = {
-                    statusline = {
-                        app_version = false,
-                        device = true,
-                        project_config = false,
-                    }
-                },
-                dev_log = {
-                    enabled = true,
-                    notify_errors = true,
-                    open_cmd = "tabedit",
-                },
-                lsp = {
-                    color = {
-                        enabled = true,
-                        background = false,
-                        foreground = false,
-                        virtual_text = true,
-                        virtual_text_str = "■",
-                    },
-                    settings = {
-                        showTodos = true,
-                        completeFunctionCalls = true,
-                        renameFilesWithClasses = "prompt",
-                        enableSnippets = true,
-                        enableSdkFormatter = true,
-                    },
-                },
-            }
-        end
-    },
+    }
 }
 
 -- Keybindigns
@@ -180,18 +116,6 @@ lvim.keys.normal_mode["<leader>D"] = ":DBUIToggle<CR>"
 
 -- telescope projects
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
-
--- flutter
-lvim.builtin.which_key.mappings["F"] = {
-    name = "+Flutter",
-    c = { "<cmd>Telescope flutter commands<cr>", "Open Flutter Commans" },
-    d = { "<cmd>FlutterDevices<cr>", "Flutter Devices" },
-    e = { "<cmd>FlutterEmulators<cr>", "Flutter Emulators" },
-    r = { "<cmd>FlutterReload<cr>", "Hot Reload App" },
-    R = { "<cmd>FlutterRestart<cr>", "Hot Restart app" },
-    q = { "<cmd>FlutterQuit<cr>", "Quit running application" },
-    v = { "<cmd>Telescope flutter fvm<cr>", "Flutter version" },
-}
 
 -- dotnet
 lvim.builtin.which_key.mappings["N"] = {
@@ -202,23 +126,6 @@ lvim.builtin.which_key.mappings["N"] = {
     A = { "<cmd>DotnetUI project reference add<cr>", "Add a project reference" },
     R = { "<cmd>DotnetUI project reference remove<cr>", "Remove a project reference" },
 }
-
--- Flutter .arb files should be concidered as json files
-vim.filetype.add {
-    extension = {
-        arb = 'json',
-    }
-}
-
--- Dart files should use two spaces indentation
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "dart",
-    callback = function()
-        vim.bo.tabstop = 2 -- Set tabstop to 2 spaces for Dart
-        vim.bo.shiftwidth = 2 -- Set shiftwidth to 2 spaces for Dart
-        vim.bo.expandtab = true -- Use spaces instead of tabs
-    end,
-})
 
 -- Setup auto completion of SQL files with vim-dadbod-completion
 vim.api.nvim_create_autocmd("FileType", {

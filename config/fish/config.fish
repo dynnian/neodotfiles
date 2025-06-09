@@ -62,57 +62,6 @@ else
   bind '$' __history_previous_command_arguments
 end
 
-# Function for creating a backup file
-# ex: backup file.txt
-# result: copies file as file.txt.bak
-function backup --argument filename
-    cp $filename $filename.bak
-end
-
-# Function for copying files and directories, even recursively.
-# ex: copy DIRNAME LOCATIONS
-# result: copies the directory and all of its contents.
-function copy
-    set count (count $argv | tr -d \n)
-    if test "$count" = 2; and test -d "$argv[1]"
-	set from (echo $argv[1] | trim-right /)
-	set to (echo $argv[2])
-        command cp -r $from $to
-    else
-        command cp $argv
-    end
-end
-
-# Function for printing a column (splits input on whitespace)
-# ex: echo 1 2 3 | coln 3
-# output: 3
-function coln
-    while read -l input
-        echo $input | awk '{print $'$argv[1]'}'
-    end
-end
-
-# Function for printing a row
-# ex: seq 3 | rown 3
-# output: 3
-function rown --argument index
-    sed -n "$index p"
-end
-
-# Function for ignoring the first 'n' lines
-# ex: seq 10 | skip 5
-# results: prints everything but the first 5 lines
-function skip --argument n
-    tail +(math 1 + $n)
-end
-
-# Function for taking the first 'n' lines
-# ex: seq 10 | take 5
-# results: prints only the first 5 lines
-function take --argument number
-    head -$number
-end
-
 # unlock ssh keys
 function unlock
     ssh-add "$HOME/.ssh/$argv[1]"
@@ -148,11 +97,11 @@ alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
 # package management
-alias pku="paru -Syu"
-alias pki="paru -S"
-alias pkr="paru -Rcns"
-alias pks="paru -Ss"
-alias pkc="paru -Scc && paru -Rns (pacman -Qtdq)"
+alias pku="yay -Syu"
+alias pki="yay -S"
+alias pkr="yay -Rcns"
+alias pks="yay -Ss"
+alias pkc="doas pacman -Scc && doas pacman -Rns (pacman -Qtdq)"
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'
@@ -167,6 +116,7 @@ alias mv='mv -iv'
 alias rm='rm -vI'
 alias mkd='mkdir -pv'
 alias mkdir='mkdir -pv'
+alias du='dust'
 
 # audio
 alias mx='pulsemixer'

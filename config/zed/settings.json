@@ -38,9 +38,29 @@
 
     // theme settings
     "theme": {
-        "mode": "system",
+        "mode": "dark",
         "light": "Gruvbox Dark Hard",
         "dark": "Gruvbox Dark Hard"
+    },
+
+    // transparency settings
+    "experimental.theme_overrides": {
+        "background.appearance": "blurred",
+        "background": "#1d2021BB",
+        "editor.background": "#1d2021BB",
+        "editor.gutter.background": "#1d2021BB",
+        "toolbar.background": "#1d2021BB",
+        "editor.line_highlight": "#1d2021BB",
+        "editor.active_line.background": "#1d2021BB",
+        "editor.selection.background": "#1d2021BB",
+        "editor.selection.foreground": "#1d2021BB",
+        "editor.selection.border": "#1d2021BB",
+        "editor.selection.inactive.foreground": "#1d2021BB",
+        "editor.selection.inactive.border": "#1d2021BB",
+        "editor.selection.active.background": "#1d2021BB",
+        "editor.selection.active.foreground": "#1d2021BB",
+        "editor.selection.active.border": "#1d2021BB",
+        "editor.selection.inactive.background": "#1d2021BB"
     },
 
     // terminal settings
@@ -72,25 +92,39 @@
         "indent_size": 15
     },
 
-    // disable panels I don't need
-    "chat_panel": {
-        "button": false
-    },
-    "collaboration_panel": {
-        "button": false
-    },
-    "assistant": {
-        "button": false,
+    // ai stuff
+    "agent": {
+        "default_model": {
+            "provider": "copilot_chat",
+            "model": "o4-mini"
+        },
+        "button": true,
         "version": "2"
     },
     "features": {
-        "copilot": false,
-        "inline_completion_provider": "none"
+        "copilot": true,
+        "edit_prediction_provider": "copilot"
+    },
+
+    // disable panels I don't need
+    "chat_panel": {
+        "button": "never"
+    },
+    "collaboration_panel": {
+        "button": false
     },
 
     // disable telemetry
     "telemetry": {
         "diagnostics": false,
         "metrics": false
+    },
+    "lsp": {
+        "tinymist": {
+            "settings": {
+                "exportPdf": "onSave",
+                "outputPath": "$root/$name"
+            }
+        }
     }
 }

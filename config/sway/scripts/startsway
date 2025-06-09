@@ -11,6 +11,7 @@ export SDL_VIDEODRIVER=wayland
 export CLUTTER_PLATFORM=wayland
 export QT_QPA_PLATFORM=wayland
 export QT_STYLE_OVERRIDE=kvantum
+export QT_QPA_PLATFORMTHEME=qt5ct:qt6ct
 export GDK_BACKEND=wayland
 export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 export XKB_DEFAULT_LAYOUT=us

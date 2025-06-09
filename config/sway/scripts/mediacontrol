@@ -56,7 +56,6 @@ change_volume() {
         pamixer -d "$step"
     fi
     update_volume_wobpipe
-    paplay "$SOUND_EFFECT"
 }
 
 # Function to toggle mute
