@@ -21,8 +21,8 @@ export LESSHISTFILE="-"
 export BASHRC="$HOME/.bashrc"
 
 # Text editor
-export EDITOR="$HOME/.local/bin/lvim"
-export VISUAL="foot -T lunarvim -a lunarvim $XDG_BIN_HOME/lvim"
+export EDITOR="nvim"
+export VISUAL="foot -T nvim -a io.neovim.nvim nvim"
 
 # Programming languages specific environment variables
 ## Go

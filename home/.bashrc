@@ -128,11 +128,15 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pku="paru -Syu" \
-    pki="paru -S" \
-    pkr="paru -Rcns" \
-    pks="paru -Ss" \
-    pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
+    pku="sudo dnf update" \
+    pki="sudo dnf install" \
+    pkr="sudo dnf remove" \
+    pks="sudo dnf search" \
+    pkc="sudo dnf autoremove" \
+    fki="flatpak install" \
+    fku="flatpak update" \
+    fkr="flatpak remove" \
+    fkc="flatpak remove --unused && flatpak remove --delete-data"
 
     #pkg-clean="sudo pacman -R $(pacman -Qtds)" \
 # colorize grep output (good for log files)

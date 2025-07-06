@@ -1,10 +1,10 @@
 profile triple {
     output eDP-1
-    output HDMI-A-2
     output DP-1
-    exec hyprctl keyword monitor eDP-1, preferred, 3200x0, 1
-    exec hyprctl keyword monitor DP-1, higherr, 0x0, 1
-    exec hyprctl keyword monitor HDMI-A-2, higherr, 1280x0, 1
+    output DP-3
+    exec hyprctl keyword monitor eDP-1, preferred, 0x0, 1
+    exec hyprctl keyword monitor DP-3, 1920x1080@100.00, 1920x0, 1
+    exec hyprctl keyword monitor DP-1, 1280x1024@75.03, 3840x0, 1
 }
 
 profile hdmi {

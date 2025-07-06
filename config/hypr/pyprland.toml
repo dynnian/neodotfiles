@@ -31,12 +31,12 @@ size = "65% 65%"
 animation = "fromTop"
 multi = false
 
-[scratchpads.movies]
-command = "foot -T flix-cli -a flix-cli flix-cli"
-class = "flix-cli"
-size = "65% 65%"
-animation = "fromTop"
-multi = false
+#[scratchpads.movies]
+#command = "foot -T flix-cli -a flix-cli flix-cli"
+#class = "flix-cli"
+#size = "65% 65%"
+#animation = "fromTop"
+#multi = false
 
 [scratchpads.youtube]
 command = "foot -T yt-x -a yt-x yt-x"
