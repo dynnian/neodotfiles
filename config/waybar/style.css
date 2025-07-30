@@ -78,7 +78,7 @@ window#waybar {
 
 #workspaces button {
     border-top: 2px solid @inactive;
-    padding: 0 8px;
+    padding: 0 4px;
     color: @white;
 }
 

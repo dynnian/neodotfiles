@@ -7,6 +7,15 @@ profile triple {
     exec hyprctl keyword monitor DP-1, 1280x1024@75.03, 3840x0, 1
 }
 
+profile triple-2 {
+    output eDP-1
+    output DP-1
+    output DP-4
+    exec hyprctl keyword monitor eDP-1, preferred, 0x0, 1
+    exec hyprctl keyword monitor DP-4, 1920x1080@100.00, 1920x0, 1
+    exec hyprctl keyword monitor DP-1, 1280x1024@75.03, 3840x0, 1
+}
+
 profile hdmi {
     output eDP-1
     output HDMI-A-2
@@ -16,9 +25,20 @@ profile hdmi {
 
 profile work {
     output eDP-1
-    output "Dell Inc. DELL P2423DE B1LPWY3"
+    output DP-3
+    output DP-4
     exec hyprctl keyword monitor eDP-1, preferred, 0x0, 1
-    exec hyprctl keyword monitor DP-1, preferred, 1920x0, 1
+    exec hyprctl keyword monitor DP-3, preferred, 1920x0, 1
+    exec hyprctl keyword monitor DP-4, preferred, 3840x0, 1, transform, 1
+}
+
+profile work-2 {
+    output eDP-1
+    output DP-4
+    output DP-5
+    exec hyprctl keyword monitor eDP-1, preferred, 0x0, 1
+    exec hyprctl keyword monitor DP-4, preferred, 1920x0, 1
+    exec hyprctl keyword monitor DP-5, preferred, 3840x0, 1, transform, 1
 }
 
 profile hdmi-c {

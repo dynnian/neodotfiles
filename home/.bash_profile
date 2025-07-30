@@ -22,7 +22,7 @@ export BASHRC="$HOME/.bashrc"
 
 # Text editor
 export EDITOR="nvim"
-export VISUAL="foot -T nvim -a io.neovim.nvim nvim"
+export VISUAL="kitty -T nvim --app-id io.neovim.nvim nvim"
 
 # Programming languages specific environment variables
 ## Go
