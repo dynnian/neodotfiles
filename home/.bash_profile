@@ -102,6 +102,9 @@ fi
 # Bashrc
 source "$BASHRC"
 
+# Bitwarden SSH Agent
+export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
+
 # Starting wayland session
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     startsway &>/dev/null
