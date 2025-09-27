@@ -23,40 +23,65 @@ export BASHRC="$HOME/.bashrc"
 
 # Default apps
 export TERMINAL="foot"
-export EDITOR="lvim"
-export VISUAL="foot -T lunarvim -a lunarvim lvim"
-export BROWSER="flatpak run app.zen_browser.zen"
+export BROWSER="flatpak run com.brave.Browser"
 export VIEWER="zathura"
 
 # Programming languages specific environment variables
-## Go
-export GOPATH="$XDG_DATA_HOME/go"
+# Set default text editor to either neovim or vim
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR="nvim"
+elif command -v vim >/dev/null 2>&1; then
+  export EDITOR="vim"
+fi
 
-## Rust
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
+# Set visual editor to zed if installed
+if command -v zed >/dev/null 2>&1; then
+  export VISUAL="zed"
+fi
 
-## Dotnet
-export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGet"
+# Configure Golang
+if command -v go >/dev/null 2>&1; then
+  export GOPATH="${GOPATH:-$XDG_DATA_HOME/go}"
+  mkdir -p "$GOPATH"
+
+  case ":$PATH:" in
+    *":$GOPATH/bin:"*) ;;
+    *) PATH="$GOPATH/bin:$PATH" ;;
+  esac
+
+  export PATH
+fi
+
+# Configure .NET
+if command -v dotnet >/dev/null 2>&1; then
+  mkdir -p "$HOME/.dotnet/tools"
+  export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGet"
+
+  case ":$PATH:" in
+    *":$HOME/.dotnet/tools:"*) ;;
+    *) PATH="$HOME/.dotnet/tools:$PATH" ;;
+  esac
+
+  export PATH
+fi
+
+# Configure Rust & Cargo
+if command -v cargo >/dev/null 2>&1; then
+  export CARGO_HOME="${CARGO_HOME:-$XDG_DATA_HOME/cargo}"
+  mkdir -p "$CARGO_HOME/bin"
+
+  case ":$PATH:" in
+    *":$CARGO_HOME/bin:"*) ;;
+    *) PATH="$CARGO_HOME/bin:$PATH" ;;
+  esac
+
+  export PATH
+fi
 
 # Set path
 ## local bin paths
 if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
-fi
-
-## rust tools and programs
-if [ -d "$CARGO_HOME/bin" ]; then
-    PATH="$CARGO_HOME/bin:$PATH"
-fi
-
-## golang tools and programs
-if [ -d "$GOPATH/bin" ]; then
-    PATH="$GOPATH/bin:$PATH"
-fi
-
-## dotnet sdk tools
-if [ -d "$HOME/.dotnet/tools" ]; then
-    PATH="$HOME/.dotnet/tools:$PATH"
 fi
 
 ## jetbrains toolbox
