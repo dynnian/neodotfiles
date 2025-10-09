@@ -19,4 +19,5 @@ exec {
 
 exec_always {
     pidof kanshi && kill -1 $(pidof kanshi) || kanshi
+    gtk-update-icon-cache
 }

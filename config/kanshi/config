@@ -1,15 +1,13 @@
-profile triple {
+profile home {
     exec pgrep wl-mirror && pkill -n wl-mirror
     output eDP-1 position 0,0
     output DP-4 mode 1920x1080@100Hz position 1920,0
-    output DP-1 mode 1280x1024@75Hz position 3840,0
 }
 
-profile triple-2 {
+profile home-2 {
     exec pgrep wl-mirror && pkill -n wl-mirror
     output eDP-1 position 0,0
     output DP-3 mode 1920x1080@100Hz position 1920,0
-    output DP-1 mode 1280x1024@75Hz position 3840,0
 }
 
 profile work {

@@ -97,11 +97,11 @@ alias lt='eza -aT --color=always --group-directories-first' # tree listing
 alias l.='eza -a | egrep "^\."'
 
 # package management
-alias pku="yay -Syu"
-alias pki="yay -S"
-alias pkr="yay -Rcns"
-alias pks="yay -Ss"
-alias pkc="doas pacman -Scc && doas pacman -Rns (pacman -Qtdq)"
+alias pku="paru -Syu"
+alias pki="paru -S"
+alias pkr="paru -Rcns"
+alias pks="paru -Ss"
+alias pkc="sudo pacman -Scc && sudo pacman -Rns (pacman -Qtdq)"
 
 # Colorize grep output (good for log files)
 alias grep='grep --color=auto'

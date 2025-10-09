@@ -18,11 +18,11 @@ set $browser $BROWSER
 set $vm flatpak run org.gnome.Boxes
 set $file foot -T yazi -a yazi yazi
 set $editor $VISUAL
-set $music foot -T cmus -a cmus cmus
+set $music foot -T cmus -a cmus cmus 
 set $rss foot -T newsboat -a newsboat newsboat
 set $ani-cli foot -T ani-cli -a ani-cli ani-cli
 set $flix-cli foot -T flix-cli -a flix-cli flix-cli
-set $youtube foot -T yt-x -a yt-x yt-x
+set $youtube foot -T youtube-tui -a youtube-tui youtube-tui
 set $audiomixer foot -T pulsemixer -a pulsemixer pulsemixer
 set $monitor foot -T btop -a btop btop
 

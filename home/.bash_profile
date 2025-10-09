@@ -23,7 +23,7 @@ export BASHRC="$HOME/.bashrc"
 
 # Default apps
 export TERMINAL="foot"
-export BROWSER="flatpak run com.brave.Browser"
+export BROWSER="qutebrowser"
 export VIEWER="zathura"
 
 # Programming languages specific environment variables

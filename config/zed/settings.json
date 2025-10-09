@@ -8,6 +8,7 @@
 // command palette
 {
     // don't prompt for updates
+    "base_keymap": "VSCode",
     "auto_update": false,
 
     // editor settings
@@ -25,12 +26,6 @@
 
     // specific languages settings
     "languages": {
-        "Dart": {
-            "tab_size": 2
-        },
-        "LaTeX": {
-            "tab_size": 2
-        },
         "JSON": {
             "tab_size": 2
         }
@@ -40,27 +35,7 @@
     "theme": {
         "mode": "dark",
         "light": "Gruvbox Dark Hard",
-        "dark": "Gruvbox Dark Hard"
-    },
-
-    // transparency settings
-    "experimental.theme_overrides": {
-        "background.appearance": "blurred",
-        "background": "#1d2021BB",
-        "editor.background": "#1d2021BB",
-        "editor.gutter.background": "#1d2021BB",
-        "toolbar.background": "#1d2021BB",
-        "editor.line_highlight": "#1d2021BB",
-        "editor.active_line.background": "#1d2021BB",
-        "editor.selection.background": "#1d2021BB",
-        "editor.selection.foreground": "#1d2021BB",
-        "editor.selection.border": "#1d2021BB",
-        "editor.selection.inactive.foreground": "#1d2021BB",
-        "editor.selection.inactive.border": "#1d2021BB",
-        "editor.selection.active.background": "#1d2021BB",
-        "editor.selection.active.foreground": "#1d2021BB",
-        "editor.selection.active.border": "#1d2021BB",
-        "editor.selection.inactive.background": "#1d2021BB"
+        "dark": "Gruvbox Dark"
     },
 
     // terminal settings
@@ -98,8 +73,7 @@
             "provider": "copilot_chat",
             "model": "o4-mini"
         },
-        "button": true,
-        "version": "2"
+        "button": true
     },
     "features": {
         "copilot": true,

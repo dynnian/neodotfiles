@@ -128,11 +128,11 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pku="yay -Syu" \
-    pki="yay -S" \
-    pkr="yay -Rcns" \
-    pks="yay -Ss" \
-    pkc="doas pacman -Scc && doas pacman -Rcns (pacman -Qtdq)"
+    pku="paru -Syu" \
+    pki="paru -S" \
+    pkr="paru -Rcns" \
+    pks="paru -Ss" \
+    pkc="sudo pacman -Scc && sudo pacman -Rcns (pacman -Qtdq)"
 
 # colorize grep output (good for log files)
 alias \

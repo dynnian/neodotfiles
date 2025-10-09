@@ -7,7 +7,6 @@ export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 export EGL_PLATFORM=wayland
-export SDL_VIDEODRIVER=wayland
 export CLUTTER_PLATFORM=wayland
 export QT_QPA_PLATFORM=wayland
 export QT_STYLE_OVERRIDE=kvantum
@@ -30,6 +29,9 @@ export GTK_CURSOR_THEME="Simp1e-Gruvbox-Dark"
 
 # User defined enviroment variables
 export RUNNER="fuzzel --dmenu"
+
+# Fix wlroots explicit sync bug, temporarily. See https://github.com/swaywm/sway/issues/8755
+export WLR_RENDER_NO_EXPLICIT_SYNC=1
 
 # Start compositor
 exec sway
