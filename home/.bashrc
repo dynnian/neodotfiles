@@ -10,7 +10,7 @@ export MANPAGER="batman"
     . /usr/share/bash-completion/bash_completion
 
 # enable bash-completion for opendoas
-if command -v doas >/dev/null 2>*1; then
+if command -v doas >/dev/null 2>&1; then
     complete -F _command doas
 fi
 
