@@ -1,22 +1,32 @@
 #!/usr/bin/env bash
 
-# Devices
-TOUCHPAD="Synaptics TM3276-022"
-
 # Wait for X to be ready
+while ! xinput list >/dev/null 2>&1; do
+    sleep 0.5
+done
+
+# Detect device
+if xinput list | grep -q "VEN_0488:00 0488:104B Touchpad"; then
+    # Dell Precision 3581
+    TOUCHPAD="VEN_0488:00 0488:104B Touchpad"
+elif xinput list | grep -q "Virtual core pointer"; then
+    # ThinkPad T480
+    TOUCHPAD="Virtual core pointer"
+else
+    echo "Touchpad not found."
+    exit 1
+fi
+
+echo "Configuring touchpad: $TOUCHPAD"
+
+# Wait until the device is ready
 while ! xinput list | grep -q "$TOUCHPAD"; do
     sleep 0.5
 done
 
-# === Touchpad ===
-# Enable tapping
+# Touchpad settings
 xinput set-prop "$TOUCHPAD" "libinput Tapping Enabled" 1
-
-# Set click method to clickfinger (1 0)
 xinput set-prop "$TOUCHPAD" "libinput Click Method Enabled" 1 0
-
-# Enable natural scrolling
 xinput set-prop "$TOUCHPAD" "libinput Natural Scrolling Enabled" 1
-
-# Keep touchpad enabled while typing
 xinput set-prop "$TOUCHPAD" "libinput Disable While Typing Enabled" 0
+

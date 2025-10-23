@@ -3,11 +3,16 @@ export TERM="xterm-256color"                      # getting proper colors
 export HISTCONTROL=ignoredups:erasedups           # no duplicate entries
 
 ### "bat" as manpager
-export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
+export MANPAGER="batman"
 
 # use bash-completion, if available
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
+
+# enable bash-completion for opendoas
+if command -v doas >/dev/null 2>*1; then
+    complete -F _command doas
+fi
 
 # if not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -40,9 +45,9 @@ shopt -s checkwinsize # checks term size when bash regains control
 # ignore upper and lowercase when TAB completion
 bind "set completion-ignore-case on"
 
-# sudo not required for some system commands
+# doas not required for some system commands
 for command in cryptsetup mount umount poweroff reboot ; do
-alias $command="sudo $command"
+alias $command="doas $command"
 done; unset command
 
 ### ARCHIVE EXTRACTION ###
@@ -112,9 +117,7 @@ alias \
 [ -x "$(command -v fastfetch)" ] && alias neofetch="fastfetch"
 
 # use lunarvim or neovim for vim if present.
-if [ -x "$(command -v $HOME/.local/bin/lvim)" ]; then
-    alias vim="$HOME/.local/bin/lvim"
-elif [ -x "$(command -v nvim)" ]; then
+if [ -x "$(command -v nvim)" ]; then
     alias vim="nvim"
 fi
 
@@ -128,11 +131,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    pku="paru -Syu" \
-    pki="paru -S" \
-    pkr="paru -Rcns" \
-    pks="paru -Ss" \
-    pkc="paru -Scc && paru -Rcns (pacman -Qtdq)"
+    xbu="doas xbps-install -Su" \
+    xbi="doas xbps-install -S" \
+    xbr="doas xbps-remove -R" \
+    xbrs="doas xbps-remove" \
+    xbs="doas xbps-query -R" \
+    xbc="doas xbps-remove -Oo"
 
 # colorize grep output (good for log files)
 alias \
@@ -162,7 +166,6 @@ alias \
 
 # multimedia scripts
 alias \
-    fli="flix-cli" \
     ani="ani-cli" \
     aniq="ani-cli -q"
 
@@ -175,14 +178,15 @@ alias \
 
 # power management
 alias \
-    po="systemctl poweroff" \
-    sp="systemctl suspend" \
-    rb="systemctl reboot"
+    po="loginctl poweroff" \
+    sp="loginctl suspend" \
+    rb="loginctl reboot"
 
 # file management
 alias \
-    fm="yazi" \
-    flm="yazi" \
+    fm="$HOME/.config/vifm/scripts/vifmrun" \
+    flm="$HOME/.config/vifm/scripts/vifmrun" \
+    vifm="$HOME/.config/vifm/scripts/vifmrun" \
     rm="rm -vI" \
     mv="mv -iv" \
     cp="cp -iv" \
@@ -274,5 +278,126 @@ function parse_git_dirty {
         echo ""
     fi
 }
+
+# Automatically add completion for all aliases to commands having completion functions
+alias_completion() {
+    local namespace="alias_completion"
+
+    # Preload and cache current completion definitions and alias list once
+    local comp_dump alias_dump
+    comp_dump="$(builtin complete -p 2>/dev/null)" || comp_dump=""
+    alias_dump="$(builtin alias -p 2>/dev/null)"   || alias_dump=""
+
+    # Extract: completion triggers (command words) and map full lines by trigger
+    # compl_regex: complete ... -F <func> <trigger>
+    local compl_regex='^complete( +[^ ]+)* -F ([^ ]+) ("[^"]+"|[^ ]+)$'
+
+    # Build an associative map: trigger -> full completion line
+    # and a flat list of triggers for quick membership testing
+    declare -A comp_line_by_trigger=()
+    local -a triggers=()
+    local line
+    while IFS= read -r line; do
+        [[ $line =~ $compl_regex ]] || continue
+        # group 3 is the trigger
+        local trig="${BASH_REMATCH[3]}"
+        comp_line_by_trigger["$trig"]="$line"
+        triggers+=("$trig")
+    done <<< "$comp_dump"
+
+    # If nothing to do, bail early
+    ((${#triggers[@]} == 0)) && return 0
+
+    # Determine completion loader (if any)
+    local completion_loader
+    completion_loader="$(builtin complete -p -D 2>/dev/null | sed -Ene 's/.* -F ([^ ]*).*/\1/p')"
+
+    # Choose fast temp location
+    local tmpdir="/dev/shm"
+    [[ -d $tmpdir && -w $tmpdir ]] || tmpdir="/tmp"
+
+    # Preliminary cleanup (silenced; bypass rm alias)
+    command rm -f -- "$tmpdir/${namespace}-"*.tmp 2>/dev/null
+
+    # Create temp file for wrapper funcs and completion installs
+    local tmp_file
+    tmp_file="$(mktemp "$tmpdir/${namespace}-XXXXXX.tmp")" || return 1
+
+    # alias_regex: alias <name>='<cmd> <args...>'
+    local alias_regex="^alias ([^=]+)='(\"[^\"]+\"|[^ ]+)(( +[^ ]+)*)'$"
+
+    # Process aliases
+    while IFS= read -r line; do
+        [[ $line =~ $alias_regex ]] || continue
+
+        local alias_name="${BASH_REMATCH[1]}"
+        local alias_cmd="${BASH_REMATCH[2]}"
+        local alias_args="${BASH_REMATCH[3]# }"   # strip leading space if present
+
+        # Skip pipelines / control structures etc. by attempting safe word-splitting via eval
+        # (if it errors due to unquoted metacharacters, skip)
+        local alias_arg_words
+        if [[ -n $alias_args ]]; then
+            eval "alias_arg_words=($alias_args)" 2>/dev/null || continue
+        else
+            alias_arg_words=()
+        fi
+
+        # Ensure we have a completion for the aliased command; try to autoload if configured
+        local new_completion="${comp_line_by_trigger["$alias_cmd"]}"
+        if [[ -z $new_completion ]]; then
+            if [[ -n $completion_loader ]]; then
+                eval "$completion_loader $alias_cmd"
+                if [[ $? -eq 124 ]]; then
+                    # Refresh cache for this trigger only
+                    new_completion="$(builtin complete -p -- "$alias_cmd" 2>/dev/null | tail -n1)"
+                    [[ -z $new_completion ]] && continue
+                    comp_line_by_trigger["$alias_cmd"]="$new_completion"
+                    triggers+=("$alias_cmd")
+                else
+                    continue
+                fi
+            else
+                continue
+            fi
+        fi
+
+        # If alias adds fixed args, wrap the original completion function
+        if [[ -n $alias_args ]]; then
+            # Extract completion function name from the completion line
+            local compl_func="${new_completion#* -F }"
+            compl_func="${compl_func%% *}"
+
+            # Avoid recursive loops by skipping our own wrappers
+            if [[ "${compl_func#_$namespace::}" == "$compl_func" ]]; then
+                local compl_wrapper="_${namespace}::${alias_name}"
+                {
+                    printf 'function %s {\n' "$compl_wrapper"
+                    printf '  (( COMP_CWORD += %d ))\n' "${#alias_arg_words[@]}"
+                    printf '  COMP_WORDS=(%q %s ${COMP_WORDS[@]:1})\n' "$alias_cmd" "$alias_args"
+                    printf '  (( COMP_POINT -= ${#COMP_LINE} ))\n'
+                    # Replace only the first occurrence of alias_name at start (typical use)
+                    printf '  COMP_LINE=${COMP_LINE/#%q/%q}\n' "$alias_name" "$alias_cmd $alias_args"
+                    printf '  (( COMP_POINT += ${#COMP_LINE} ))\n'
+                    printf '  %s\n' "$compl_func"
+                    printf '}\n'
+                } >> "$tmp_file"
+
+                # Replace -F <func> with -F <wrapper>
+                new_completion="${new_completion/ -F $compl_func / -F $compl_wrapper }"
+            fi
+        fi
+
+        # Bind the (possibly wrapped) completion to the alias name
+        printf '%s %s\n' "${new_completion% *}" "$alias_name" >> "$tmp_file"
+
+    done <<< "$alias_dump"
+
+    # Load everything and cleanup (bypass rm alias)
+    # shellcheck disable=SC1090
+    source "$tmp_file"
+    command rm -f -- "$tmp_file" 2>/dev/null
+}
+alias_completion
 
 export PS1="[\[\e[31m\]\u\[\e[m\]\[\e[35m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]] [\[\e[33m\]\W\[\e[m\]\[\e[34m\]\`parse_git_branch\`\[\e[m\]] 󱞪 "

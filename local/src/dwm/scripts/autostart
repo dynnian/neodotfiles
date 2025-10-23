@@ -8,6 +8,8 @@
 # activate neccesary env variables for X11
 dbus-update-activation-environment DISPLAY XAUTHORITY &
 
+$XDG_SOURCE_HOME/dwm/scripts/pipeinit
+
 # configure input
 $XDG_SOURCE_HOME/dwm/scripts/input &
 
@@ -24,7 +26,7 @@ pidof xidlehook || $XDG_SOURCE_HOME/dwm/scripts/idle &
 pidof xss-lock || xss-lock -- "$XDG_SOURCE_HOME/dwm/scripts/lock" &
 pidof unclutter || unclutter --hide-on-touch &
 pidof dunst || dunst --config $XDG_CONFIG_HOME/dunst/dunstrc &
-pidof polkit-gnome-authentication-agent-1 || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
 pidof clipmenud || clipmenud &
 pidof emacs || /usr/bin/emacs --daemon &
 pidof nextcloud || flatpak run com.nextcloud.desktopclient.nextcloud --background &

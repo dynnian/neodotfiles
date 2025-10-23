@@ -30,37 +30,51 @@ export EDITOR="nvim"
 export VISUAL="emacsclient -c -a 'emacs'"
 export VIEWER="zathura"
 export VIDEO="mpv"
-export BROWSER="flatpak run com.brave.Browser"
+export BROWSER="firefox"
 
-# Programming languages specific environment variables
-## Go
-export GOPATH="$XDG_DATA_HOME/go"
+# Configure Golang
+if command -v go >/dev/null 2>&1; then
+  export GOPATH="${GOPATH:-$XDG_DATA_HOME/go}"
+  mkdir -p "$GOPATH"
 
-## Rust
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
+  case ":$PATH:" in
+    *":$GOPATH/bin:"*) ;;
+    *) PATH="$GOPATH/bin:$PATH" ;;
+  esac
+
+  export PATH
+fi
+
+# Configure .NET
+if command -v dotnet >/dev/null 2>&1; then
+  mkdir -p "$HOME/.dotnet/tools"
+  export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGet"
+
+  case ":$PATH:" in
+    *":$HOME/.dotnet/tools:"*) ;;
+    *) PATH="$HOME/.dotnet/tools:$PATH" ;;
+  esac
+
+  export PATH
+fi
+
+# Configure Rust & Cargo
+if command -v cargo >/dev/null 2>&1; then
+  export CARGO_HOME="${CARGO_HOME:-$XDG_DATA_HOME/cargo}"
+  mkdir -p "$CARGO_HOME/bin"
+
+  case ":$PATH:" in
+    *":$CARGO_HOME/bin:"*) ;;
+    *) PATH="$CARGO_HOME/bin:$PATH" ;;
+  esac
+
+  export PATH
+fi
 
 # Set path
 ## local bin paths
-if [ -d "$HOME/.bin" ]; then
-    PATH="$HOME/.bin:$PATH"
-fi
 if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
-fi
-
-## rust tools and programs
-if [ -d "$CARGO_HOME/bin" ]; then
-    PATH="$CARGO_HOME/bin:$PATH"
-fi
-
-## golang tools and programs
-if [ -d "$GOPATH/bin" ]; then
-    PATH="$GOPATH/bin:$PATH"
-fi
-
-## dotnet tools
-if [ -d "$HOME/.dotnet/tools" ]; then
-    PATH="$HOME/.dotnet/tools:$PATH"
 fi
 
 ## jetbrains toolbox
@@ -72,6 +86,8 @@ fi
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
 fi
+
+export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
 
 # Bashrc
 source "$BASHRC"
