@@ -32,7 +32,7 @@ gaps inner 5
 exec gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
 exec gsettings set org.gnome.desktop.interface cursor-size 16 &
 exec gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
-exec gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-Dark' &
+exec gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-BL-LB-Dark' &
 exec gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
 exec gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
 exec gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10' &
