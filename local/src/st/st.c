@@ -740,17 +740,15 @@ sigchld(int a)
 	int stat;
 	pid_t p;
 
-	if ((p = waitpid(pid, &stat, WNOHANG)) < 0)
-		die("waiting for pid %hd failed: %s\n", pid, strerror(errno));
-
-	if (pid != p)
-		return;
-
-	if (WIFEXITED(stat) && WEXITSTATUS(stat))
-		die("child exited with status %d\n", WEXITSTATUS(stat));
-	else if (WIFSIGNALED(stat))
-		die("child terminated due to signal %d\n", WTERMSIG(stat));
-	exit(0);
+	while ((p = waitpid(-1, &stat, WNOHANG)) > 0) {
+		if (p == pid) {
+			if (WIFEXITED(stat) && WEXITSTATUS(stat))
+				die("child exited with status %d\n", WEXITSTATUS(stat));
+			else if (WIFSIGNALED(stat))
+				die("child terminated due to signal %d\n", WTERMSIG(stat));
+			exit(0);
+		}
+	}
 }
 
 void
@@ -1094,7 +1092,8 @@ newterm(const Arg* a)
 	case 0:
 		chdir(getcwd_by_pid(pid));
 		execlp("st", "./st", NULL);
-		break;
+		perror("execlp st failed");
+		_exit(1);
 	}
 }
 
@@ -1244,7 +1243,7 @@ csiparse(void)
 	long int v;
 
 	csiescseq.narg = 0;
-	if (*p == '?') {
+	if (*p == '?' || *p == '>' || *p == '<' || *p == '=') {
 		csiescseq.priv = 1;
 		p++;
 	}
@@ -1259,6 +1258,11 @@ csiparse(void)
 			v = -1;
 		csiescseq.arg[csiescseq.narg++] = v;
 		p = np;
+		while (*p == ':') {
+			p++;
+			strtol(p, &np, 10);
+			p = np;
+		}
 		if (*p != ';' || csiescseq.narg == ESC_ARG_SIZ)
 			break;
 		p++;
@@ -1719,6 +1723,44 @@ csihandle(void)
 		csidump();
 		/* die(""); */
 		break;
+	case '$':
+		if (csiescseq.mode[1] == 'p') {
+			/* DECRQM -- Request DEC Private Mode */
+			int mode = csiescseq.arg[0];
+			int status = 0; /* 0 = not recognized, 1 = set, 2 = reset */
+			
+			if (csiescseq.priv) {
+				switch (mode) {
+				case 7: /* DECAWM -- Autowrap Mode */
+					status = IS_SET(MODE_WRAP) ? 1 : 2;
+					break;
+				case 47: /* Alt Screen */
+				case 1049: /* Alt Screen */
+					status = IS_SET(MODE_ALTSCREEN) ? 1 : 2;
+					break;
+				default:
+					status = 0; /* Not recognized / Not supported */
+					break;
+				}
+				len = snprintf(buf, sizeof(buf), "\033[?%d;%d$y", mode, status);
+			} else {
+				switch (mode) {
+				case 4: /* IRM -- Insertion Replacement Mode */
+					status = IS_SET(MODE_INSERT) ? 1 : 2;
+					break;
+				case 20: /* LNM -- Line Feed/New Line Mode */
+					status = IS_SET(MODE_CRLF) ? 1 : 2;
+					break;
+				default:
+					status = 0; /* Not recognized / Not supported */
+					break;
+				}
+				len = snprintf(buf, sizeof(buf), "\033[%d;%d$y", mode, status);
+			}
+			ttywrite(buf, len, 0);
+			return;
+		}
+		goto unknown;
 	case '@': /* ICH -- Insert <n> blank char */
 		DEFAULT(csiescseq.arg[0], 1);
 		tinsertblank(csiescseq.arg[0]);
@@ -1874,12 +1916,19 @@ csihandle(void)
 		tsetmode(csiescseq.priv, 1, csiescseq.arg, csiescseq.narg);
 		break;
 	case 'm': /* SGR -- Terminal attribute (color) */
+		if (csiescseq.priv) {
+			/* Ignore xterm private SGR modes like modifyOtherKeys silently */
+			break;
+		}
 		tsetattr(csiescseq.arg, csiescseq.narg);
 		break;
 	case 'n': /* DSR – Device Status Report (cursor position) */
 		if (csiescseq.arg[0] == 6) {
 			len = snprintf(buf, sizeof(buf),"\033[%i;%iR",
 					term.c.y+1, term.c.x+1);
+			ttywrite(buf, len, 0);
+		} else if (csiescseq.arg[0] == 5) {
+			len = snprintf(buf, sizeof(buf), "\033[0n");
 			ttywrite(buf, len, 0);
 		}
 		break;
@@ -1898,6 +1947,9 @@ csihandle(void)
 		break;
 	case 'u': /* DECRC -- Restore cursor position (ANSI.SYS) */
 		tcursor(CURSOR_LOAD);
+		break;
+	case 't': /* XTWINOPS -- Window manipulation */
+		/* Ignore silently to avoid stderr spam */
 		break;
 	case ' ':
 		switch (csiescseq.mode[1]) {
@@ -1997,6 +2049,21 @@ strhandle(void)
 				j = defaultcs;
 			else
 				j = (narg > 1) ? atoi(strescseq.args[1]) : -1;
+
+			if (p && strcmp(p, "?") == 0) {
+				unsigned short r, g, b;
+				if (xgetcolor(j, &r, &g, &b) == 0) {
+					char buf[40];
+					int len;
+					if (par == 4) {
+						len = snprintf(buf, sizeof(buf), "\033]4;%d;rgb:%04x/%04x/%04x\007", j, r, g, b);
+					} else {
+						len = snprintf(buf, sizeof(buf), "\033]%d;rgb:%04x/%04x/%04x\007", par, r, g, b);
+					}
+					ttywrite(buf, len, 0);
+				}
+				return;
+			}
 
 			if (xsetcolorname(j, p)) {
 				if (par == 104 && narg <= 1)

@@ -593,6 +593,8 @@ buttonpress(XEvent *e) {
 		focus(NULL);
 	}
 	if(ev->window == selmon->barwin) {
+		int barw = selmon->ww - 2 * sp;
+		int sepw = (showsystray && getsystraywidth() > 0 && systraysep && systraysep[0] != '\0') ? drw_fontset_getwidth(drw, systraysep) : 0;
 		i = x = 0;
 		do
 			x += TEXTW(tags[i]);
@@ -602,7 +604,7 @@ buttonpress(XEvent *e) {
 			arg.ui = 1 << i;
 		} else if(ev->x < x + TEXTW(selmon->ltsymbol))
 			click = ClkLtSymbol;
-		else if(ev->x > selmon->ww - (int)TEXTW(stext) - getsystraywidth())
+		else if(ev->x > barw - (int)TEXTW(stext) - getsystraywidth() - sepw + lrpad / 2)
 			click = ClkStatusText;
 		else
 			click = ClkWinTitle;
@@ -677,6 +679,7 @@ cleanupmon(Monitor *mon) {
 	}
 	XUnmapWindow(dpy, mon->barwin);
 	XDestroyWindow(dpy, mon->barwin);
+	free(mon->pertag);
 	free(mon);
 }
 
@@ -914,7 +917,7 @@ createmon(void) {
 	m->topbar = topbar;
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
-	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
+	strlcpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
 	m->pertag = ecalloc(1, sizeof(Pertag));
 	m->pertag->curtag = m->pertag->prevtag = 1;
 
@@ -1021,17 +1024,22 @@ drawbar(Monitor *m) {
 	if(!m->showbar)
 		return;
 
+	int barw = m->ww - 2 * sp;
+	int sepw = (showsystray && m == systraytomon(m) && getsystraywidth() > 0 && systraysep && systraysep[0] != '\0') ? drw_fontset_getwidth(drw, systraysep) : 0;
+
 	if (showsystray && m == systraytomon(m)) {
 		stw = getsystraywidth();
 		drw_setscheme(drw, scheme[SchemeNorm]);
-		drw_rect(drw, m->ww - stw, 0, stw, bh, 1, 1);
+		drw_rect(drw, barw - stw, 0, stw, bh, 1, 1);
+		if (sepw > 0)
+			drw_text(drw, barw - stw - sepw, 0, sepw, bh, 0, systraysep, 0);
 	}
 
 	/* draw status first so it can be overdrawn by tags later */
 	if(m == selmon) { /* status is only drawn on selected monitor */
 		drw_setscheme(drw, scheme[SchemeNorm]);
 		tw = TEXTW(stext);
-		drw_text(drw, m->ww - tw - stw, 0, tw, bh, lrpad / 2, stext, 0);
+		drw_text(drw, barw - tw - stw - sepw + lrpad / 2, 0, tw - lrpad / 2, bh, lrpad / 2, stext, 0);
 	}
 
 	for(c = m->clients; c; c = c->next) {
@@ -1063,23 +1071,20 @@ drawbar(Monitor *m) {
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
-	if((w = m->ww - tw - stw - x) > bh) {
+	if((w = barw - tw - stw - sepw + lrpad / 2 - x) > bh) {
 		if(m->sel) {
 			drw_setscheme(drw,
 				      scheme[m ==
 					     selmon ? SchemeSel :
 					     SchemeNorm]);
-			if(TEXTW(m->sel->name) > w) /* title is bigger than the width of the title rectangle, don't center */
-				drw_text(drw, x, 0, w - 2 * sp, bh,
-					 lrpad / 2 +
-					 (m->sel->icon ? m->sel->icw +
-					  ICONSPACING : 0), m->sel->name, 0);
-			else /* center window title */
-				drw_text(drw, x, 0, w - 2 * sp, bh,
-					 (w - TEXTW(m->sel->name)) / 2,
-					 m->sel->name, 0);
+			int iconw = m->sel->icon ? m->sel->icw + ICONSPACING : 0;
+			int titlew = TEXTW(m->sel->name) + iconw;
+			int pad = (w - titlew) / 2;
+			if (pad < 0)
+				pad = 0;
+			drw_text(drw, x, 0, w, bh, pad + lrpad / 2 + iconw, m->sel->name, 0);
 			if(m->sel->icon)
-				drw_pic(drw, x + lrpad / 2,
+				drw_pic(drw, x + pad + lrpad / 2,
 					(bh - m->sel->ich) / 2, m->sel->icw,
 					m->sel->ich, m->sel->icon);
 			if(m->sel->isfloating)
@@ -1097,10 +1102,10 @@ drawbar(Monitor *m) {
 					    tagset[m->seltags]);
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
+			drw_rect(drw, x, 0, w, bh, 1, 1);
 		}
 	}
-	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+	drw_map(drw, m->barwin, 0, 0, barw, bh);
 }
 
 void
@@ -1295,7 +1300,7 @@ geticonprop(Window win, unsigned int *picw, unsigned int *pich) {
 	}
 
 	unsigned long *bstp = NULL;
-	uint32_t w, h, sz;
+	uint32_t w, h, sz = 0;
 	{
 		unsigned long *i;
 		const unsigned long *end = p + n;
@@ -1353,12 +1358,13 @@ geticonprop(Window win, unsigned int *picw, unsigned int *pich) {
 	*picw = icw;
 	*pich = ich;
 
-	uint32_t i, *bstp32 = (uint32_t *) bstp;
+	uint32_t i, *icon_pixels = ecalloc(w * h, sizeof(uint32_t));
 	for(sz = w * h, i = 0; i < sz; ++i)
-		bstp32[i] = prealpha(bstp[i]);
+		icon_pixels[i] = prealpha(bstp[i]);
 
 	Picture ret =
-		drw_picture_create_resized(drw, (char *)bstp, w, h, icw, ich);
+		drw_picture_create_resized(drw, (char *)icon_pixels, w, h, icw, ich);
+	free(icon_pixels);
 	XFree(p);
 
 	return ret;
@@ -1371,8 +1377,8 @@ getsystraywidth()
 	unsigned int w = 0;
 	Client *i;
 	if (showsystray)
-		for (i = systray->icons; i; w += i->w + systrayspacing, i = i->next);
-	return w ? w + systrayspacing : 0;
+		for (i = systray->icons; i; w += i->w + systrayhpad, i = i->next);
+	return w ? w + systrayhpad : 0;
 }
 
 int
@@ -1397,7 +1403,7 @@ getstate(Window w) {
 	    &format, &n, &extra, (unsigned char **)&p) != Success)
 		return -1;
 	if(n != 0)
-		result = *p;
+		result = *(long *)p;
 	XFree(p);
 	return result;
 }
@@ -2664,9 +2670,10 @@ fullscreen(const Arg *arg) {
 	if(selmon->showbar) {
 		for(last_layout = (Layout *) layouts;
 		    last_layout != selmon->lt[selmon->sellt]; last_layout++);
-		setlayout(&((Arg) {
-			    .v = &layouts[2]}
-			  ));
+		Layout *l;
+		for(l = (Layout *)layouts; l->arrange && l->arrange != monocle; l++);
+		if(l->arrange)
+			setlayout(&((Arg) { .v = l }));
 	} else {
 		setlayout(&((Arg) {
 			    .v = last_layout}
@@ -2680,7 +2687,7 @@ setlayout(const Arg *arg) {
 	if(!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
 		selmon->sellt =
 			selmon->pertag->sellts[selmon->pertag->curtag] ^= 1;
-	if(arg && arg->v)
+	if(arg && arg->v && ((Layout *)arg->v)->symbol)
 		selmon->lt[selmon->sellt] =
 			selmon->pertag->ltidxs[selmon->
 					       pertag->curtag][selmon->
@@ -3017,6 +3024,8 @@ void
 togglescratch(const Arg *arg) {
 	Client *c;
 	unsigned int found = 0;
+	if (arg->ui >= LENGTH(scratchpads))
+		return;
 	unsigned int scratchtag = SPTAG(arg->ui);
 	Arg sparg = {.v = scratchpads[arg->ui].cmd };
 
@@ -3417,14 +3426,14 @@ updatesystray(int updatebar)
 		wa.background_pixel = 0;
 		XChangeWindowAttributes(dpy, i->win, CWBackPixel, &wa);
 		XMapRaised(dpy, i->win);
-		w += systrayspacing;
+		w += systrayhpad;
 		i->x = w;
-		XMoveResizeWindow(dpy, i->win, i->x, 0, i->w, i->h);
+		XMoveResizeWindow(dpy, i->win, i->x, (bh - i->h) / 2, i->w, i->h);
 		w += i->w;
 		if (i->mon != m)
 			i->mon = m;
 	}
-	w = w ? w + systrayspacing : 1;
+	w = w ? w + systrayhpad : 1;
 	x -= w;
 	XMoveResizeWindow(dpy, systray->win, x - xpad, m->by + ypad, w, bh);
 	wc.x = x - xpad;
@@ -3444,25 +3453,31 @@ updatesystray(int updatebar)
 void
 updatesystrayicongeom(Client *i, int w, int h)
 {
+	int iconh = systrayiconsize ? (int)systrayiconsize : (bh - 2 * (int)systrayvpad);
+	if (iconh > bh - 2 * (int)systrayvpad)
+		iconh = bh - 2 * (int)systrayvpad;
+	if (iconh <= 0)
+		iconh = 1;
+
 	if (i) {
-		i->h = bh;
+		i->h = iconh;
 		if (w == h)
-			i->w = bh;
-		else if (h == bh)
+			i->w = iconh;
+		else if (h == iconh)
 			i->w = w;
 		else
-			i->w = (int) ((float)bh * ((float)w / (float)h));
+			i->w = (int) ((float)iconh * ((float)w / (float)h));
 		applysizehints(i, &(i->x), &(i->y), &(i->w), &(i->h), False);
 		/* force icons into the systray dimensions if they don't want to */
-		if (i->h > bh) {
+		if (i->h > iconh) {
 			if (i->w == i->h)
-				i->w = bh;
+				i->w = iconh;
 			else
-				i->w = (int) ((float)bh * ((float)i->w / (float)i->h));
-			i->h = bh;
+				i->w = (int) ((float)iconh * ((float)i->w / (float)i->h));
+			i->h = iconh;
 		}
-		if (i->w > 2*bh)
-			i->w = bh;
+		if (i->w > 2*iconh)
+			i->w = iconh;
 	}
 }
 
@@ -3719,7 +3734,8 @@ xinitvisual() {
 		}
 	}
 
-	XFree(infos);
+	if(infos)
+		XFree(infos);
 
 	if(!visual) {
 		visual = DefaultVisual(dpy, screen);

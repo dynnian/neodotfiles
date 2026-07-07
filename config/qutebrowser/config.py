@@ -1,189 +1,205 @@
-##       ____             __
-##      / __ \_________ _/ /_____
-##     / / / / ___/ __ `/ //_/ _ \
-##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)
-##   /_____/_/   \__,_/_/|_|\___/   My custom qutebrowser config
-##
+# config.py - Standard qutebrowser configuration
 
-# NOTE: config.py is intended for advanced users who are comfortable
-# with manually migrating the config file on qutebrowser upgrades. If
-# you prefer, you can also configure qutebrowser using the
-# :set/:bind/:config-* commands without having to write a config.py
-# file.
-#
-# Documentation:
-#   qute://help/configuring.html
-#   qute://help/settings.html
+# --- Font Fallbacks (Replacing theme.nix) ---
+SYSTEM_FONT = "Inter"      # Replace with your system font, e.g., "DejaVu Sans"
+SYSTEM_FONT_MONO = "Mononoki Nerd Font"  # Replace with your mono font, e.g., "JetBrains Mono"
 
-# Uncomment this to still load settings configured via autoconfig.yml
-# config.load_autoconfig()
-# Or uncomment this line to load settings from config.py
+# --- Gruvbox Dark Hard Palette ---
+bg0_normal = "#282828"
+bg0 = bg0_normal
+bg1 = "#3c3836"
+bg2 = "#504945"
+bg3 = "#665c54"
+bg4 = "#7c6f64"
+
+fg0 = "#fbf1c7"
+fg1 = "#ebdbb2"
+fg2 = "#d5c4a1"
+fg3 = "#bdae93"
+fg4 = "#a89984"
+
+bright_red = "#fb4934"
+bright_green = "#b8bb26"
+bright_yellow = "#fabd2f"
+bright_blue = "#83a598"
+bright_purple = "#d3869b"
+bright_aqua = "#8ec07c"
+bright_orange = "#fe8019"
+
+dark_red = "#cc241d"
+dark_blue = "#458588"
+dark_purple = "#b16286"
+dark_aqua = "#689d6a"
+
+# --- General Configuration ---
 config.load_autoconfig(False)
 
-# Aliases for commands. The keys of the given dictionary are the
-# aliases, while the values are the commands they map to.
-# Type: Dict
-c.aliases = {'q': 'quit', 'w': 'session-save', 'wq': 'quit --save'}
+# --- User Agent ---
+c.content.headers.user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36'
 
-# Setting dark mode
-# config.set("colors.webpage.darkmode.enabled", True) # this will force dark mode for everything
-config.set("colors.webpage.preferred_color_scheme", "dark") # this will request dark mode if it's supported
+# --- Aliases ---
+c.aliases = {
+    'q': 'quit',
+    'w': 'session-save',
+    'wq': 'quit --save'
+}
 
-# Which cookies to accept. With QtWebEngine, this setting also controls
-# other features with tracking capabilities similar to those of cookies;
-# including IndexedDB, DOM storage, filesystem API, service workers, and
-# AppCache. Note that with QtWebKit, only `all` and `never` are
-# supported as per-domain values. Setting `no-3rdparty` or `no-
-# unknown-3rdparty` per-domain on QtWebKit will have the same effect as
-# `all`.
-# Type: String
-# Valid values:
-#   - all: Accept all cookies.
-#   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
-#   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
-#   - never: Don't accept cookies at all.
+# --- Key Bindings ---
+config.bind('M', 'hint links spawn mpv {hint-url}', mode='normal')
+config.bind('Z', 'hint links spawn st -e youtube-dl {hint-url}', mode='normal')
+config.bind('t', 'set-cmd-text -s :open -t', mode='normal')
+config.bind('xb', 'config-cycle statusbar.show always never', mode='normal')
+config.bind('xt', 'config-cycle tabs.show always never', mode='normal')
+config.bind('xx', 'config-cycle statusbar.show always never;; config-cycle tabs.show always never', mode='normal')
+
+# --- Domain-specific Settings ---
 config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
-
-# Which cookies to accept. With QtWebEngine, this setting also controls
-# other features with tracking capabilities similar to those of cookies;
-# including IndexedDB, DOM storage, filesystem API, service workers, and
-# AppCache. Note that with QtWebKit, only `all` and `never` are
-# supported as per-domain values. Setting `no-3rdparty` or `no-
-# unknown-3rdparty` per-domain on QtWebKit will have the same effect as
-# `all`.
-# Type: String
-# Valid values:
-#   - all: Accept all cookies.
-#   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
-#   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
-#   - never: Don't accept cookies at all.
 config.set('content.cookies.accept', 'all', 'devtools://*')
-
-# User agent to send.  The following placeholders are defined:  *
-# `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
-# The underlying WebKit version (set to a fixed value   with
-# QtWebEngine). * `{qt_key}`: "Qt" for QtWebKit, "QtWebEngine" for
-# QtWebEngine. * `{qt_version}`: The underlying Qt version. *
-# `{upstream_browser_key}`: "Version" for QtWebKit, "Chrome" for
-# QtWebEngine. * `{upstream_browser_version}`: The corresponding
-# Safari/Chrome version. * `{qutebrowser_version}`: The currently
-# running qutebrowser version.  The default value is equal to the
-# unchanged user agent of QtWebKit/QtWebEngine.  Note that the value
-# read from JavaScript is always the global value. With QtWebEngine
-# between 5.12 and 5.14 (inclusive), changing the value exposed to
-# JavaScript requires a restart.
-# Type: FormatString
-#config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}', 'https://web.whatsapp.com/')
-#config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://accounts.google.com/*')
-#config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36', 'https://*.slack.com/*')
-#config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://docs.google.com/*')
-#config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://drive.google.com/*')
-
-# Load images automatically in web pages.
-# Type: Bool
 config.set('content.images', True, 'chrome-devtools://*')
-
-# Load images automatically in web pages.
-# Type: Bool
 config.set('content.images', True, 'devtools://*')
-
-# Enable JavaScript.
-# Type: Bool
 config.set('content.javascript.enabled', True, 'chrome-devtools://*')
-
-# Enable JavaScript.
-# Type: Bool
 config.set('content.javascript.enabled', True, 'devtools://*')
-
-# Enable JavaScript.
-# Type: Bool
 config.set('content.javascript.enabled', True, 'chrome://*/*')
-
-# Enable JavaScript.
-# Type: Bool
 config.set('content.javascript.enabled', True, 'qute://*/*')
 
-# Directory to save downloads to. If unset, a sensible OS-specific
-# default is used.
-# Type: Directory
-c.downloads.location.directory = '~/Downloads'
+# --- Search Engines ---
+c.url.searchengines = {
+    'DEFAULT': 'https://sx.dynn.xyz/search?q={}',
+    'w': 'https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1',
+    'aw': 'https://wiki.archlinux.org/?search={}',
+    'nw': 'https://wiki.nixos.org/index.php?search={}',
+    'g': 'https://www.google.com/search?hl=en&q={}',
+    'd': 'https://duckduckgo.com/search?q={}',
+    'ub': 'https://www.urbandictionary.com/define.php?term={}'
+}
 
-# When to show the tab bar.
-# Type: String
-# Valid values:
-#   - always: Always show the tab bar.
-#   - never: Always hide the tab bar.
-#   - multiple: Hide the tab bar if only one tab is open.
-#   - switching: Show the tab bar when switching tabs.
+# --- Settings ---
 c.tabs.show = 'always'
+c.downloads.location.directory = '~/Downloads'
+c.url.default_page = 'https://sx.dynn.xyz'
+c.url.start_pages = ['https://sx.dynn.xyz']
 
-# Setting default page for when opening new tabs or new windows with
-# commands like :open -t and :open -w .
-c.url.default_page = 'https://search.lianslair.com'
-c.url.start_pages = 'https://search.lianslair.com'
+c.colors.webpage.preferred_color_scheme = 'dark'
 
-# Search engines which can be used via the address bar.  Maps a search
-# engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}`
-# placeholder. The placeholder will be replaced by the search term, use
-# `{{` and `}}` for literal `{`/`}` braces.  The following further
-# placeholds are defined to configure how special characters in the
-# search terms are replaced by safe characters (called 'quoting'):  *
-# `{}` and `{semiquoted}` quote everything except slashes; this is the
-# most   sensible choice for almost all search engines (for the search
-# term   `slash/and&amp` this placeholder expands to `slash/and%26amp`).
-# * `{quoted}` quotes all characters (for `slash/and&amp` this
-# placeholder   expands to `slash%2Fand%26amp`). * `{unquoted}` quotes
-# nothing (for `slash/and&amp` this placeholder   expands to
-# `slash/and&amp`).  The search engine named `DEFAULT` is used when
-# `url.auto_search` is turned on and something else than a URL was
-# entered to be opened. Other search engines can be used by prepending
-# the search engine name to the search term, e.g. `:open google
-# qutebrowser`.
-# Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://search.lianslair.com/search?q={}', 'aw': 'https://wiki.archlinux.org/?search={}', 'ub': 'https://www.urbandictionary.com/define.php?term={}', 'wiki': 'https://en.wikipedia.org/wiki/{}'}
+c.content.notifications.enabled = False
+c.content.blocking.method = 'both'
+c.content.blocking.enabled = True
+c.content.autoplay = False
+c.content.register_protocol_handler = False
 
-# Default font families to use. Whenever "default_family" is used in a
-# font setting, it's replaced with the fonts listed here. If set to an
-# empty value, a system-specific monospace default is used.
-# Type: List of Font, or Font
-c.fonts.default_family = '"Inter"'
-
-# Default font size to use. Whenever "default_size" is used in a font
-# setting, it's replaced with the size listed here. Valid values are
-# either a float value with a "pt" suffix, or an integer value with a
-# "px" suffix.
-# Type: String
+# --- Fonts ---
+c.fonts.default_family = SYSTEM_FONT
 c.fonts.default_size = '10pt'
+c.fonts.completion.entry = f"10pt '{SYSTEM_FONT_MONO}'"
+c.fonts.debug_console = f"10pt '{SYSTEM_FONT_MONO}'"
+c.fonts.prompts = f"10pt {SYSTEM_FONT}"
+c.fonts.statusbar = f"10pt '{SYSTEM_FONT}'"
 
-# Font used in the completion widget.
-# Type: Font
-c.fonts.completion.entry = '10pt "mononoki Nerd Font"'
+# --- Theme Colors ---
 
-# Font used for the debugging console.
-# Type: Font
-c.fonts.debug_console = '10pt "mononoki Nerd Font"'
+# Completion
+c.colors.completion.fg = [fg1, bright_aqua, bright_yellow]
+c.colors.completion.odd.bg = bg0
+c.colors.completion.even.bg = bg0
+c.colors.completion.category.fg = bright_blue
+c.colors.completion.category.bg = bg1
+c.colors.completion.category.border.top = bg1
+c.colors.completion.category.border.bottom = bg1
+c.colors.completion.item.selected.fg = fg0
+c.colors.completion.item.selected.bg = bg4
+c.colors.completion.item.selected.border.top = bg2
+c.colors.completion.item.selected.border.bottom = bg2
+c.colors.completion.item.selected.match.fg = bright_orange
+c.colors.completion.match.fg = bright_orange
+c.colors.completion.scrollbar.fg = fg0
+c.colors.completion.scrollbar.bg = bg1
 
-# Font used for prompts.
-# Type: Font
-c.fonts.prompts = 'default_size sans-serif'
+# Context Menu
+c.colors.contextmenu.disabled.bg = bg3
+c.colors.contextmenu.disabled.fg = fg3
+c.colors.contextmenu.menu.bg = bg0
+c.colors.contextmenu.menu.fg = fg2
+c.colors.contextmenu.selected.bg = bg2
+c.colors.contextmenu.selected.fg = fg2
 
-# Font used in the statusbar.
-# Type: Font
-c.fonts.statusbar = '10pt "Inter"'
+# Downloads
+c.colors.downloads.bar.bg = bg0
+c.colors.downloads.start.fg = bg0
+c.colors.downloads.start.bg = bright_blue
+c.colors.downloads.stop.fg = bg0
+c.colors.downloads.stop.bg = bright_aqua
+c.colors.downloads.error.fg = bright_red
 
-config.source('gruvbox.py')
+# Hints
+c.colors.hints.fg = bg0
+c.colors.hints.bg = 'rgba(250, 191, 47, 200)'  # bright_yellow
+c.colors.hints.match.fg = bg4
 
-# Bindings for normal mode
-config.bind('M', 'hint links spawn mpv {hint-url}')
-config.bind('Z', 'hint links spawn st -e youtube-dl {hint-url}')
-config.bind('t', 'set-cmd-text -s :open -t')
-config.bind('xb', 'config-cycle statusbar.show always never')
-config.bind('xt', 'config-cycle tabs.show always never')
-config.bind('xx', 'config-cycle statusbar.show always never;; config-cycle tabs.show always never')
+# Keyhints
+c.colors.keyhint.fg = fg4
+c.colors.keyhint.suffix.fg = fg0
+c.colors.keyhint.bg = bg0
 
-# configs
-config.set('content.notifications.enabled', False)
-config.set('content.blocking.method', 'both')
-config.set('content.blocking.enabled', True)
-config.set('content.autoplay', False)
-config.set('content.register_protocol_handler', False)
+# Messages
+c.colors.messages.error.fg = bg0
+c.colors.messages.error.bg = bright_red
+c.colors.messages.error.border = bright_red
+c.colors.messages.warning.fg = bg0
+c.colors.messages.warning.bg = bright_purple
+c.colors.messages.warning.border = bright_purple
+c.colors.messages.info.fg = fg2
+c.colors.messages.info.bg = bg0
+c.colors.messages.info.border = bg0
+
+# Prompts
+c.colors.prompts.fg = fg2
+c.colors.prompts.border = f"1px solid {bg1}"
+c.colors.prompts.bg = bg3
+c.colors.prompts.selected.bg = bg2
+
+# Statusbar
+c.colors.statusbar.normal.fg = fg2
+c.colors.statusbar.normal.bg = bg0
+c.colors.statusbar.insert.fg = bg0
+c.colors.statusbar.insert.bg = dark_aqua
+c.colors.statusbar.passthrough.fg = bg0
+c.colors.statusbar.passthrough.bg = dark_blue
+c.colors.statusbar.private.fg = bright_purple
+c.colors.statusbar.private.bg = bg0
+c.colors.statusbar.command.fg = fg3
+c.colors.statusbar.command.bg = bg1
+c.colors.statusbar.command.private.fg = bright_purple
+c.colors.statusbar.command.private.bg = bg1
+c.colors.statusbar.caret.fg = bg0
+c.colors.statusbar.caret.bg = dark_purple
+c.colors.statusbar.caret.selection.fg = bg0
+c.colors.statusbar.caret.selection.bg = bright_purple
+c.colors.statusbar.progress.bg = bright_blue
+c.colors.statusbar.url.fg = fg4
+c.colors.statusbar.url.error.fg = dark_red
+c.colors.statusbar.url.hover.fg = bright_orange
+c.colors.statusbar.url.success.http.fg = bright_red
+c.colors.statusbar.url.success.https.fg = fg0
+c.colors.statusbar.url.warn.fg = bright_purple
+
+# Tabs
+c.colors.tabs.bar.bg = bg0
+c.colors.tabs.indicator.start = bright_blue
+c.colors.tabs.indicator.stop = bright_aqua
+c.colors.tabs.indicator.error = bright_red
+c.colors.tabs.odd.fg = fg2
+c.colors.tabs.odd.bg = bg2
+c.colors.tabs.even.fg = fg2
+c.colors.tabs.even.bg = bg3
+c.colors.tabs.selected.odd.fg = fg2
+c.colors.tabs.selected.odd.bg = bg0
+c.colors.tabs.selected.even.fg = fg2
+c.colors.tabs.selected.even.bg = bg0
+c.colors.tabs.pinned.even.bg = bright_green
+c.colors.tabs.pinned.even.fg = bg2
+c.colors.tabs.pinned.odd.bg = bright_green
+c.colors.tabs.pinned.odd.fg = bg2
+c.colors.tabs.pinned.selected.even.bg = bg0
+c.colors.tabs.pinned.selected.even.fg = fg2
+c.colors.tabs.pinned.selected.odd.bg = bg0
+c.colors.tabs.pinned.selected.odd.fg = fg2

@@ -1,30 +1,34 @@
+#define BARPADDING_PATCH 1
 /* Appearance */
-static const unsigned int borderpx       = 3;        /* border pixel of windows */
-static const unsigned int snap           = 32;       /* snap pixel */
-static const unsigned int gappx          = 6;        /* gaps between windows */
-static const int showbar                 = 1;        /* 0 means no bar */
-static const int topbar                  = 1;        /* 0 means bottom bar */
-static const unsigned int systraypinning = 0;        /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayspacing = 0;        /* systray spacing */
-static const int systraypinningfailfirst = 1;        /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray             = 1;        /* 0 means no systray */
-static const int vertpad                 = 0;        /* vertical padding of bar */
-static const int sidepad                 = 0;        /* horizontal padding of bar */
-static const int horizpadbar             = 2;        /* horizontal padding for statusbar */
-static const int vertpadbar              = 6;        /* vertical padding for statusbar */
-static const int rmaster                 = 0;        /* 1 means master-area is initially on the right */
-static const char *fonts[]               = {"Symbols Nerd Font Mono:size=12", "mononoki Nerd Font:size=12"};
-static const char dmenufont[]            = {"mononoki Nerd Font:size=12"};
-static const char col_gray1[]            = "#1d2021";
-static const char col_gray2[]            = "#32302f";
-static const char col_gray3[]            = "#d5c4a1";
-static const char col_gray4[]            = "#fbf1c7";
-static const char col_cyan[]             = "#cc241d";
-static const unsigned int baralpha       = 0xf5;
-static const unsigned int borderalpha    = OPAQUE;
-static const XPoint stickyicon[]         = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
-static const XPoint stickyiconbb         = {4,8};  /* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
-static const char start_script[]         = "$XDG_SOURCE_HOME/dwm/scripts/autostart";
+static const unsigned int borderpx        = 3;        /* border pixel of windows */
+static const unsigned int snap            = 32;       /* snap pixel */
+static const unsigned int gappx           = 6;        /* gaps between windows */
+static const int showbar                  = 1;        /* 0 means no bar */
+static const int topbar                   = 1;        /* 0 means bottom bar */
+static const unsigned int systraypinning  = 0;        /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayiconsize = 16;       /* systray icon size */
+static const unsigned int systrayvpad     = 4;        /* systray vertical padding */
+static const unsigned int systrayhpad     = 8;        /* systray horizontal padding */
+static const int systraypinningfailfirst  = 1;        /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
+static const int showsystray              = 1;        /* 0 means no systray */
+static const char *systraysep             = "|";      /* systray separator */
+static const int vertpad                  = 0;        /* vertical padding of bar */
+static const int sidepad                  = 0;        /* horizontal padding of bar */
+static const int horizpadbar              = 2;        /* horizontal padding for statusbar */
+static const int vertpadbar               = 6;        /* vertical padding for statusbar */
+static const int rmaster                  = 0;        /* 1 means master-area is initially on the right */
+static const char *fonts[]                = {"Symbols Nerd Font Mono:size=12", "mononoki Nerd Font:size=12"};
+static const char dmenufont[]             = {"mononoki Nerd Font:size=12"};
+static const char col_gray1[]             = "#1d2021";
+static const char col_gray2[]             = "#32302f";
+static const char col_gray3[]             = "#d5c4a1";
+static const char col_gray4[]             = "#fbf1c7";
+static const char col_cyan[]              = "#cc241d";
+static const unsigned int baralpha        = 0xf5;
+static const unsigned int borderalpha     = OPAQUE;
+static const XPoint stickyicon[]          = { {0,0}, {4,0}, {4,8}, {2,6}, {0,8}, {0,0} }; /* represents the icon as an array of vertices */
+static const XPoint stickyiconbb          = {4,8};  /* defines the bottom right corner of the polygon's bounding box (speeds up scaling) */
+static const char start_script[]          = "$XDG_SOURCE_HOME/dwm/scripts/autostart";
 
 #define ICONSIZE 16   /* window icon size */
 #define ICONSPACING 5 /* space between window icon and title (only when text is truncated) */
@@ -46,8 +50,8 @@ static const unsigned int alphas[][3]      = {
 const char *spcmd1[]  = {"bash", "-c", "st -n sptrm -c sptrm -g 140x35", NULL};
 const char *spcmd2[]  = {"bash", "-c", "st -n sptop -c sptop -g 140x35 -e btop", NULL};
 const char *spcmd3[]  = {"bash", "-c", "st -n sppmx -c sppmx -g 140x35 -e pulsemixer", NULL};
-const char *spcmd4[]  = {"bash", "-c", "st -n spflm -c spflm -g 140x35 -e $XDG_CONFIG_HOME/vifm/scripts/vifmrun", NULL};
-const char *spcmd5[]  = {"bash", "-c", "st -n sprss -c sprss -g 140x35 -e newsboat", NULL};
+const char *spcmd4[]  = {"bash", "-c", "st -n spflm -c spflm -g 140x35 -e yazi", NULL};
+const char *spcmd5[]  = {"bash", "-c", "st -n spmus -c spmus -g 140x35 -e cmus", NULL};
 const char *spcmd6[]  = {"bash", "-c", "st -n spani -c spani -g 140x35 -e ani-cli", NULL};
 const char *spcmd7[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
 const char *spcmd8[]  = {"flatpak", "run", "io.github.Qalculate", NULL};
@@ -59,7 +63,7 @@ static Sp scratchpads[] = {
     {"sptop",      spcmd2},
     {"sppmx",      spcmd3},
     {"spflm",      spcmd4},
-    {"sprss",      spcmd5},
+    {"spmus",      spcmd5},
     {"spani",      spcmd6},
     {"spbit",      spcmd7},
     {"spqal",      spcmd8},
@@ -103,6 +107,7 @@ static const Rule rules[] = {
     {"lunarvim",                        NULL,        NULL,           1,     0,   -1},
     {"Emacs",                           NULL,        NULL,           1,     0,   -1},
     {"Godot",                           NULL,        NULL,           1,     0,   -1},
+    {"nvim",                            NULL,        NULL,           1,     0,   -1},
     {"neovim",                          NULL,        NULL,           1,     0,   -1},
     {"neovide",                         NULL,        NULL,           1,     0,   -1},
     /* 2 - Test Tag */
@@ -111,6 +116,7 @@ static const Rule rules[] = {
     /* 3 - Web Tag */
     {"LibreWolf",                       NULL,        NULL,      1 << 2,     0,   -1},
     {"libreWolf",                       NULL,        NULL,      1 << 2,     0,   -1},
+    {"librewolf",                       NULL,        NULL,      1 << 2,     0,   -1},
     {"librewolf-default",               NULL,        NULL,      1 << 2,     0,   -1},
     {"firefox",                         NULL,        NULL,      1 << 2,     0,   -1},
     {"Firefox",                         NULL,        NULL,      1 << 2,     0,   -1},
@@ -193,9 +199,9 @@ static const Rule rules[] = {
     {NULL,                              "sptop",     NULL,      SPTAG(1),   1,   -1},
     {NULL,                              "sppmx",     NULL,      SPTAG(2),   1,   -1},
     {NULL,                              "spflm",     NULL,      SPTAG(3),   1,   -1},
-    {NULL,                              "sprss",     NULL,      SPTAG(4),   1,   -1},
+    {NULL,                              "spmus",     NULL,      SPTAG(4),   1,   -1},
     {NULL,                              "spani",     NULL,      SPTAG(5),   1,   -1},
-    {"Bitwarden",                       NULL,        NULL,      SPTAG(6),  1,   -1},
+    {"Bitwarden",                       "bitwarden", NULL,      SPTAG(6),  1,   -1},
     {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(7),  1,   -1},
     {"Arandr",                          NULL,        NULL,      SPTAG(8),  1,   -1},
 };
@@ -236,13 +242,11 @@ static const char *monocles[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳"
 /* Main commands */
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "bash", "-c", "st", NULL };
-static const char *editor[]        = { "emacsclient", "-c", "-a", "emacs", NULL };
-static const char *browser[]       = { "firefox", NULL };
-static const char *email[]         = { "flatpak", "run", "org.gnome.Evolution", NULL };
+static const char *editor[]        = { "bash", "-c", "st -n nvim -c nvim -e nvim", NULL };
+static const char *browser[]       = { "librewolf", NULL };
 static const char *signalc[]       = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *ferdium[]       = { "flatpak", "run", "org.ferdium.Ferdium", NULL };
 static const char *vmachine[]      = { "virt-manager", NULL };
-static const char *remote[]        = { "flatpak", "run", "com.devolutions.remotedesktopmanager", NULL };
 static const char *office[]        = { "flatpak", "run", "org.onlyoffice.desktopeditors", NULL };
 static const char *notes[]         = { "flatpak", "run", "md.obsidian.Obsidian", NULL };
 static const char *game[]          = { "flatpak", "run", "net.lutris.Lutris", NULL };
@@ -268,9 +272,7 @@ static Keychord *keychords[] = {
     /* Apps */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_e}},            spawn,          {.v = editor } }),          /* Launch text editor       (tag 1) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_v}},            spawn,          {.v = vmachine } }),        /* Launch vm manager        (tag 2) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_r}},            spawn,          {.v = remote } }),          /* Launch vm manager        (tag 2) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_w}},            spawn,          {.v = browser } }),         /* Launch web browser 1     (tag 3) */
-    &((Keychord){2, {{MODKEY, XK_a}, {0, XK_m}},            spawn,          {.v = email } }),           /* Launch email client      (tag 3) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_c}},            spawn,          {.v = signalc } }),         /* Launch signal            (tag 4) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_f}},            spawn,          {.v = ferdium } }),         /* Launch ferdium           (tag 4) */
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_o}},            spawn,          {.v = office } }),          /* Launch office suite      (tag 8) */
@@ -297,9 +299,6 @@ static Keychord *keychords[] = {
     &((Keychord){1, {{0, XF86XK_AudioNext}},                spawn,          SHCMD("playerctl next") }),         /* Next song/media */
     &((Keychord){1, {{0, XF86XK_AudioPrev}},                spawn,          SHCMD("playerctl previous") }),     /* Previous song/media */
     &((Keychord){1, {{0, XF86XK_AudioStop}},                spawn,          SHCMD("playerctl stop") }),         /* Stop playback */
-
-    /* RSS Feed */
-    &((Keychord){1, {{0, XF86XK_News}},                     spawn,          SHCMD("st -n newsboat -c newsboat -e newsboat") }), /* Launch RSS feed reader with media key */
 
     /* Window Management */
     &((Keychord){1, {{MODKEY, XK_j}},                       focusstack,     {.i = +1 } }),          /* Focus next window in the stack */
@@ -341,8 +340,8 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_Return}},       togglescratch,  {.ui = 0 } }),  /* Toggle scratch terminal */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_b}},            togglescratch,  {.ui = 1 } }),  /* Toggle system monitor scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_p}},            togglescratch,  {.ui = 2 } }),  /* Toggle audio mixer scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_v}},            togglescratch,  {.ui = 3 } }),  /* Toggle vifm scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_r}},            togglescratch,  {.ui = 4 } }),  /* Toggle newsboat scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_f}},            togglescratch,  {.ui = 3 } }),  /* Toggle yazi scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},            togglescratch,  {.ui = 4 } }),  /* Toggle yazi scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},            togglescratch,  {.ui = 5 } }),  /* Toggle ani-cli scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 6 } }),  /* Toggle Bitwarden scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 7 } }), /* Toggle Qalculate scratchpad */

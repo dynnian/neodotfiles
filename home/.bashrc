@@ -131,12 +131,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    xbu="doas xbps-install -Su" \
-    xbi="doas xbps-install -S" \
-    xbr="doas xbps-remove -R" \
-    xbrs="doas xbps-remove" \
-    xbs="doas xbps-query -R" \
-    xbc="doas xbps-remove -Oo"
+    xbu="sudo xbps-install -Su" \
+    xbi="sudo xbps-install -S" \
+    xbr="sudo xbps-remove -R" \
+    xbrs="sudo xbps-remove" \
+    xbs="sudo xbps-query -R" \
+    xbc="sudo xbps-remove -Oo"
 
 # colorize grep output (good for log files)
 alias \
@@ -401,3 +401,7 @@ alias_completion() {
 alias_completion
 
 export PS1="[\[\e[31m\]\u\[\e[m\]\[\e[35m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]] [\[\e[33m\]\W\[\e[m\]\[\e[34m\]\`parse_git_branch\`\[\e[m\]] 󱞪 "
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/drk/.local/bin:$PATH"

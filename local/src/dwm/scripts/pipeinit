@@ -5,5 +5,3 @@ pkill pipewire
 pipewire &
 pipewire-pulse &
 wireplumber &
-
-disown

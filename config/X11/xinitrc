@@ -41,6 +41,9 @@ export XCURSOR_SIZE=16
 export GTK_THEME="Gruvbox-BL-LB-Dark"
 export GTK_ICON_THEME="Papirus-Dark"
 
+# Clean the autostart script lock file
+rm /tmp/dwm-autostart-$USER.lock
+
 # initialize dwm
 pkill dwm
 exec dbus-run-session -- sh -c '

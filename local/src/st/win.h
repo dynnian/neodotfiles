@@ -30,6 +30,7 @@ void xdrawline(Line, int, int, int);
 void xfinishdraw(void);
 void xloadcols(void);
 int xsetcolorname(int, const char *);
+int xgetcolor(int, unsigned short *, unsigned short *, unsigned short *);
 void xseticontitle(char *);
 void xsettitle(char *);
 int xsetcursor(int);

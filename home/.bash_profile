@@ -27,10 +27,10 @@ export BASHRC="$HOME/.bashrc"
 # Default apps
 export TERMINAL="st"
 export EDITOR="nvim"
-export VISUAL="emacsclient -c -a 'emacs'"
+export VISUAL="st -n nvim -c nvim -e nvim"
 export VIEWER="zathura"
 export VIDEO="mpv"
-export BROWSER="firefox"
+export BROWSER="librewolf"
 
 # Configure Golang
 if command -v go >/dev/null 2>&1; then
@@ -77,23 +77,30 @@ if [ -d "$HOME/.local/bin" ]; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-## jetbrains toolbox
-if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ]; then
-    PATH="$XDG_DATA_HOME/JetBrains/Toolbox/scripts:$PATH"
-fi
-
 # Create config directories if they don't exist
 if [ ! -d "$WGETDIR" ] || [ ! -d "$GNUPGHOME" ]; then
     mkdir -p "$WGETDIR" "$GNUPGHOME"
 fi
-
-export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
 
 # Bashrc
 source "$BASHRC"
 
 # Starting xsession
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    startx "$XINITRC" -- vt1 -keeptty &>> /dev/null
+    # Define and ensure the log directory exists
+    export X11LOGDIR="$XDG_DATA_HOME/logs/x11"
+    mkdir -p "$X11LOGDIR"
+
+    # Save a backup of the previous session log if it exists
+    [ -f "$X11LOGDIR/dwm.log" ] && mv "$X11LOGDIR/dwm.log" "$X11LOGDIR/dwm.log.old"
+
+    echo "=== Session started on $(date) ===" > "$X11LOGDIR/dwm.log"
+
+    # Route both stdout and stderr to the log file
+    startx "$XINITRC" -- vt1 -keeptty >> "$X11LOGDIR/dwm.log" 2>&1
+
     logout
 fi
+
+# Added by Antigravity CLI installer
+export PATH="/home/drk/.local/bin:$PATH"

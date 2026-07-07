@@ -201,6 +201,7 @@ static int match(uint, uint);
 
 static void run(void);
 static void usage(void);
+void xrdb_load(void);
 
 static void (*handler[LASTEvent])(XEvent *) = {
 	[KeyPress] = kpress,
@@ -233,6 +234,7 @@ static DC dc;
 static XWindow xw;
 static XSelection xsel;
 static TermWindow win;
+static volatile sig_atomic_t reload_requested = 0;
 
 /* Font Ring Cache */
 enum {
@@ -413,11 +415,12 @@ mousereport(XEvent *e)
 			button = 3;
 		} else {
 			button -= Button1;
-			if (button >= 3)
-                           if (button >= 7)
-				button += 128 - 7;
-			else if (button >= 3)
-				button += 64 - 3;
+			if (button >= 3) {
+				if (button >= 7)
+					button += 128 - 7;
+				else if (button >= 3)
+					button += 64 - 3;
+			}
 		}
 		if (e->xbutton.type == ButtonPress) {
 			oldbutton = button;
@@ -716,6 +719,13 @@ bmotion(XEvent *e)
 		return;
 	}
 
+	int y = e->xbutton.y - borderpx;
+	if (y < 0) {
+		kscrollup(&((Arg){.i = 1}));
+	} else if (y >= win.th) {
+		kscrolldown(&((Arg){.i = 1}));
+	}
+
 	mousesel(e, 0);
 }
 
@@ -839,6 +849,18 @@ xsetcolorname(int x, const char *name)
 	if (x == defaultbg)
 		dc.col[defaultbg].color.alpha = (unsigned short)(0xffff * alpha);
 
+	return 0;
+}
+
+int
+xgetcolor(int x, unsigned short *r, unsigned short *g, unsigned short *b)
+{
+	if (!BETWEEN(x, 0, dc.collen))
+		return 1;
+
+	*r = dc.col[x].color.red;
+	*g = dc.col[x].color.green;
+	*b = dc.col[x].color.blue;
 	return 0;
 }
 
@@ -2082,6 +2104,16 @@ run(void)
 	cresize(w, h);
 
 	for (timeout = -1, drawing = 0, lastblink = (struct timespec){0};;) {
+		if (reload_requested) {
+			reload_requested = 0;
+			xrdb_load();
+			xloadcols();
+			xunloadfonts();
+			xloadfonts(font, 0);
+			cresize(win.w, win.h);
+			redraw();
+			ttywrite("\033[O", 3, 1);
+		}
 		FD_ZERO(&rfd);
 		FD_SET(ttyfd, &rfd);
 		FD_SET(xfd, &rfd);
@@ -2166,7 +2198,7 @@ run(void)
 
 #define XRESOURCE_LOAD_STRING(NAME, DST)	\
 	XRESOURCE_LOAD_META(NAME)		\
-		DST = ret.addr;
+		DST = xstrdup(ret.addr);
 
 #define XRESOURCE_LOAD_CHAR(NAME, DST)		\
 	XRESOURCE_LOAD_META(NAME)		\
@@ -2216,7 +2248,7 @@ xrdb_load(void)
 			}
 
 			if (ret.addr != NULL && !strncmp("String", type, 64))
-				colorname[i] = ret.addr;
+				colorname[i] = xstrdup(ret.addr);
 		}
 
 		XRESOURCE_LOAD_STRING("foreground", colorname[defaultfg]);
@@ -2260,26 +2292,13 @@ xrdb_load(void)
 
 	}
 	XFlush(dpy);
+	XCloseDisplay(dpy);
 }
 
 void
 reload(int sig)
 {
-	xrdb_load();
-
-	/* colors, fonts */
-	xloadcols();
-	xunloadfonts();
-	xloadfonts(font, 0);
-
-	/* pretend the window just got resized */
-	cresize(win.w, win.h);
-
-	redraw();
-
-	/* triggers re-render if we're visible. */
-	ttywrite("\033[O", 3, 1);
-
+	reload_requested = 1;
 	signal(SIGUSR1, reload);
 }
 

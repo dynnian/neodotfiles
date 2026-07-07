@@ -8,12 +8,13 @@
 #include "st.h"
 
 void hbtransformsegment(XftFont *xfont, const Glyph *string, hb_codepoint_t *codepoints, int start, int length);
-hb_font_t *hbfindfont(XftFont *match);
-
 typedef struct {
 	XftFont *match;
 	hb_font_t *font;
+	hb_codepoint_t space_glyph;
 } HbFontMatch;
+
+HbFontMatch *hbfindfont(XftFont *match);
 
 static int hbfontslen = 0;
 static HbFontMatch *hbfontcache = NULL;
@@ -33,12 +34,12 @@ hbunloadfonts()
 	hbfontslen = 0;
 }
 
-hb_font_t *
+HbFontMatch *
 hbfindfont(XftFont *match)
 {
 	for (int i = 0; i < hbfontslen; i++) {
 		if (hbfontcache[i].match == match)
-			return hbfontcache[i].font;
+			return &hbfontcache[i];
 	}
 
 	/* Font not found in cache, caching it now. */
@@ -48,11 +49,25 @@ hbfindfont(XftFont *match)
 	if (font == NULL)
 		die("Failed to load Harfbuzz font.");
 
+	/* Shape space once to get space_glyph */
+	hb_codepoint_t space_glyph = 0;
+	hb_buffer_t *space_buf = hb_buffer_create();
+	hb_buffer_set_direction(space_buf, HB_DIRECTION_LTR);
+	Rune space_rune = 0x0020;
+	hb_buffer_add_codepoints(space_buf, &space_rune, 1, 0, 1);
+	hb_shape(font, space_buf, NULL, 0);
+	unsigned int space_gcount;
+	hb_glyph_info_t *space_info = hb_buffer_get_glyph_infos(space_buf, &space_gcount);
+	if (space_gcount > 0)
+		space_glyph = space_info[0].codepoint;
+	hb_buffer_destroy(space_buf);
+
 	hbfontcache[hbfontslen].match = match;
 	hbfontcache[hbfontslen].font = font;
+	hbfontcache[hbfontslen].space_glyph = space_glyph;
 	hbfontslen += 1;
 
-	return font;
+	return &hbfontcache[hbfontslen - 1];
 }
 
 void
@@ -95,6 +110,8 @@ hbtransform(XftGlyphFontSpec *specs, const Glyph *glyphs, size_t len, int x, int
 
 		if (codepoints[i] != specs[specidx].glyph)
 			((Glyph *)glyphs)[i].mode |= ATTR_LIGA;
+		else
+			((Glyph *)glyphs)[i].mode &= ~ATTR_LIGA;
 
 		specs[specidx++].glyph = codepoints[i];
 	}
@@ -105,8 +122,8 @@ hbtransform(XftGlyphFontSpec *specs, const Glyph *glyphs, size_t len, int x, int
 void
 hbtransformsegment(XftFont *xfont, const Glyph *string, hb_codepoint_t *codepoints, int start, int length)
 {
-	hb_font_t *font = hbfindfont(xfont);
-	if (font == NULL)
+	HbFontMatch *fm = hbfindfont(xfont);
+	if (fm == NULL)
 		return;
 
 	Rune rune;
@@ -124,14 +141,15 @@ hbtransformsegment(XftFont *xfont, const Glyph *string, hb_codepoint_t *codepoin
 	}
 
 	/* Shape the segment. */
-	hb_shape(font, buffer, NULL, 0);
+	hb_shape(fm->font, buffer, NULL, 0);
 
 	/* Get new glyph info. */
-	hb_glyph_info_t *info = hb_buffer_get_glyph_infos(buffer, NULL);
+	unsigned int glyph_count;
+	hb_glyph_info_t *info = hb_buffer_get_glyph_infos(buffer, &glyph_count);
 
 	/* Write new codepoints. */
 	for (int i = 0; i < length; i++) {
-		hb_codepoint_t gid = info[i].codepoint;
+		hb_codepoint_t gid = (i < glyph_count) ? info[i].codepoint : fm->space_glyph;
 		codepoints[start+i] = gid;
 	}
 

@@ -1,34 +1,8 @@
 #!/bin/bash
 
-# Define brightness adjustment commands
-adjust_brightness_all() {
-    for output in $(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print $4}')
-    do
-        xrandr --output "$output" --brightness "$1"
-    done
-}
-
-# Create temporary scripts for brightness adjustments
-BRIGHTNESS_DIM_SCRIPT=$(mktemp)
-BRIGHTNESS_NORMAL_SCRIPT=$(mktemp)
-
-# Write the commands to temporary scripts
-cat <<EOF > "$BRIGHTNESS_DIM_SCRIPT"
-#!/bin/bash
-for output in \$(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print \$4}'); do
-    xrandr --output "\$output" --brightness 0.5
-done
-EOF
-
-cat <<EOF > "$BRIGHTNESS_NORMAL_SCRIPT"
-#!/bin/bash
-for output in \$(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print \$4}'); do
-    xrandr --output "\$output" --brightness 1
-done
-EOF
-
-# Make the scripts executable
-chmod +x "$BRIGHTNESS_DIM_SCRIPT" "$BRIGHTNESS_NORMAL_SCRIPT"
+# Commands to dim and restore brightness across all monitors
+DIM_CMD="for output in \$(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print \$4}'); do xrandr --output \"\$output\" --brightness 0.5; done"
+NORMAL_CMD="for output in \$(xrandr --listmonitors | awk '/^\s*[0-9]+:/ {print \$4}'); do xrandr --output \"\$output\" --brightness 1.0; done"
 
 # Start xidlehook
 pidof xidlehook || xidlehook \
@@ -36,11 +10,8 @@ pidof xidlehook || xidlehook \
     --not-when-fullscreen \
     --not-when-audio \
     --timer 60 \
-        "$BRIGHTNESS_DIM_SCRIPT" \
-        "$BRIGHTNESS_NORMAL_SCRIPT" \
+        "$DIM_CMD" \
+        "$NORMAL_CMD" \
     --timer 30 \
         "$XDG_SOURCE_HOME/dwm/scripts/lock" \
-        "$BRIGHTNESS_NORMAL_SCRIPT"
-
-# Clean up temporary scripts on exit
-trap "rm -f $BRIGHTNESS_DIM_SCRIPT $BRIGHTNESS_NORMAL_SCRIPT" EXIT
+        "$NORMAL_CMD"

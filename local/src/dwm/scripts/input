@@ -5,28 +5,29 @@ while ! xinput list >/dev/null 2>&1; do
     sleep 0.5
 done
 
-# Detect device
-if xinput list | grep -q "VEN_0488:00 0488:104B Touchpad"; then
-    # Dell Precision 3581
-    TOUCHPAD="VEN_0488:00 0488:104B Touchpad"
-elif xinput list | grep -q "Virtual core pointer"; then
-    # ThinkPad T480
-    TOUCHPAD="Virtual core pointer"
-else
-    echo "Touchpad not found."
-    exit 1
-fi
+# Configure Touchpads
+xinput list --short | grep -i "touchpad" | while read -r line; do
+    ID=$(echo "$line" | grep -o 'id=[0-9]*' | cut -d= -f2)
 
-echo "Configuring touchpad: $TOUCHPAD"
-
-# Wait until the device is ready
-while ! xinput list | grep -q "$TOUCHPAD"; do
-    sleep 0.5
+    echo "Configuring touchpad (ID: $ID)..."
+    xinput set-prop "$ID" --type=int --format=8 "libinput Tapping Enabled" 1
+    xinput set-prop "$ID" --type=int --format=8 "libinput Click Method Enabled" 0 1
+    xinput set-prop "$ID" --type=int --format=8 "libinput Natural Scrolling Enabled" 1
+    xinput set-prop "$ID" --type=int --format=8 "libinput Disable While Typing Enabled" 1
 done
 
-# Touchpad settings
-xinput set-prop "$TOUCHPAD" "libinput Tapping Enabled" 1
-xinput set-prop "$TOUCHPAD" "libinput Click Method Enabled" 1 0
-xinput set-prop "$TOUCHPAD" "libinput Natural Scrolling Enabled" 1
-xinput set-prop "$TOUCHPAD" "libinput Disable While Typing Enabled" 0
+# Configure TrackPoint
+xinput list --short | grep -i "TrackPoint" | while read -r line; do
+    ID=$(echo "$line" | grep -o 'id=[0-9]*' | cut -d= -f2)
 
+    echo "Configuring TrackPoint (ID: $ID)..."
+
+    # 1. Set the acceleration profile to 'adaptive' (default) or 'flat'
+    # 0 = adaptive (default), 1 = flat
+    xinput set-prop "$ID" --type=int --format=8 "libinput Accel Profile Enabled" 0 0
+
+    # 2. Set the acceleration speed
+    # This value ranges from -1.0 to 1.0.
+    # Positive values increase speed (sensitivity). 
+    xinput set-prop "$ID" --type=float --format=32 "libinput Accel Speed" 1
+done

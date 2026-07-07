@@ -75,10 +75,6 @@ drw_create(Display *dpy, int screen, Window root, unsigned int w,
 	drw->depth = depth;
 	drw->cmap = cmap;
 	drw->drawable = XCreatePixmap(dpy, root, w, h, depth);
-	drw->visual = visual;
-	drw->depth = depth;
-	drw->cmap = cmap;
-	drw->drawable = XCreatePixmap(dpy, root, w, h, depth);
 	drw->picture = XRenderCreatePicture(dpy, drw->drawable, XRenderFindVisualFormat(dpy, visual), 0, NULL);
 	drw->gc = XCreateGC(dpy, drw->drawable, 0, NULL);
 	XSetLineAttributes(dpy, drw->gc, 1, LineSolid, CapButt, JoinMiter);
@@ -243,11 +239,13 @@ drw_picture_create_resized(Drw *drw, char *src, unsigned int srcw,
 	Pixmap pm;
 	Picture pic;
 	GC gc;
+	int endian = 1;
+	int host_order = (*((char *)&endian) == 1) ? LSBFirst : MSBFirst;
 
 	if(srcw <= (dstw << 1u) && srch <= (dsth << 1u)) {
 		XImage img = {
 			srcw, srch, 0, ZPixmap, src,
-			ImageByteOrder(drw->dpy), BitmapUnit(drw->dpy),
+			host_order, BitmapUnit(drw->dpy),
 				BitmapBitOrder(drw->dpy), 32,
 			32, 0, 32,
 			0, 0, 0
@@ -299,7 +297,7 @@ drw_picture_create_resized(Drw *drw, char *src, unsigned int srcw,
 			dstw, dsth, 0, ZPixmap,
 				(char *)
 				imlib_image_get_data_for_reading_only(),
-			ImageByteOrder(drw->dpy), BitmapUnit(drw->dpy),
+			host_order, BitmapUnit(drw->dpy),
 				BitmapBitOrder(drw->dpy), 32,
 			32, 0, 32,
 			0, 0, 0
@@ -358,7 +356,6 @@ drw_polygon(Drw *drw, int x, int y, int ow, int oh, int sw, int sh,
 		sh -= 1;
 	}
 	XPoint scaledpoints[npoints];
-	memcpy(scaledpoints, points, npoints);
 	for(int v = 0; v < npoints; v++)
 		scaledpoints[v] = (XPoint) {
 		.x = points[v].x * sw / ow + x,.y =

@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
-##       ____             __                               ##
-##      / __ \_________ _/ /_____                          ##
-##     / / / / ___/ __ `/ //_/ _ \                         ##
-##    / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
-##   /_____/_/   \__,_/_/|_|\___/   My custom dwm build    ##
+##        ____               __                             ##
+##       / __ \_________ _/ /_____                          ##
+##      / / / / ___/ __ `/ //_/ _ \                         ##
+##     / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
+##    /_____/_/   \__,_/_/|_|\___/   My custom dwm build    ##
+
+# Helper function to background apps and capture stdout/stderr to files
+run_app() {
+    local cmd_name
+    cmd_name=$(basename "$1")
+    local log_file="$X11LOGDIR/${cmd_name}.log"
+
+    echo "--- Starting $cmd_name on $(date) ---" >> "$log_file"
+    "$@" >> "$log_file" 2>&1 &
+}
 
 # activate neccesary env variables for X11
 dbus-update-activation-environment DISPLAY XAUTHORITY &
-
-$XDG_SOURCE_HOME/dwm/scripts/pipeinit
 
 # configure input
 $XDG_SOURCE_HOME/dwm/scripts/input &
@@ -16,17 +24,38 @@ $XDG_SOURCE_HOME/dwm/scripts/input &
 # set monitor settings and restore wallpaper
 $XDG_SOURCE_HOME/dwm/scripts/monitors && sh "$XDG_SOURCE_HOME/dwm/scripts/restorewall" &
 
-# set theming and font thingy
+# set theming and font stuff
 $XDG_SOURCE_HOME/dwm/scripts/theme &
 
-# autostart programs, use pidof <program> || program, to prevent relaunching stuff if dwm is restarted 
-pidof dwmblocks || dwmblocks &
-pidof picom || picom &
-pidof xidlehook || $XDG_SOURCE_HOME/dwm/scripts/idle &
-pidof xss-lock || xss-lock -- "$XDG_SOURCE_HOME/dwm/scripts/lock" &
-pidof unclutter || unclutter --hide-on-touch &
-pidof dunst || dunst --config $XDG_CONFIG_HOME/dunst/dunstrc &
-pidof polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1 &
-pidof clipmenud || clipmenud &
-pidof emacs || /usr/bin/emacs --daemon &
-pidof nextcloud || flatpak run com.nextcloud.desktopclient.nextcloud --background &
+# Spin up stuff at ~/.config/autostart and more
+if [ ! -f /tmp/dwm-autostart-$USER.lock ]; then
+    # Create the autostart lock file so programs don't get relaunched when dwm is restarted
+    touch /tmp/dwm-autostart-$USER.lock
+
+    # Launch PipeWire
+    $XDG_SOURCE_HOME/dwm/scripts/pipeinit >> "$X11LOGDIR/pipewire.log" 2>&1 &
+
+    ## UI backbone programs
+    # Status widgets
+    run_app dwmblocks
+    # Compositor
+    run_app picom
+    # Automatic screen lock
+    run_app xss-lock -- "$XDG_SOURCE_HOME/dwm/scripts/lock"
+    # Screen idle
+    $XDG_SOURCE_HOME/dwm/scripts/idle >> "$X11LOGDIR/xidlehook.log" 2>&1 &
+    # Hide cursor on inactivity
+    run_app unclutter --hide-on-touch
+    # Notifications
+    run_app dunst --config "$XDG_CONFIG_HOME/dunst/dunstrc"
+    # Clipboard manager
+    run_app clipmenud
+
+    # Start GNOME Polkit and Keyring Agents
+    run_app /usr/libexec/polkit-gnome-authentication-agent-1
+    gnome-keyring-daemon --start --components=secrets &
+
+    # Other programs
+    flatpak run com.nextcloud.desktopclient.nextcloud --background >> "$X11LOGDIR/nextcloud.log" 2>&1 &
+    dex --autostart --environment dwm >> "$X11LOGDIR/dex.log" 2>&1 &
+fi
