@@ -1,4 +1,29 @@
-/* See LICENSE for license details. */
+#include <X11/Xlib.h>
+
+typedef struct {
+	Display *dpy;
+	Colormap cmap;
+	Window win;
+	Drawable buf;
+	void *specbuf; /* GlyphFontSpec *specbuf */
+	Atom xembed, wmdeletewin, netwmname, netwmicon, netwmiconname, netwmpid;
+	XIM xim;
+	XIC xic;
+	void *draw; /* Draw draw */
+	Visual *vis;
+	XSetWindowAttributes attrs;
+	int scr;
+	int isfixed; /* is fixed geometry? */
+	int depth; /* bit depth */
+	int l, t; /* left and top offset */
+	int gm; /* geometry mask */
+} XWindow;
+
+extern XWindow xw;
+
+int xgetcw(void);
+int xgetch(void);
+uint32_t xgetbgcolor(uint32_t bg);
 
 enum win_mode {
 	MODE_VISIBLE     = 1 << 0,

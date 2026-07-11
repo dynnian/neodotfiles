@@ -243,7 +243,7 @@ static const char *monocles[] = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱", "󰎳"
 static const char *dmenucmd[]      = { "dmenu_run", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]       = { "bash", "-c", "st", NULL };
 static const char *editor[]        = { "bash", "-c", "st -n nvim -c nvim -e nvim", NULL };
-static const char *browser[]       = { "librewolf", NULL };
+static const char *browser[]       = { "firefox", NULL };
 static const char *signalc[]       = { "flatpak", "run", "org.signal.Signal", NULL };
 static const char *ferdium[]       = { "flatpak", "run", "org.ferdium.Ferdium", NULL };
 static const char *vmachine[]      = { "virt-manager", NULL };
@@ -280,8 +280,7 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_a}, {0, XK_g}},            spawn,          {.v = game } }),            /* Launch gaming platform   (tag 9) */
 
     /* Keyboard Layouts */
-    &((Keychord){2, {{MODKEY, XK_x}, {0, XK_e}},            spawn,          SHCMD("setxkbmap -layout es && pkill -RTMIN+10 dwmblocks") }),  /* Switch to Spanish keyboard layout */
-    &((Keychord){2, {{MODKEY, XK_x}, {0, XK_u}},            spawn,          SHCMD("setxkbmap -layout us && pkill -RTMIN+10 dwmblocks") }),  /* Switch to US keyboard layout */
+    &((Keychord){1, {{ShiftMask, XK_Caps_Lock}},            spawn,          SHCMD("$XDG_SOURCE_HOME/dwm/scripts/kbd_layout && pkill -RTMIN+10 dwmblocks") }),  /* Toggle keyboard layout between Spanish and US */
 
     /* Audio Control */
     &((Keychord){1, {{0, XF86XK_AudioRaiseVolume}},         spawn,          SHCMD("pamixer -i 5 && pkill -RTMIN+10 dwmblocks") }),                  /* Increase volume by 5%+ */

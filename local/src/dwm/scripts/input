@@ -6,7 +6,7 @@ while ! xinput list >/dev/null 2>&1; do
 done
 
 # Configure Touchpads
-xinput list --short | grep -i "touchpad" | while read -r line; do
+xinput list --short | grep -iE "touchpad|synaptics" | while read -r line; do
     ID=$(echo "$line" | grep -o 'id=[0-9]*' | cut -d= -f2)
 
     echo "Configuring touchpad (ID: $ID)..."

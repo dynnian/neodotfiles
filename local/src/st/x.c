@@ -21,6 +21,8 @@ static char *argv0;
 #include "st.h"
 #include "win.h"
 #include "hb.h"
+#include <Imlib2.h>
+#include "sixel.h"
 
 /* types used in config.h */
 typedef struct {
@@ -103,25 +105,6 @@ typedef struct {
 	int mode; /* window state/mode flags */
 	int cursor; /* cursor style */
 } TermWindow;
-
-typedef struct {
-	Display *dpy;
-	Colormap cmap;
-	Window win;
-	Drawable buf;
-	GlyphFontSpec *specbuf; /* font spec buffer used for rendering */
-     	Atom xembed, wmdeletewin, netwmname, netwmicon, netwmiconname, netwmpid;
-	XIM xim;
-	XIC xic;
-	Draw draw;
-	Visual *vis;
-	XSetWindowAttributes attrs;
-	int scr;
-	int isfixed; /* is fixed geometry? */
-	int depth; /* bit depth */
-	int l, t; /* left and top offset */
-	int gm; /* geometry mask */
-} XWindow;
 
 typedef struct {
 	Atom xtarget;
@@ -231,7 +214,7 @@ static void (*handler[LASTEvent])(XEvent *) = {
 
 /* Globals */
 static DC dc;
-static XWindow xw;
+XWindow xw;
 static XSelection xsel;
 static TermWindow win;
 static volatile sig_atomic_t reload_requested = 0;
@@ -337,9 +320,25 @@ zoom(const Arg *arg)
 void
 zoomabs(const Arg *arg)
 {
+	ImageList *im;
+	int i;
+
 	xunloadfonts();
 	xloadfonts(usedfont, arg->f);
 	xloadsparefonts();
+
+	/* delete old pixmaps so that xfinishdraw() can create new scaled ones */
+	for (im = term.images, i = 0; i < 2; i++, im = term.images_alt) {
+		for (; im; im = im->next) {
+			if (im->pixmap)
+				XFreePixmap(xw.dpy, (Drawable)im->pixmap);
+			if (im->clipmask)
+				XFreePixmap(xw.dpy, (Drawable)im->clipmask);
+			im->pixmap = NULL;
+			im->clipmask = NULL;
+		}
+	}
+
 	cresize(0, 0);
 	redraw();
 	xhints();
@@ -1848,11 +1847,140 @@ xdrawline(Line line, int x1, int y1, int x2)
 void
 xfinishdraw(void)
 {
-	XCopyArea(xw.dpy, xw.buf, xw.win, dc.gc, 0, 0, win.w,
-			win.h, 0, 0);
-	XSetForeground(xw.dpy, dc.gc,
-			dc.col[IS_SET(MODE_REVERSE)?
-				defaultfg : defaultbg].pixel);
+	ImageList *im, *next;
+	Imlib_Image origin, scaled;
+	XGCValues gcvalues;
+	GC gc = NULL;
+	int width, height;
+	int cx, cy, del, desty, mode, x1, x2, xend;
+	int bw = borderpx, bh = borderpx;
+	Line line;
+	Glyph g;
+
+	if (term.images) {
+		cx = term.c.x;
+		cy = (!IS_SET(MODE_HIDE) && term.scr == 0) ? term.c.y : -1;
+	}
+
+	for (im = term.images; im; im = next) {
+		next = im->next;
+
+		/* do not draw or process the image, if it is not visible or
+		 * the image line is not dirty */
+		if (im->x >= term.col || im->y >= term.row || im->y < 0 || !term.dirtyimg[im->y])
+			continue;
+
+		/* scale the image */
+		width = MAX(im->width * win.cw / im->cw, 1);
+		height = MAX(im->height * win.ch / im->ch, 1);
+		if (!im->pixmap) {
+			if (!(im->pixmap = (void *)XCreatePixmap(xw.dpy, xw.win, width, height, xw.depth)))
+				continue;
+			if (win.cw == im->cw && win.ch == im->ch) {
+				XImage ximage = {
+					.format = ZPixmap,
+					.data = (char *)im->pixels,
+					.width = im->width,
+					.height = im->height,
+					.xoffset = 0,
+					.byte_order = sixelbyteorder,
+					.bitmap_bit_order = MSBFirst,
+					.bits_per_pixel = 32,
+					.bytes_per_line = im->width * 4,
+					.bitmap_unit = 32,
+					.bitmap_pad = 32,
+					.depth = xw.depth
+				};
+				XPutImage(xw.dpy, (Drawable)im->pixmap, dc.gc, &ximage, 0, 0, 0, 0, width, height);
+				if (im->transparent)
+					im->clipmask = (void *)sixel_create_clipmask((char *)im->pixels, width, height);
+			} else {
+				origin = imlib_create_image_using_data(im->width, im->height, (DATA32 *)im->pixels);
+				if (!origin)
+					continue;
+				imlib_context_set_image(origin);
+				imlib_image_set_has_alpha(1);
+				imlib_context_set_anti_alias(im->transparent ? 0 : 1); /* anti-aliasing messes up the clip mask */
+				scaled = imlib_create_cropped_scaled_image(0, 0, im->width, im->height, width, height);
+				imlib_free_image_and_decache();
+				if (!scaled)
+					continue;
+				imlib_context_set_image(scaled);
+				imlib_image_set_has_alpha(1);
+				XImage ximage = {
+					.format = ZPixmap,
+					.data = (char *)imlib_image_get_data_for_reading_only(),
+					.width = width,
+					.height = height,
+					.xoffset = 0,
+					.byte_order = sixelbyteorder,
+					.bitmap_bit_order = MSBFirst,
+					.bits_per_pixel = 32,
+					.bytes_per_line = width * 4,
+					.bitmap_unit = 32,
+					.bitmap_pad = 32,
+					.depth = xw.depth
+				};
+				XPutImage(xw.dpy, (Drawable)im->pixmap, dc.gc, &ximage, 0, 0, 0, 0, width, height);
+				if (im->transparent)
+					im->clipmask = (void *)sixel_create_clipmask((char *)imlib_image_get_data_for_reading_only(), width, height);
+				imlib_free_image_and_decache();
+			}
+		}
+
+		/* create GC */
+		if (!gc) {
+			memset(&gcvalues, 0, sizeof(gcvalues));
+			gcvalues.graphics_exposures = False;
+			gc = XCreateGC(xw.dpy, xw.win, GCGraphicsExposures, &gcvalues);
+		}
+
+		/* set the clip mask */
+		desty = bh + im->y * win.ch;
+		if (im->clipmask) {
+			XSetClipMask(xw.dpy, gc, (Drawable)im->clipmask);
+			XSetClipOrigin(xw.dpy, gc, bw + im->x * win.cw, desty);
+		}
+
+		/* draw only the parts of the image that are not erased */
+		line = TLINE(im->y) + im->x;
+		xend = MIN(im->x + im->cols, term.col);
+		for (del = 1, x1 = im->x; x1 < xend; x1 = x2) {
+			mode = line->extra & EXT_SIXEL;
+			for (x2 = x1 + 1; x2 < xend; x2++) {
+				if (((++line)->extra & EXT_SIXEL) != mode)
+					break;
+			}
+			if (mode) {
+				XCopyArea(xw.dpy, (Drawable)im->pixmap, xw.buf, gc,
+				    (x1 - im->x) * win.cw, 0,
+				    MIN((x2 - x1) * win.cw, width - (x1 - im->x) * win.cw), height,
+				    bw + x1 * win.cw, desty);
+				del = 0;
+			}
+		}
+		if (im->clipmask)
+			XSetClipMask(xw.dpy, gc, None);
+
+		/* if all the parts are erased, we can delete the entire image */
+		if (del && im->x + im->cols <= term.col) {
+			delete_image(im);
+			continue;
+		}
+
+		/* Redraw the cursor if it is behind the image */
+		if (cy == im->y && (line[cx-xend+1].extra & EXT_SIXEL)) {
+			g = (Glyph){ .u = ' ', .mode = 0, .fg = defaultfg, .bg = defaultbg, .extra = 0 };
+			xdrawcursor(cx, cy, g, cx, cy, g, TLINE(cy), term.col);
+		}
+	}
+	if (gc) {
+		XFreeGC(xw.dpy, gc);
+		memset(term.dirtyimg, 0, term.row * sizeof(*term.dirtyimg));
+	}
+
+	XCopyArea(xw.dpy, xw.buf, xw.win, dc.gc, 0, 0, win.w, win.h, 0, 0);
+	XSetForeground(xw.dpy, dc.gc, dc.col[IS_SET(MODE_REVERSE) ? defaultfg : defaultbg].pixel);
 }
 
 void
@@ -2448,4 +2576,25 @@ run:
 	run();
 
 	return 0;
+}
+
+int xgetcw(void) { return win.cw; }
+int xgetch(void) { return win.ch; }
+uint32_t xgetbgcolor(uint32_t bg)
+{
+	unsigned char r, g, b, a = 255;
+	if (IS_TRUECOL(bg)) {
+		r = bg >> 16 & 255;
+		g = bg >> 8 & 255;
+		b = bg >> 0 & 255;
+	} else {
+		unsigned short ur, ug, ub;
+		xgetcolor(bg, &ur, &ug, &ub);
+		r = ur >> 8;
+		g = ug >> 8;
+		b = ub >> 8;
+		if (bg == defaultbg)
+			a = dc.col[defaultbg].pixel >> 24 & 255;
+	}
+	return (uint32_t)a << 24 | (uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b;
 }

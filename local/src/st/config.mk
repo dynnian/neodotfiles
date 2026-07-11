@@ -19,12 +19,14 @@ INCS = -I$(X11INC) \
        `$(PKG_CONFIG) --cflags glib-2.0` \
        `$(PKG_CONFIG) --cflags fontconfig` \
        `$(PKG_CONFIG) --cflags freetype2` \
-       `$(PKG_CONFIG) --cflags harfbuzz`
+       `$(PKG_CONFIG) --cflags harfbuzz` \
+       `$(PKG_CONFIG) --cflags imlib2`
 LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lgd \
        `$(PKG_CONFIG) --libs glib-2.0` \
        `$(PKG_CONFIG) --libs fontconfig` \
        `$(PKG_CONFIG) --libs freetype2` \
-       `$(PKG_CONFIG) --libs harfbuzz`
+       `$(PKG_CONFIG) --libs harfbuzz` \
+       `$(PKG_CONFIG) --libs imlib2`
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -DICON=\"$(ICONPREFIX)/$(ICONNAME)\" -D_XOPEN_SOURCE=600

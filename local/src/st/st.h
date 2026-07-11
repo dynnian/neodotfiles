@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <sys/types.h>
+#include <time.h>
 
 #include <gd.h>
 #include <glib.h>
@@ -67,6 +68,26 @@ typedef unsigned int uint;
 typedef unsigned long ulong;
 typedef unsigned short ushort;
 
+enum extra_attribute {
+	EXT_SIXEL = 1 << 31
+};
+
+typedef struct _ImageList {
+	struct _ImageList *next, *prev;
+	unsigned char *pixels;
+	void *pixmap;
+	void *clipmask;
+	int width;
+	int height;
+	int x;
+	int y;
+	int reflow_y;
+	int cols;
+	int cw;
+	int ch;
+	int transparent;
+} ImageList;
+
 typedef uint_least32_t Rune;
 
 #define Glyph Glyph_
@@ -75,9 +96,54 @@ typedef struct {
 	ushort mode;      /* attribute flags */
 	uint32_t fg;      /* foreground  */
 	uint32_t bg;      /* background  */
+	uint32_t extra;   /* sixel */
 } Glyph;
 
 typedef Glyph *Line;
+
+void delete_image(ImageList *im);
+void scroll_images(int n);
+
+#define HISTSIZE 2000
+#define TLINE(y)		((y) < term.scr ? term.hist[((y) + term.histi - \
+				term.scr + HISTSIZE + 1) % HISTSIZE] : \
+				term.line[(y) - term.scr])
+
+typedef struct {
+	Glyph attr; /* current char attributes */
+	int x;
+	int y;
+	char state;
+} TCursor;
+
+typedef struct {
+	int row;      /* nb row */
+	int col;      /* nb col */
+        int maxcol;
+	Line *line;   /* screen */
+	Line *alt;    /* alternate screen */
+	Line hist[HISTSIZE]; /* history buffer */
+	int histi;    /* history index */
+	int scr;      /* scroll back */
+	int *dirty;   /* dirtyness of lines */
+	char *dirtyimg; /* dirtyness of image lines */
+	TCursor c;    /* cursor */
+	int ocx;      /* old cursor col */
+	int ocy;      /* old cursor row */
+	int top;      /* top    scroll limit */
+	int bot;      /* bottom scroll limit */
+	int mode;     /* terminal mode flags */
+	int esc;      /* escape state flags */
+	char trantbl[4]; /* charset table translation */
+	int charset;  /* current charset */
+	int icharset; /* selected charset for sequence */
+	int *tabs;
+	ImageList *images;     /* sixel images */
+	ImageList *images_alt; /* sixel images for alternate screen */
+	struct timespec last_ximspot_update;
+} Term;
+
+extern Term term;
 
 typedef union {
 	int i;
@@ -126,6 +192,7 @@ void selstart(int, int, int);
 void selextend(int, int, int, int);
 int selected(int, int);
 char *getsel(void);
+void selscrollview(int);
 
 size_t utf8encode(Rune, char *);
 
