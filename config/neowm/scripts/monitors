@@ -1,0 +1,120 @@
+#!/bin/bash
+
+# Default: Mirroring is OFF unless flag is passed
+MIRROR_MODE=0
+
+# Parse command-line arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -m|--mirror) MIRROR_MODE=1; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+done
+
+# Function to get the highest refresh rate for a given monitor
+get_highest_rate() {
+    local monitor=$1
+    xrandr --query | sed -n "/^$monitor connected/,/^[^ ]/p" \
+        | grep '+' \
+        | grep -oE '[0-9]+\.[0-9]+' \
+        | sort -rn \
+        | head -n 1
+}
+
+# 1. Detect if the laptop lid is closed
+LID_CLOSED=0
+if grep -q "closed" /proc/acpi/button/lid/*/state 2>/dev/null; then
+    LID_CLOSED=1
+fi
+
+# 2. Identify the internal monitor name
+INTERNAL_MONITOR=$(xrandr --query | grep -E "^(eDP[-0-9]*|LVDS[-0-9]*)" | cut -d' ' -f1)
+
+# 3. Get all CONNECTED external monitors
+mapfile -t EXTERNAL_MONITORS < <(xrandr --query | grep " connected" | cut -d' ' -f1 | grep -v "$INTERNAL_MONITOR")
+TOTAL_EXT=${#EXTERNAL_MONITORS[@]}
+
+# Start building the xrandr command
+XRANDR_CMD="xrandr"
+
+# 4. Check if Mirror Mode conditions are strictly met
+if [ "$MIRROR_MODE" -eq 1 ] && [ "$LID_CLOSED" -eq 0 ] && [ "$TOTAL_EXT" -eq 1 ]; then
+    TARGET_EXT="${EXTERNAL_MONITORS[0]}"
+    
+    # Mirroring Setup: Keep internal primary for presentation control consistency
+    XRANDR_CMD="$XRANDR_CMD --output $INTERNAL_MONITOR --auto --primary"
+    XRANDR_CMD="$XRANDR_CMD --output $TARGET_EXT --auto --same-as $INTERNAL_MONITOR"
+
+else
+    # ---- Standard Dynamic Extended Layout ----
+    
+    PRIMARY_SET=0
+
+    # Handle Internal Monitor first (sets up the base layout position)
+    if [ "$LID_CLOSED" -eq 1 ] || [ -z "$INTERNAL_MONITOR" ]; then
+        if [ -n "$INTERNAL_MONITOR" ]; then
+            XRANDR_CMD="$XRANDR_CMD --output $INTERNAL_MONITOR --off"
+        fi
+    else
+        INT_RATE=$(get_highest_rate "$INTERNAL_MONITOR")
+        RATE_FLAG=""
+        [ -n "$INT_RATE" ] && RATE_FLAG="--rate $INT_RATE"
+        
+        # If NO external monitors are connected, internal MUST be primary
+        if [ "$TOTAL_EXT" -eq 0 ]; then
+            XRANDR_CMD="$XRANDR_CMD --output $INTERNAL_MONITOR --auto $RATE_FLAG --primary"
+            PRIMARY_SET=1
+        else
+            # Otherwise, it's just a normal secondary screen on the far left
+            XRANDR_CMD="$XRANDR_CMD --output $INTERNAL_MONITOR --auto $RATE_FLAG"
+        fi
+    fi
+
+    # Position External Monitors dynamically
+    PREV_MONITOR="$INTERNAL_MONITOR"
+    if [ "$LID_CLOSED" -eq 1 ]; then
+        PREV_MONITOR=""
+    fi
+
+    COUNT=0
+    for MON in "${EXTERNAL_MONITORS[@]}"; do
+        COUNT=$((COUNT + 1))
+        
+        EXT_RATE=$(get_highest_rate "$MON")
+        RATE_FLAG=""
+        [ -n "$EXT_RATE" ] && RATE_FLAG="--rate $EXT_RATE"
+        
+        MON_FLAGS="--output $MON --auto $RATE_FLAG"
+        
+        # If we have external monitors and haven't set a primary yet,
+        # the FIRST external monitor (COUNT=1) becomes the primary.
+        if [ "$PRIMARY_SET" -eq 0 ] && [ "$COUNT" -eq 1 ]; then
+            MON_FLAGS="$MON_FLAGS --primary"
+            PRIMARY_SET=1
+        fi
+        
+        # Chain layouts using --right-of
+        if [ -n "$PREV_MONITOR" ]; then
+            MON_FLAGS="$MON_FLAGS --right-of $PREV_MONITOR"
+        fi
+        
+        # Rotate the 3rd external monitor
+        if [ "$COUNT" -eq 3 ]; then
+            MON_FLAGS="$MON_FLAGS --rotate right"
+        else
+            MON_FLAGS="$MON_FLAGS --rotate normal"
+        fi
+        
+        XRANDR_CMD="$XRANDR_CMD $MON_FLAGS"
+        PREV_MONITOR="$MON"
+    done
+fi
+
+# 5. Clean up disconnected monitors
+mapfile -t DISCONNECTED_MONITORS < <(xrandr --query | grep " disconnected" | cut -d' ' -f1)
+for MON in "${DISCONNECTED_MONITORS[@]}"; do
+    XRANDR_CMD="$XRANDR_CMD --output $MON --off"
+done
+
+# Execute the final command
+eval "$XRANDR_CMD"

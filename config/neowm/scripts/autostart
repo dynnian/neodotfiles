@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+##        ____               __                             ##
+##       / __ \_________ _/ /_____                          ##
+##      / / / / ___/ __ `/ //_/ _ \                         ##
+##     / /_/ / /  / /_/ / ,< /  __/  Clay Gomera (Drake)    ##
+##    /_____/_/   \__,_/_/|_|\___/   My custom neowm build  ##
+
+NEOWM_SCRIPTS="$XDG_CONFIG_HOME/neowm/scripts"
+
+# Helper function to background apps and capture stdout/stderr to files
+run_app() {
+    local cmd_name
+    cmd_name=$(basename "$1")
+    local log_file="$X11LOGDIR/${cmd_name}.log"
+
+    echo "--- Starting $cmd_name on $(date) ---" >> "$log_file"
+    "$@" >> "$log_file" 2>&1 &
+}
+
+# activate neccesary env variables for X11
+dbus-update-activation-environment DISPLAY XAUTHORITY &
+
+# configure input
+$NEOWM_SCRIPTS/input &
+
+# set monitor settings and restore wallpaper
+$NEOWM_SCRIPTS/monitors && sh $NEOWM_SCRIPTS/restorewall &
+
+# set theming and font stuff
+$NEOWM_SCRIPTS/theme &
+
+# Screen idle
+$NEOWM_SCRIPTS/idle >> "$X11LOGDIR/neoxidle.log" 2>&1 &
+
+# Spin up stuff at ~/.config/autostart and more
+if [ ! -f /tmp/neowm-autostart-$USER.lock ]; then
+    # Create the autostart lock file so programs don't get relaunched when neowm is restarted
+    touch /tmp/neowm-autostart-$USER.lock
+
+    # Launch PipeWire
+    $NEOWM_SCRIPTS/pipeinit >> "$X11LOGDIR/pipewire.log" 2>&1 &
+
+    ## UI backbone programs
+    # Compositor
+    run_app picom
+    # Automatic screen lock
+    #run_app xss-lock -- "$XDG_SOURCE_HOME/neowm/scripts/lock"
+    # Hide cursor on inactivity
+    run_app unclutter --hide-on-touch
+    # Notifications
+    run_app dunst --config "$XDG_CONFIG_HOME/dunst/dunstrc"
+    # Clipboard manager
+    run_app clipmenud
+
+    # Start GNOME Polkit and Keyring Agents
+    run_app /usr/libexec/polkit-gnome-authentication-agent-1
+    gnome-keyring-daemon --start --components=secrets &
+
+    # Other programs
+    flatpak run com.nextcloud.desktopclient.nextcloud --background >> "$X11LOGDIR/nextcloud.log" 2>&1 &
+    dex --autostart --environment neowm >> "$X11LOGDIR/dex.log" 2>&1 &
+fi

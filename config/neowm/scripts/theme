@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# set theeming options
+gsettings set org.gnome.desktop.interface cursor-theme 'Simp1e-Gruvbox-Dark' &
+gsettings set org.gnome.desktop.interface cursor-size 16 &
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' &
+gsettings set org.gnome.desktop.interface gtk-theme 'Gruvbox-BL-LB-Dark' &
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' &
+gsettings set org.gnome.desktop.interface font-name 'Inter 10' &
+gsettings set org.gnome.desktop.interface document-font-name 'Liberation Sans 10' &
+gsettings set org.gnome.desktop.interface monospace-font-name 'Mononoki Nerd Font 10' &
+gsettings set org.gnome.desktop.interface font-antialiasing 'rgba' &
+gsettings set org.gnome.desktop.interface font-hinting 'full' &

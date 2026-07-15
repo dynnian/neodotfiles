@@ -52,10 +52,12 @@ const char *spcmd2[]  = {"bash", "-c", "st -n sptop -c sptop -g 140x35 -e btop",
 const char *spcmd3[]  = {"bash", "-c", "st -n sppmx -c sppmx -g 140x35 -e pulsemixer", NULL};
 const char *spcmd4[]  = {"bash", "-c", "st -n spflm -c spflm -g 140x35 -e yazi", NULL};
 const char *spcmd5[]  = {"bash", "-c", "st -n spmus -c spmus -g 140x35 -e cmus", NULL};
-const char *spcmd6[]  = {"bash", "-c", "st -n spani -c spani -g 140x35 -e ani-cli", NULL};
-const char *spcmd7[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
-const char *spcmd8[]  = {"flatpak", "run", "io.github.Qalculate", NULL};
-const char *spcmd9[]  = {"arandr", NULL};
+const char *spcmd6[]  = {"bash", "-c", "st -n spsub -c spsub -g 140x35 -e SubTUI", NULL};
+const char *spcmd7[]  = {"bash", "-c", "st -n spani -c spani -g 140x35 -e ani-cli", NULL};
+const char *spcmd8[]  = {"bash", "-c", "st -n spyou -c spyou -g 140x35 -e youtube-tui", NULL};
+const char *spcmd9[]  = {"flatpak", "run", "com.bitwarden.desktop", NULL};
+const char *spcmd10[]  = {"flatpak", "run", "io.github.Qalculate", NULL};
+const char *spcmd11[]  = {"arandr", NULL};
 
 static Sp scratchpads[] = {
     /* NAME         CMD */
@@ -64,10 +66,12 @@ static Sp scratchpads[] = {
     {"sppmx",      spcmd3},
     {"spflm",      spcmd4},
     {"spmus",      spcmd5},
-    {"spani",      spcmd6},
-    {"spbit",      spcmd7},
-    {"spqal",      spcmd8},
-    {"spscr",      spcmd9}
+    {"spsub",      spcmd6},
+    {"spani",      spcmd7},
+    {"spyou",      spcmd8},
+    {"spbit",      spcmd9},
+    {"spqal",      spcmd10},
+    {"spscr",      spcmd11}
 };
 
 /* Tag Definitions */
@@ -200,10 +204,12 @@ static const Rule rules[] = {
     {NULL,                              "sppmx",     NULL,      SPTAG(2),   1,   -1},
     {NULL,                              "spflm",     NULL,      SPTAG(3),   1,   -1},
     {NULL,                              "spmus",     NULL,      SPTAG(4),   1,   -1},
-    {NULL,                              "spani",     NULL,      SPTAG(5),   1,   -1},
-    {"Bitwarden",                       "bitwarden", NULL,      SPTAG(6),  1,   -1},
-    {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(7),  1,   -1},
-    {"Arandr",                          NULL,        NULL,      SPTAG(8),  1,   -1},
+    {NULL,                              "spsub",     NULL,      SPTAG(5),   1,   -1},
+    {NULL,                              "spani",     NULL,      SPTAG(6),   1,   -1},
+    {NULL,                              "spyou",     NULL,      SPTAG(7),   1,   -1},
+    {"Bitwarden",                       "bitwarden", NULL,      SPTAG(8),   1,   -1},
+    {"Qalculate-gtk",                   NULL,        NULL,      SPTAG(9),   1,   -1},
+    {"Arandr",                          NULL,        NULL,      SPTAG(10),  1,   -1},
 };
 
 /* Layout(s) */
@@ -340,11 +346,13 @@ static Keychord *keychords[] = {
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_b}},            togglescratch,  {.ui = 1 } }),  /* Toggle system monitor scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_p}},            togglescratch,  {.ui = 2 } }),  /* Toggle audio mixer scratchpad */
     &((Keychord){2, {{MODKEY, XK_s}, {0, XK_f}},            togglescratch,  {.ui = 3 } }),  /* Toggle yazi scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},            togglescratch,  {.ui = 4 } }),  /* Toggle yazi scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},            togglescratch,  {.ui = 5 } }),  /* Toggle ani-cli scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 6 } }),  /* Toggle Bitwarden scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 7 } }), /* Toggle Qalculate scratchpad */
-    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 8 } }), /* Toggle arandr scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_m}},            togglescratch,  {.ui = 4 } }),  /* Toggle cmus scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_n}},            togglescratch,  {.ui = 5 } }),  /* Toggle SubTUI scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_a}},            togglescratch,  {.ui = 6 } }),  /* Toggle ani-cli scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_y}},            togglescratch,  {.ui = 7 } }),  /* Toggle youtube-tui scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_k}},            togglescratch,  {.ui = 8 } }),  /* Toggle Bitwarden scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_c}},            togglescratch,  {.ui = 9 } }),  /* Toggle Qalculate scratchpad */
+    &((Keychord){2, {{MODKEY, XK_s}, {0, XK_d}},            togglescratch,  {.ui = 10 } }), /* Toggle arandr scratchpad */
 
     /* Session Management */
     &((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_q}}, quit,           {0} }), 

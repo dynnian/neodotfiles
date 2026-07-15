@@ -56,7 +56,7 @@ case "$action" in
         loginctl suspend
         ;;
     "$option5")
-        "$XDG_SOURCE_HOME/dwm/scripts/lock"
+        "$XDG_CONFIG_HOME/neowm/scripts/lock"
         ;;
     "$option6")
         # Determine current power profile for submenu

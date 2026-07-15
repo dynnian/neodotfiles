@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+currwall=$(tail --lines=1 "$XDG_CONFIG_HOME/neowm/scripts/restorewall" | awk '{print $3}' | sed "s/\"//g")
+slock -b "$currwall"

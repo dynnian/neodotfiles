@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Wait for PipeWire-Pulse to fully initialize before starting neoxidle.
+# pactl info will return a non-zero exit code until the server is ready.
+max_retries=15
+retry_count=0
+while ! pactl info > /dev/null 2>&1; do
+    if [ "$retry_count" -ge "$max_retries" ]; then
+        echo "Timed out waiting for PulseAudio/PipeWire. Starting neoxidle anyway."
+        break
+    fi
+    sleep 1
+    retry_count=$((retry_count + 1))
+done
+
+# Save current hardware brightness and drop it to 10%
+DIM_CMD="brightnessctl --save set 10%"
+# Restore the saved hardware brightness
+NORMAL_CMD="brightnessctl --restore"
+
+# Start neoxidle
+pidof neoxidle || neoxidle \
+    --detect-sleep \
+    --not-when-fullscreen \
+    --not-when-audio \
+    --timer 60 \
+        "$DIM_CMD" \
+        "$NORMAL_CMD" \
+    --timer 30 \
+        "$XDG_CONFIG_HOME/neowm/scripts/lock" \
+        "$NORMAL_CMD"

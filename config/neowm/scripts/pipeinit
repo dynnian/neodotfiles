@@ -1,0 +1,7 @@
+#!/bin/sh
+
+pkill pipewire --signal SIGKILL
+
+pipewire &
+pipewire-pulse &
+wireplumber &

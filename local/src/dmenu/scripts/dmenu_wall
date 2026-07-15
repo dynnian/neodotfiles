@@ -6,7 +6,7 @@
 
 # Directory containing wallpapers
 walldir="$XDG_PICTURES_DIR/Wallpapers"
-restorescript="$XDG_SOURCE_HOME/dwm/scripts/restorewall"
+restorescript="$XDG_CONFIG_HOME/neowm/scripts/restorewall"
 
 # Change to wallpaper directory or exit if it fails
 cd "$walldir" || exit

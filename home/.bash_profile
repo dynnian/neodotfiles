@@ -30,7 +30,7 @@ export EDITOR="nvim"
 export VISUAL="st -n nvim -c nvim -e nvim"
 export VIEWER="zathura"
 export VIDEO="mpv"
-export BROWSER="librewolf"
+export BROWSER="firefox"
 
 # Configure Golang
 if command -v go >/dev/null 2>&1; then
@@ -92,12 +92,14 @@ if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     mkdir -p "$X11LOGDIR"
 
     # Save a backup of the previous session log if it exists
-    [ -f "$X11LOGDIR/dwm.log" ] && mv "$X11LOGDIR/dwm.log" "$X11LOGDIR/dwm.log.old"
+    [ -f "$X11LOGDIR/neowm.log" ] && mv -f "$X11LOGDIR/neowm.log" "$X11LOGDIR/neowm.log.old"
 
-    echo "=== Session started on $(date) ===" > "$X11LOGDIR/dwm.log"
+    echo "=== Session started on $(date) ===" > "$X11LOGDIR/neowm.log"
 
     # Route both stdout and stderr to the log file
-    startx "$XINITRC" -- vt1 -keeptty >> "$X11LOGDIR/dwm.log" 2>&1
+    startx "$XINITRC" -- vt1 -keeptty >> "$X11LOGDIR/neowm.log" 2>&1
+    # Clean the autostart script lock file
+    rm /tmp/neowm-autostart-$USER.lock
 
     logout
 fi

@@ -1,9 +1,0 @@
-st build options:
-CFLAGS  = -I/usr/X11R6/include  -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/freetype2 -I/usr/include/libpng16  -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -DVERSION="0.8.5" -DICON="/usr/local/share/pixmaps/st.png" -D_XOPEN_SOURCE=600  -Wall -Wextra -Wpedantic
-LDFLAGS = -L/usr/X11R6/lib -lm -lrt -lX11 -lutil -lXft -lgd  -lglib-2.0  -lfontconfig -lfreetype  -lfreetype  -lharfbuzz 
-CC      = c99
-c99 -I/usr/X11R6/include  `pkg-config --cflags glib-2.0`  `pkg-config --cflags fontconfig`  `pkg-config --cflags freetype2`  `pkg-config --cflags harfbuzz` -DVERSION=\"0.8.5\" -DICON=\"/usr/local/share/pixmaps/st.png\" -D_XOPEN_SOURCE=600  -Wall -Wextra -Wpedantic -c st.c
-c99 -I/usr/X11R6/include  `pkg-config --cflags glib-2.0`  `pkg-config --cflags fontconfig`  `pkg-config --cflags freetype2`  `pkg-config --cflags harfbuzz` -DVERSION=\"0.8.5\" -DICON=\"/usr/local/share/pixmaps/st.png\" -D_XOPEN_SOURCE=600  -Wall -Wextra -Wpedantic -c x.c
-c99 -I/usr/X11R6/include  `pkg-config --cflags glib-2.0`  `pkg-config --cflags fontconfig`  `pkg-config --cflags freetype2`  `pkg-config --cflags harfbuzz` -DVERSION=\"0.8.5\" -DICON=\"/usr/local/share/pixmaps/st.png\" -D_XOPEN_SOURCE=600  -Wall -Wextra -Wpedantic -c boxdraw.c
-c99 -I/usr/X11R6/include  `pkg-config --cflags glib-2.0`  `pkg-config --cflags fontconfig`  `pkg-config --cflags freetype2`  `pkg-config --cflags harfbuzz` -DVERSION=\"0.8.5\" -DICON=\"/usr/local/share/pixmaps/st.png\" -D_XOPEN_SOURCE=600  -Wall -Wextra -Wpedantic -c hb.c
-c99 -o st st.o x.o boxdraw.o hb.o -L/usr/X11R6/lib -lm -lrt -lX11 -lutil -lXft -lgd  `pkg-config --libs glib-2.0`  `pkg-config --libs fontconfig`  `pkg-config --libs freetype2`  `pkg-config --libs harfbuzz` 

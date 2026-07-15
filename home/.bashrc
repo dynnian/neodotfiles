@@ -9,7 +9,7 @@ export MANPAGER="batman"
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
 
-# enable bash-completion for opendoas
+# enable bash-completion for doas
 if command -v doas >/dev/null 2>&1; then
     complete -F _command doas
 fi
@@ -131,12 +131,12 @@ fi
 
 # function to detect os and assign aliases to package managers
 alias \
-    xbu="sudo xbps-install -Su" \
-    xbi="sudo xbps-install -S" \
-    xbr="sudo xbps-remove -R" \
-    xbrs="sudo xbps-remove" \
-    xbs="sudo xbps-query -R" \
-    xbc="sudo xbps-remove -Oo"
+    xbu="doas xbps-install -Su" \
+    xbi="doas xbps-install -S" \
+    xbr="doas xbps-remove -R" \
+    xbrs="doas xbps-remove" \
+    xbs="doas xbps-query -Rs" \
+    xbc="doas xbps-remove -Oo"
 
 # colorize grep output (good for log files)
 alias \
