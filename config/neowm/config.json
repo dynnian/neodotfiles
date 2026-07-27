@@ -107,7 +107,7 @@
     { "class": "kdenlive|Pitivi|Natron|SimpleScreenRecorder|Ghb|mpv|^obs$", "tag": 6 },
     { "class": "Blender|Gimp-2.10|krita|Inkscape|Xournalpp|Com.github.xournalpp.xournalpp", "tag": 7 },
     { "class": "ONLYOFFICE Desktop Editors|libreoffice-.*|soffice|Joplin|obsidian|Notesnook|com.github.johnfactotum.Foliate", "tag": 8 },
-    { "class": "steam|airshipper|pyrogenesis|DarkPlaces|xonotic-sdl|supertuxkart-sdl|supertux2|Minetest|openttd|warzone2100|wesnoth|retroarch|pcsx2-qt|duckstation-qt|Cemu|xemu|org.ppsspp.PPSSPP|dolphin-emu|es-de", "tag": 9 }
+    { "class": "steam|PrismLauncher|airshipper|pyrogenesis|DarkPlaces|xonotic-sdl|supertuxkart-sdl|supertux2|Minetest|openttd|warzone2100|wesnoth|retroarch|pcsx2-qt|duckstation-qt|Cemu|xemu|org.ppsspp.PPSSPP|dolphin-emu|es-de", "tag": 9 }
   ],
 
   "layouts": [
@@ -141,7 +141,7 @@
     { "keys": ["Mod4+a", "o"], "action": "spawn", "argument": "flatpak run org.onlyoffice.desktopeditors" },
     { "keys": ["Mod4+a", "n"], "action": "spawn", "argument": "flatpak run md.obsidian.Obsidian" },
     { "keys": ["Mod4+a", "g"], "action": "spawn", "argument": "flatpak run net.lutris.Lutris" },
-    { "keys": ["Mod4+k"], "action": "spawn", "argument": "$XDG_CONFIG_HOME/neowm/scripts/kbd_layout && neowm -u layout" },
+    { "keys": ["Mod4+x"], "action": "spawn", "argument": "$XDG_CONFIG_HOME/neowm/scripts/kbd_layout && neowm -u layout" },
     { "keys": ["XF86AudioRaiseVolume"], "action": "spawn", "argument": "pamixer -i 5 && neowm -u volume" },
     { "keys": ["XF86AudioLowerVolume"], "action": "spawn", "argument": "pamixer -d 5 && neowm -u volume" },
     { "keys": ["XF86AudioMute"], "action": "spawn", "argument": "pamixer -t && neowm -u volume" },

@@ -5,6 +5,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.smarttab = true
+vim.opt.conceallevel = 1
 
 -- Only use fish if it is installed on the system
 if vim.fn.executable("fish") == 1 then

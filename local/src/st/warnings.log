@@ -1,0 +1,227 @@
+st.c: In function 'sigchld':
+st.c:738:13: warning: unused parameter 'a' [-Wunused-parameter]
+  738 | sigchld(int a)
+      |         ~~~~^
+st.c: In function 'ttywriteraw':
+st.c:928:31: warning: comparison of integer expressions of different signedness: 'ssize_t' {aka 'long int'} and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+  928 |                         if (r < n) {
+      |                               ^
+st.c: In function 'treset':
+st.c:1046:31: warning: comparison of integer expressions of different signedness: 'uint' {aka 'unsigned int'} and 'int' [-Wsign-compare]
+ 1046 |         for (i = tabspaces; i < term.col; i += tabspaces)
+      |                               ^
+st.c: In function 'newterm':
+st.c:1088:20: warning: unused parameter 'a' [-Wunused-parameter]
+ 1088 | newterm(const Arg* a)
+      |         ~~~~~~~~~~~^
+In file included from st.c:21:
+st.c: In function 'tdefcolor':
+st.h:11:38: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+   11 | #define BETWEEN(x, a, b)        ((a) <= (x) && (x) <= (b))
+      |                                      ^~
+st.c:1429:22: note: in expansion of macro 'BETWEEN'
+ 1429 |                 if (!BETWEEN(r, 0, 255) || !BETWEEN(g, 0, 255) || !BETWEEN(b, 0, 255))
+      |                      ^~~~~~~
+st.h:11:38: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+   11 | #define BETWEEN(x, a, b)        ((a) <= (x) && (x) <= (b))
+      |                                      ^~
+st.c:1429:45: note: in expansion of macro 'BETWEEN'
+ 1429 |                 if (!BETWEEN(r, 0, 255) || !BETWEEN(g, 0, 255) || !BETWEEN(b, 0, 255))
+      |                                             ^~~~~~~
+st.h:11:38: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+   11 | #define BETWEEN(x, a, b)        ((a) <= (x) && (x) <= (b))
+      |                                      ^~
+st.c:1429:68: note: in expansion of macro 'BETWEEN'
+ 1429 |                 if (!BETWEEN(r, 0, 255) || !BETWEEN(g, 0, 255) || !BETWEEN(b, 0, 255))
+      |                                                                    ^~~~~~~
+st.c: In function 'strhandle':
+st.c:2011:39: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+ 2011 |                                 if (j == defaultbg)
+      |                                       ^~
+st.c: In function 'sendbreak':
+st.c:2088:22: warning: unused parameter 'arg' [-Wunused-parameter]
+ 2088 | sendbreak(const Arg *arg)
+      |           ~~~~~~~~~~~^~~
+st.c: In function 'iso14755':
+st.c:2161:21: warning: unused parameter 'arg' [-Wunused-parameter]
+ 2161 | iso14755(const Arg *arg)
+      |          ~~~~~~~~~~~^~~
+st.c: In function 'toggleprinter':
+st.c:2183:26: warning: unused parameter 'arg' [-Wunused-parameter]
+ 2183 | toggleprinter(const Arg *arg)
+      |               ~~~~~~~~~~~^~~
+st.c: In function 'printscreen':
+st.c:2189:24: warning: unused parameter 'arg' [-Wunused-parameter]
+ 2189 | printscreen(const Arg *arg)
+      |             ~~~~~~~~~~~^~~
+st.c: In function 'printsel':
+st.c:2195:21: warning: unused parameter 'arg' [-Wunused-parameter]
+ 2195 | printsel(const Arg *arg)
+      |          ~~~~~~~~~~~^~~
+st.c: In function 'tputtab':
+st.c:2241:26: warning: comparison of integer expressions of different signedness: 'uint' {aka 'unsigned int'} and 'int' [-Wsign-compare]
+ 2241 |                 while (x < term.col && n--)
+      |                          ^
+st.c:2242:37: warning: comparison of integer expressions of different signedness: 'uint' {aka 'unsigned int'} and 'int' [-Wsign-compare]
+ 2242 |                         for (++x; x < term.col && !term.tabs[x]; ++x)
+      |                                     ^
+st.h:14:43: warning: comparison of unsigned expression in '< 0' is always false [-Wtype-limits]
+   14 | #define LIMIT(x, a, b)          (x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
+      |                                           ^
+st.c:2249:20: note: in expansion of macro 'LIMIT'
+ 2249 |         term.c.x = LIMIT(x, 0, term.col-1);
+      |                    ^~~~~
+st.h:14:61: warning: comparison of integer expressions of different signedness: 'uint' {aka 'unsigned int'} and 'int' [-Wsign-compare]
+   14 | #define LIMIT(x, a, b)          (x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
+      |                                                             ^
+st.c:2249:20: note: in expansion of macro 'LIMIT'
+ 2249 |         term.c.x = LIMIT(x, 0, term.col-1);
+      |                    ^~~~~
+st.h:14:69: warning: operand of '?:' changes signedness from 'int' to 'uint' {aka 'unsigned int'} due to unsignedness of other operand [-Wsign-compare]
+   14 | #define LIMIT(x, a, b)          (x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
+      |                                                                     ^~~
+st.c:2249:20: note: in expansion of macro 'LIMIT'
+ 2249 |         term.c.x = LIMIT(x, 0, term.col-1);
+      |                    ^~~~~
+st.c: In function 'tputc':
+st.h:11:38: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+   11 | #define BETWEEN(x, a, b)        ((a) <= (x) && (x) <= (b))
+      |                                      ^~
+st.c:44:34: note: in expansion of macro 'BETWEEN'
+   44 | #define ISCONTROLC0(c)          (BETWEEN(c, 0, 0x1f) || (c) == '\177')
+      |                                  ^~~~~~~
+st.c:46:34: note: in expansion of macro 'ISCONTROLC0'
+   46 | #define ISCONTROL(c)            (ISCONTROLC0(c) || ISCONTROLC1(c))
+      |                                  ^~~~~~~~~~~
+st.c:2503:19: note: in expansion of macro 'ISCONTROL'
+ 2503 |         control = ISCONTROL(u);
+      |                   ^~~~~~~~~
+st.c:2544:39: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+ 2544 |                 if (strescseq.len+len >= sizeof(strescseq.buf)-1) {
+      |                                       ^~
+st.c:2582:58: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+ 2582 |                                         || csiescseq.len >= \
+      |                                                          ^~
+st.c: In function 'twrite':
+st.h:11:38: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+   11 | #define BETWEEN(x, a, b)        ((a) <= (x) && (x) <= (b))
+      |                                      ^~
+st.c:44:34: note: in expansion of macro 'BETWEEN'
+   44 | #define ISCONTROLC0(c)          (BETWEEN(c, 0, 0x1f) || (c) == '\177')
+      |                                  ^~~~~~~
+st.c:46:34: note: in expansion of macro 'ISCONTROLC0'
+   46 | #define ISCONTROL(c)            (ISCONTROLC0(c) || ISCONTROLC1(c))
+      |                                  ^~~~~~~~~~~
+st.c:2662:34: note: in expansion of macro 'ISCONTROL'
+ 2662 |                 if (show_ctrl && ISCONTROL(u)) {
+      |                                  ^~~~~~~~~
+st.c: In function 'tcontrolcode':
+st.c:2349:17: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ 2349 |                 tsetchar('?', &term.c.attr, term.c.x, term.c.y);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+st.c:2350:9: note: here
+ 2350 |         case '\030': /* CAN */
+      |         ^~~~
+x.c: In function 'clipcopy':
+x.c:273:21: warning: unused parameter 'dummy' [-Wunused-parameter]
+  273 | clipcopy(const Arg *dummy)
+      |          ~~~~~~~~~~~^~~~~
+x.c: In function 'clippaste':
+x.c:288:22: warning: unused parameter 'dummy' [-Wunused-parameter]
+  288 | clippaste(const Arg *dummy)
+      |           ~~~~~~~~~~~^~~~~
+x.c: In function 'selpaste':
+x.c:298:21: warning: unused parameter 'dummy' [-Wunused-parameter]
+  298 | selpaste(const Arg *dummy)
+      |          ~~~~~~~~~~~^~~~~
+x.c: In function 'numlock':
+x.c:305:20: warning: unused parameter 'dummy' [-Wunused-parameter]
+  305 | numlock(const Arg *dummy)
+      |         ~~~~~~~~~~~^~~~~
+x.c: In function 'zoomreset':
+x.c:347:22: warning: unused parameter 'arg' [-Wunused-parameter]
+  347 | zoomreset(const Arg *arg)
+      |           ~~~~~~~~~~~^~~
+x.c: In function 'mousesel':
+x.c:379:29: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+  379 |         for (type = 1; type < LEN(selmasks); ++type) {
+      |                             ^
+x.c: In function 'mousereport':
+x.c:416:28: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
+  416 |                         if (button >= 3)
+      |                            ^
+x.c: In function 'selclear_':
+x.c:615:19: warning: unused parameter 'e' [-Wunused-parameter]
+  615 | selclear_(XEvent *e)
+      |           ~~~~~~~~^
+x.c: In function 'xloadcols':
+x.c:803:23: warning: comparison of integer expressions of different signedness: 'int' and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+  803 |         for (i = 0; i < dc.collen; i++)
+      |                       ^
+In file included from x.c:21:
+x.c: In function 'xsetcolorname':
+st.h:11:52: warning: comparison of integer expressions of different signedness: 'int' and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+   11 | #define BETWEEN(x, a, b)        ((a) <= (x) && (x) <= (b))
+      |                                                    ^~
+x.c:831:14: note: in expansion of macro 'BETWEEN'
+  831 |         if (!BETWEEN(x, 0, dc.collen))
+      |              ^~~~~~~
+x.c:839:15: warning: comparison of integer expressions of different signedness: 'int' and 'unsigned int' [-Wsign-compare]
+  839 |         if (x == defaultbg)
+      |               ^~
+x.c: In function 'ximopen':
+x.c:1179:18: warning: unused parameter 'dpy' [-Wunused-parameter]
+ 1179 | ximopen(Display *dpy)
+      |         ~~~~~~~~~^~~
+x.c: In function 'ximinstantiate':
+x.c:1200:39: warning: unused parameter 'client' [-Wunused-parameter]
+ 1200 | ximinstantiate(Display *dpy, XPointer client, XPointer call)
+      |                              ~~~~~~~~~^~~~~~
+x.c:1200:56: warning: unused parameter 'call' [-Wunused-parameter]
+ 1200 | ximinstantiate(Display *dpy, XPointer client, XPointer call)
+      |                                               ~~~~~~~~~^~~~
+x.c: In function 'ximdestroy':
+x.c:1208:16: warning: unused parameter 'xim' [-Wunused-parameter]
+ 1208 | ximdestroy(XIM xim, XPointer client, XPointer call)
+      |            ~~~~^~~
+x.c:1208:30: warning: unused parameter 'client' [-Wunused-parameter]
+ 1208 | ximdestroy(XIM xim, XPointer client, XPointer call)
+      |                     ~~~~~~~~~^~~~~~
+x.c:1208:47: warning: unused parameter 'call' [-Wunused-parameter]
+ 1208 | ximdestroy(XIM xim, XPointer client, XPointer call)
+      |                                      ~~~~~~~~~^~~~
+x.c: In function 'expose':
+x.c:1847:16: warning: unused parameter 'ev' [-Wunused-parameter]
+ 1847 | expose(XEvent *ev)
+      |        ~~~~~~~~^~
+x.c: In function 'unmap':
+x.c:1861:15: warning: unused parameter 'ev' [-Wunused-parameter]
+ 1861 | unmap(XEvent *ev)
+      |       ~~~~~~~~^~
+x.c: In function 'kmap':
+x.c:1949:23: warning: comparison of integer expressions of different signedness: 'int' and 'long unsigned int' [-Wsign-compare]
+ 1949 |         for (i = 0; i < LEN(mappedkeys); i++) {
+      |                       ^
+x.c: In function 'cmessage':
+x.c:2040:41: warning: comparison of integer expressions of different signedness: 'long int' and 'Atom' {aka 'long unsigned int'} [-Wsign-compare]
+ 2040 |         } else if (e->xclient.data.l[0] == xw.wmdeletewin) {
+      |                                         ^~
+x.c: In function 'reload':
+x.c:2266:12: warning: unused parameter 'sig' [-Wunused-parameter]
+ 2266 | reload(int sig)
+      |        ~~~~^~~
+x.c: At top level:
+x.c:615:1: warning: 'selclear_' defined but not used [-Wunused-function]
+  615 | selclear_(XEvent *e)
+      | ^~~~~~~~~
+In file included from x.c:77:
+config.h:61:13: warning: 'su_timeout' defined but not used [-Wunused-variable]
+   61 | static uint su_timeout = 200;
+      |             ^~~~~~~~~~
+hb.c: In function 'hbtransform':
+hb.c:64:44: warning: comparison of integer expressions of different signedness: 'int' and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+   64 |         for (int idx = 1, specidx = 1; idx < len; idx++) {
+      |                                            ^
+hb.c:88:40: warning: comparison of integer expressions of different signedness: 'int' and 'size_t' {aka 'long unsigned int'} [-Wsign-compare]
+   88 |         for (int i = 0, specidx = 0; i < len; i++) {
+      |                                        ^

@@ -99,8 +99,8 @@ else
         fi
         
         # Rotate the 3rd external monitor
-        if [ "$COUNT" -eq 3 ]; then
-            MON_FLAGS="$MON_FLAGS --rotate right"
+        if [ "$COUNT" -eq 2 ]; then
+            MON_FLAGS="$MON_FLAGS --rotate left"
         else
             MON_FLAGS="$MON_FLAGS --rotate normal"
         fi

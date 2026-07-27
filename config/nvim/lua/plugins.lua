@@ -50,8 +50,19 @@ return {
         window = { width = 30 },
         filesystem = {
           filtered_items = {
-            hide_dotfiles = false,
+            hide_dotfiles = false, 
             hide_gitignored = false,
+            custom = function(node)
+              -- If the item starts with a dot (e.g., .obsidian, .trash)
+              if node.name:match("^%.") then
+                -- Check if this specific item lives inside an Obsidian vault
+                local is_vault = vim.fs.find({ '.obsidian' }, { upward = true, path = node.path })[1]
+                if is_vault then
+                  return true -- Hide it!
+                end
+              end
+              return false
+            end,
           },
         },
       })
@@ -264,6 +275,7 @@ return {
           { "<leader>f", group = "Find" },
           { "<leader>g", group = "Git" },
           { "<leader>l", group = "LSP" },
+          { "<leader>n", group = "Notes" },
           { "<leader>o", group = "Open" },
           { "<leader>w", group = "Windows" },
         })
@@ -355,6 +367,72 @@ return {
       telescope.load_extension("project")
       pcall(telescope.load_extension, "fzf")
     end,
+  },
+
+  -- Obsidian
+  {
+    "obsidian-nvim/obsidian.nvim",
+    version = "*",
+    lazy = true,
+    ft = "markdown",
+    cmd = { "Obsidian" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = function(_, opts)
+      -- 1. Define the path to your vault and the JSON config
+      local vault_path = vim.fn.expand("~/Nextcloud/Documents/Notes")
+      local json_path = vault_path .. "/.obsidian/daily-notes.json"
+
+      -- 2. Set fallbacks in case the file can't be read
+      local daily_folder = ""
+      local daily_format = "%Y-%m-%d"
+
+      -- 3. Read and parse the JSON file if it exists
+      if vim.fn.filereadable(json_path) == 1 then
+        local json_str = table.concat(vim.fn.readfile(json_path), "\n")
+        local ok, data = pcall(vim.json.decode, json_str)
+        
+        if ok and data then
+          daily_folder = data.folder or daily_folder
+          
+          if data.format then
+            -- 4. Translate Moment.js tokens to Lua strftime tokens
+            local fmt = data.format
+            fmt = fmt:gsub("YYYY", "%%Y")
+            fmt = fmt:gsub("YY", "%%y")
+            fmt = fmt:gsub("MM", "%%m")
+            fmt = fmt:gsub("DD", "%%d")
+            daily_format = fmt
+          end
+        end
+      end
+
+      -- 5. Inject the parsed data into the plugin options
+      opts.daily_notes = {
+        folder = daily_folder,
+        date_format = daily_format,
+        alias_format = daily_format,
+      }
+
+      -- 6. Finally, initialize the plugin with our modified options
+      require("obsidian").setup(opts)
+    end,
+    opts = {
+      legacy_commands = false,
+      workspaces = {
+        {
+          name = "personal",
+          path = "~/Nextcloud/Documents/Notes",
+        },
+      },
+      ui = {
+        enable = false, 
+      },
+      picker = {
+        name = "telescope.nvim", 
+      },
+    },
   },
 
   -- Syntax and filetypes

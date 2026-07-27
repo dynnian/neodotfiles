@@ -41,23 +41,21 @@ export XCURSOR_SIZE=16
 export GTK_THEME="Gruvbox-BL-LB-Dark"
 export GTK_ICON_THEME="Papirus-Dark"
 
-# Clean the autostart script lock file
-rm /tmp/dwm-autostart-$USER.lock
+# initialize neowm
+pkill neowm
 
-# initialize dwm
-pkill dwm
 exec dbus-run-session -- sh -c '
   # Make session env visible to D-Bus activations (useful on runit/Void)
   command -v dbus-update-activation-environment >/dev/null 2>&1 && \
     dbus-update-activation-environment --systemd --all 2>/dev/null || true
 
   # Start SNI -> XEmbed bridge so StatusNotifier items appear in the dwm systray
-  if command -v snixembed >/dev/null 2>&1; then
-    snixembed &
+  if command -v neoxembed >/dev/null 2>&1; then
+    neoxembed &
   elif command -v xembed-sni-proxy >/dev/null 2>&1; then
     xembed-sni-proxy &
   fi
 
-  # finally start dwm (which owns the XEmbed tray selection)
-  exec dwm
+  # finally start neowm (which owns the XEmbed tray selection)
+  exec neowm
 '

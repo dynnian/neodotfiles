@@ -98,3 +98,13 @@ map("n", "<leader>/", ":Telescope current_buffer_fuzzy_find<CR>", { silent = tru
 map("n", "<leader>bn", "<cmd>bnext<CR>", { silent = true, desc = "Next buffer" })
 map("n", "<leader>bb", "<cmd>bprevious<CR>", { silent = true, desc = "Previous buffer" })
 map("n", "<leader>bk", "<cmd>lua require('mini.bufremove').delete(0, false)<CR>", { silent = true, desc = "Kill buffer" })
+
+-- Obsidian / Notes
+map("n", "<leader>nn", "<cmd>Obsidian new<CR>", { silent = true, desc = "New Note" })
+map("n", "<leader>ns", "<cmd>Obsidian search<CR>", { silent = true, desc = "Search Notes" })
+map("n", "<leader>no", "<cmd>Obsidian open<CR>", { silent = true, desc = "Open in Obsidian App" })
+map("n", "<leader>nq", "<cmd>Obsidian quick_switch<CR>", { silent = true, desc = "Quick Switch" })
+map("n", "<leader>nb", "<cmd>Obsidian backlinks<CR>", { silent = true, desc = "Backlinks" })
+map("n", "<leader>nd", "<cmd>Obsidian dailies<CR>", { silent = true, desc = "Daily Notes" })
+map("n", "<leader>nt", "<cmd>Obsidian today<CR>", { silent = true, desc = "Today's Note" })
+map("n", "<leader>nl", "<cmd>Obsidian links<CR>", { silent = true, desc = "Links in Note" })
