@@ -37,24 +37,20 @@ if [ ! -f /tmp/neowm-autostart-$USER.lock ]; then
     # Create the autostart lock file so programs don't get relaunched when neowm is restarted
     touch /tmp/neowm-autostart-$USER.lock
 
-    # Launch PipeWire
-    $NEOWM_SCRIPTS/pipeinit >> "$X11LOGDIR/pipewire.log" 2>&1 &
-
     ## UI backbone programs
     # Compositor
     run_app picom
     # Automatic screen lock
-    #run_app xss-lock -- "$XDG_SOURCE_HOME/neowm/scripts/lock"
+    run_app xss-lock -- "$XDG_SOURCE_HOME/neowm/scripts/lock"
     # Hide cursor on inactivity
     run_app unclutter --hide-on-touch
     # Notifications
     run_app dunst --config "$XDG_CONFIG_HOME/dunst/dunstrc"
     # Clipboard manager
-    run_app clipmenud
+    #run_app clipmenud
 
     # Start GNOME Polkit and Keyring Agents
-    run_app /usr/libexec/polkit-gnome-authentication-agent-1
-    gnome-keyring-daemon --start --components=secrets &
+    run_app /usr/lib64/polkit-gnome/polkit-gnome-authentication-agent-1
 
     # Other programs
     flatpak run com.nextcloud.desktopclient.nextcloud --background >> "$X11LOGDIR/nextcloud.log" 2>&1 &

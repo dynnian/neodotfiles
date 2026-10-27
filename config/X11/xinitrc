@@ -44,18 +44,16 @@ export GTK_ICON_THEME="Papirus-Dark"
 # initialize neowm
 pkill neowm
 
-exec dbus-run-session -- sh -c '
-  # Make session env visible to D-Bus activations (useful on runit/Void)
-  command -v dbus-update-activation-environment >/dev/null 2>&1 && \
-    dbus-update-activation-environment --systemd --all 2>/dev/null || true
+# Make session env visible to D-Bus activations (useful on runit/Void)
+command -v dbus-update-activation-environment >/dev/null 2>&1 && \
+  dbus-update-activation-environment --systemd --all 2>/dev/null || true
 
-  # Start SNI -> XEmbed bridge so StatusNotifier items appear in the dwm systray
-  if command -v neoxembed >/dev/null 2>&1; then
-    neoxembed &
-  elif command -v xembed-sni-proxy >/dev/null 2>&1; then
-    xembed-sni-proxy &
-  fi
+# Start SNI -> XEmbed bridge so StatusNotifier items appear in the dwm systray
+#if command -v neoxembed >/dev/null 2>&1; then
+#  neoxembed &
+#elif command -v xembed-sni-proxy >/dev/null 2>&1; then
+#  xembed-sni-proxy &
+#fi
 
-  # finally start neowm (which owns the XEmbed tray selection)
-  exec neowm
-'
+# finally start neowm (which owns the XEmbed tray selection)
+exec neowm

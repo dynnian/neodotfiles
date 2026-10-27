@@ -221,7 +221,7 @@ const Instances = {
     "intellectual.lumaeris.com",
   ],
   invidious: [
-    "inv.nadeko.net",
+    "invidious.nerdvpn.de",
   ],
   piped: [
     "piped.video",

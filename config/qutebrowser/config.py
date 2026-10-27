@@ -89,11 +89,11 @@ c.content.register_protocol_handler = False
 
 # --- Fonts ---
 c.fonts.default_family = SYSTEM_FONT
-c.fonts.default_size = '10pt'
-c.fonts.completion.entry = f"10pt '{SYSTEM_FONT_MONO}'"
-c.fonts.debug_console = f"10pt '{SYSTEM_FONT_MONO}'"
-c.fonts.prompts = f"10pt {SYSTEM_FONT}"
-c.fonts.statusbar = f"10pt '{SYSTEM_FONT}'"
+c.fonts.default_size = '8pt'
+c.fonts.completion.entry = f"8pt '{SYSTEM_FONT_MONO}'"
+c.fonts.debug_console = f"8pt '{SYSTEM_FONT_MONO}'"
+c.fonts.prompts = f"8pt {SYSTEM_FONT}"
+c.fonts.statusbar = f"8pt '{SYSTEM_FONT}'"
 
 # --- Theme Colors ---
 

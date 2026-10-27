@@ -6,10 +6,10 @@
     "icon_size": 16,
     "icon_spacing": 5,
     "fonts": [
-      "Symbols Nerd Font Mono:size=12",
-      "mononoki Nerd Font:size=12"
+      "Symbols Nerd Font Mono:size=10",
+      "mononoki Nerd Font:size=10"
     ],
-    "dmenu_font": "mononoki Nerd Font:size=12",
+    "dmenu_font": "mononoki Nerd Font:size=10",
     "bar": {
       "enable": true,
       "top": true,
@@ -83,14 +83,13 @@
   ],
 
   "scratchpads": [
-    { "name": "sptrm", "class": "sptrm", "command": "st -n sptrm -c sptrm -g 140x35" },
-    { "name": "sptop", "class": "sptop", "command": "st -n sptop -c sptop -g 140x35 -e btop" },
-    { "name": "sppmx", "class": "sppmx", "command": "st -n sppmx -c sppmx -g 140x35 -e pulsemixer" },
-    { "name": "spflm", "class": "spflm", "command": "st -n spflm -c spflm -g 140x35 -e yazi" },
-    { "name": "spmus", "class": "spmus", "command": "st -n spmus -c spmus -g 140x35 -e cmus" },
-    { "name": "spsub", "class": "spsub", "command": "st -n spsub -c spsub -g 140x35 -e SubTUI" },
-    { "name": "spani", "class": "spani", "command": "st -n spani -c spani -g 140x35 -e ani-cli" },
-    { "name": "spyou", "class": "spyou", "command": "st -n spyou -c spyou -g 140x35 -e youtube-tui" },
+    { "name": "sptrm", "class": "sptrm", "command": "st -n sptrm -c sptrm -g 120x30" },
+    { "name": "sptop", "class": "sptop", "command": "st -n sptop -c sptop -g 120x30 -e btop" },
+    { "name": "sppmx", "class": "sppmx", "command": "st -n sppmx -c sppmx -g 120x30 -e pulsemixer" },
+    { "name": "spflm", "class": "spflm", "command": "st -n spflm -c spflm -g 120x30 -e yazi" },
+    { "name": "spmus", "class": "spmus", "command": "st -n spmus -c spmus -g 120x30 -e subtui" },
+    { "name": "spani", "class": "spani", "command": "st -n spani -c spani -g 120x30 -e ani-cli" },
+    { "name": "spyou", "class": "spyou", "command": "st -n spyou -c spyou -g 120x30 -e youtube-tui" },
     { "name": "spbit", "class": "Bitwarden", "command": "flatpak run com.bitwarden.desktop" },
     { "name": "spqal", "class": "Qalculate-gtk", "command": "flatpak run io.github.Qalculate" },
     { "name": "spscr", "class": "Arandr", "command": "arandr" }
@@ -123,7 +122,7 @@
 
   "keybinds": [
     { "keys": ["Mod4+Return"], "action": "spawn", "argument": "st" },
-    { "keys": ["Mod4+p", "r"], "action": "spawn", "argument": "dmenu_run -fn 'mononoki Nerd Font:size=12' -nb '#1d2021' -nf '#d5c4a1' -sb '#cc241d' -sf '#fbf1c7'" },
+    { "keys": ["Mod4+p", "r"], "action": "spawn", "argument": "dmenu_run -fn 'mononoki Nerd Font:size=10' -nb '#1d2021' -nf '#d5c4a1' -sb '#cc241d' -sf '#fbf1c7'" },
     { "keys": ["Mod4+p", "d"], "action": "spawn", "argument": "$XDG_SOURCE_HOME/dmenu/scripts/dmenu_drun" },
     { "keys": ["Mod4+p", "i"], "action": "spawn", "argument": "$XDG_SOURCE_HOME/dmenu/scripts/dmenu_wifi" },
     { "keys": ["Mod4+p", "s"], "action": "spawn", "argument": "$XDG_SOURCE_HOME/dmenu/scripts/dmenu_scrot" },
@@ -134,13 +133,10 @@
     { "keys": ["Mod4+p", "q"], "action": "spawn", "argument": "$XDG_SOURCE_HOME/dmenu/scripts/dmenu_power" },
     { "keys": ["Mod4+p", "c"], "action": "spawn", "argument": "clipmenu" },
     { "keys": ["Mod4+a", "e"], "action": "spawn", "argument": "st -n nvim -c nvim -e nvim" },
-    { "keys": ["Mod4+a", "v"], "action": "spawn", "argument": "virt-manager" },
-    { "keys": ["Mod4+a", "w"], "action": "spawn", "argument": "firefox" },
+    { "keys": ["Mod4+a", "w"], "action": "spawn", "argument": "qutebrowser" },
     { "keys": ["Mod4+a", "c"], "action": "spawn", "argument": "flatpak run org.signal.Signal" },
     { "keys": ["Mod4+a", "f"], "action": "spawn", "argument": "flatpak run org.ferdium.Ferdium" },
-    { "keys": ["Mod4+a", "o"], "action": "spawn", "argument": "flatpak run org.onlyoffice.desktopeditors" },
     { "keys": ["Mod4+a", "n"], "action": "spawn", "argument": "flatpak run md.obsidian.Obsidian" },
-    { "keys": ["Mod4+a", "g"], "action": "spawn", "argument": "flatpak run net.lutris.Lutris" },
     { "keys": ["Mod4+x"], "action": "spawn", "argument": "$XDG_CONFIG_HOME/neowm/scripts/kbd_layout && neowm -u layout" },
     { "keys": ["XF86AudioRaiseVolume"], "action": "spawn", "argument": "pamixer -i 5 && neowm -u volume" },
     { "keys": ["XF86AudioLowerVolume"], "action": "spawn", "argument": "pamixer -d 5 && neowm -u volume" },
@@ -148,6 +144,8 @@
     { "keys": ["XF86AudioMicMute"], "action": "spawn", "argument": "pamixer --default-source -t && neowm -u volume" },
     { "keys": ["XF86MonBrightnessUp"], "action": "spawn", "argument": "brightnessctl s 5%+ && neowm -u brightness" },
     { "keys": ["XF86MonBrightnessDown"], "action": "spawn", "argument": "brightnessctl s 5%- && neowm -u brightness" },
+    { "keys": ["XF86KbdBrightnessUp"], "action": "spawn", "argument": "brightnessctl --device='smc::kbd_backlight' s 10%+" },
+    { "keys": ["XF86KbdBrightnessDown"], "action": "spawn", "argument": "brightnessctl --device='smc::kbd_backlight' s 10%-" },
     { "keys": ["XF86AudioPause"], "action": "spawn", "argument": "playerctl play-pause" },
     { "keys": ["XF86AudioPlay"], "action": "spawn", "argument": "playerctl play-pause" },
     { "keys": ["XF86AudioNext"], "action": "spawn", "argument": "playerctl next" },
@@ -192,7 +190,6 @@
     { "keys": ["Mod4+s", "p"], "action": "togglescratch", "argument": "sppmx" },
     { "keys": ["Mod4+s", "f"], "action": "togglescratch", "argument": "spflm" },
     { "keys": ["Mod4+s", "m"], "action": "togglescratch", "argument": "spmus" },
-    { "keys": ["Mod4+s", "n"], "action": "togglescratch", "argument": "spsub" },
     { "keys": ["Mod4+s", "a"], "action": "togglescratch", "argument": "spani" },
     { "keys": ["Mod4+s", "y"], "action": "togglescratch", "argument": "spyou" },
     { "keys": ["Mod4+s", "k"], "action": "togglescratch", "argument": "spbit" },
